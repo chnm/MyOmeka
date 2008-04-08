@@ -1,10 +1,16 @@
 <?php 
 
-define('MYARCHIVE_PLUGIN_VERSION', 1);
+define('MYARCHIVE_PLUGIN_VERSION', '0.1dev');
+add_theme_pages('theme', 'public');
 
-add_plugin_hook('initialize', 'myarchive_init');
+/**
+ * THE COMMENTED OUT STUFF IS OLD CODE, MAY HELP OR JUST IGNORE IT - [KBK]
+ *
+ * @package MyArchive plugin
+ **/
+//add_plugin_hook('initialize', 'myarchive_init');
 
-function myarchive_init()
+/*function myarchive_init()
 {
 	//Define some special ACL rules for this plugin
 		
@@ -34,6 +40,7 @@ add_plugin_hook('item_browse_sql', 'myarchive_show_only_my_items');
  *
  * @return void
  **/
+/*
 function myarchive_show_only_my_items($select, $params)
 {
 	$user = current_user();
@@ -66,23 +73,6 @@ function myarchive_show_only_my_items($select, $params)
 	}
 }
 
-add_plugin_hook('append_to_page', 'myarchive_append_stuff');
-
-function myarchive_append_stuff($page, $options) {
-	switch ($page) {
-		case 'items/show':
-			myarchive_favorite_button($options['item']);
-			break;
-		
-		default:
-			break;
-	}
-}
-
-function myarchive_show_favorite_button($item) {
-	
-}
-
 add_plugin_hook('install', 'myarchive_install');
 
 function myarchive_install()
@@ -91,5 +81,70 @@ function myarchive_install()
 	
 	//We want to add the 'favorite' entity relationship to the entity_relationships table if needed
 	
+}*/
+
+function mystuff_favorite_link()
+{
+	?>
+	<style type="text/css" media="screen">
+		#favoriting input {font-size: 2em;}
+		#favoriting label {clear:both;}
+		#favoriting {
+		    display:block;
+		    clear:both;
+		    background-color: #f1c8ba;
+		    border: 1px dotted black;
+		    margin-bottom:50px;
+		    padding-left:30px;
+		    padding-top: 30px;
+		    padding-bottom: 20px;}
+		#favoriting textarea {float: none;clear:both;}
+		#saved-annotation {font-style: italic;font-size: 2em;clear:both;}
+	</style>
+	
+	<div id="favoriting">
+		<a href="#" id="favorite-off"><img src="<?php echo img('favorite-off.gif'); ?>" /></a>
+	</div>
+	
+	<script type="text/javascript" charset="utf-8">
+	    var container = $('favoriting');
+	    
+		var makeFavorite = function() {
+			var url = "<?php echo uri('_favorite_form'); ?>";
+			new Ajax.Updater(container, url, {
+				onSuccess: function(t) {
+					Effect.Appear(container);					
+				},
+				onComplete: function(t) {
+					Event.observe('save-annotation', 'click', saveAnnotation);
+				}
+			});
+			
+			return false;
+		}
+		
+		var saveAnnotation = function() {
+			var annotation = $('annotation').value;
+			var tags = $('tags').value;
+			
+			//Make a spot on the page for the saved annotation
+			
+			new Ajax.Updater(container, "<?php echo uri('_favorite_saved'); ?>", {
+			    parameters: {
+			        annotation: annotation,
+			        tags: tags
+			    },
+			    method: 'get',
+			    onComplete: function(t) {
+			        Event.observe('edit-annotation', 'click', makeFavorite);
+			    }
+			});
+						
+			return false;
+		}
+
+		Event.observe('favorite-off', 'click', makeFavorite);
+	</script>
+	
+<?php
 }
-?>
