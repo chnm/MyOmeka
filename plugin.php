@@ -2,7 +2,7 @@
 
 define('MYARCHIVE_PLUGIN_VERSION', '0.1dev');
 add_theme_pages('theme', 'public');
-
+add_controllers();
 /**
  * THE COMMENTED OUT STUFF IS OLD CODE, MAY HELP OR JUST IGNORE IT - [KBK]
  *
@@ -148,3 +148,21 @@ function mystuff_favorite_link()
 	
 <?php
 }
+
+function poster_icon_html($item) {
+    //If we can get a square thumbnail out of it, use that
+    if($thumbnail = square_thumbnail($item)) {
+        return $thumbnail;
+    }
+    
+    switch ($item->Type->name) {
+        case 'Document':
+            return 'Document';
+            break;
+        
+        default:
+            return 'No Type given';
+            break;
+    }
+}
+

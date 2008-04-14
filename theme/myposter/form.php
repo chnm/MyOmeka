@@ -1,6 +1,11 @@
 <?php head(); ?>
 <?php echo js('poster'); ?>
+<?php echo js('tiny_mce/tiny_mce'); ?>
 <style type="text/css" media="screen">
+    #description {
+        height:200px;
+    }
+    
     .item {
         display:block;
         width: 100px;
@@ -15,8 +20,7 @@
     
     .poster-spot {
         display:block;
-        float:left;
-        width: 300px;
+        width: 650px;
         border: 1px solid #999;
         margin: 20px 0px 20px 10px;
         padding: 10px 5px 10px 5px;
@@ -35,7 +39,7 @@
     }
     
     .annotation textarea {
-        width: 150px;
+        width: 470px;
         height: 100px;
         float: none;
     }
@@ -48,9 +52,22 @@
         border: 3px dotted red;
     }
     
+    .controls {
+        clear:both;
+        margin-bottom: 10px;
+    }
+    
+    .delete {
+        float:right;
+    }    
 </style>
+
+<script type="text/javascript" charset="utf-8">
+    //@testing CAN ANYONE THINK OF A BETTER WAY TO EMBED PHP into the Javascript?
+    Poster.placeholderUrl = "<?php echo uri('poster/placeholder'); ?>";
+</script>
 <div id="primary">
-<form action="" method="post" accept-charset="utf-8" id="poster-form">
+<form action="<?php echo uri('poster/save'); ?>" method="post" accept-charset="utf-8" id="poster-form">
     
     <div class="field">
         <label for="title">Title of Poster:</label>
@@ -59,27 +76,18 @@
     
     <div class="field">
         <label for="description">Description:</label>
-        <input type="text" name="description" value="" id="description" />
+        <textarea name="description" id="description"></textarea>
     </div>
-    
-    
+        
     <div id="poster-canvas">
-    <?php for($i=1; $i<=6; $i++): ?>
-        <div class="poster-spot" id="poster-spot-<?php echo $i; ?>">
-            <div class="spot-order"><?php echo $i; ?></div>
-            
-            <div class="item-canvas">
-                <div class="item"></div>
-                <input type="button" name="choose_item[<?php echo $i; ?>]" value="Choose Item" class="choose-item" />
-            </div>
-            
-            <div class="annotation">
-                <textarea name="annotation[<?php echo $i; ?>]" rows="4" cols="10"></textarea>
-                <input type="button" name="more_text[<?php echo $i; ?>]" value="+" class="add-more-text" />
-            </div>
-        </div>
+    <?php for($i=1; $i<=5; $i++): ?>
+        <?php common('_spot', compact('item', 'i'), 'myposter'); ?>
     <?php endfor; ?>
     </div> 
+    
+    
+        <?php common('_item_widget', compact('items')); ?>
+   
     
     <input type="submit" name="save_poster" value="Save Poster" id="save_poster" />
     <input type="submit" name="preview_poster" value="Preview Your Poster" id="preview_poster" />
