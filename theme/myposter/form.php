@@ -80,7 +80,7 @@
     </div>
         
     <div id="poster-canvas">
-    <?php for($i=1; $i<=5; $i++): ?>
+    <?php for($i=1; $i<=0; $i++): ?>
         <?php common('_spot', compact('item', 'i'), 'myposter'); ?>
     <?php endfor; ?>
     </div> 

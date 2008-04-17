@@ -1,6 +1,7 @@
 Poster = new Object();
 
 Object.extend(Poster, {
+        
     //Everything that takes place when the form loads
    formLoad: function() {
        //WYSIWYG Editor
@@ -17,6 +18,7 @@ Object.extend(Poster, {
        });     
        
        Poster.makeSortable();  
+       Poster.makeDeletable();
    },
    saveForm: function() {
        //Save the poster every time we change the order
@@ -26,6 +28,28 @@ Object.extend(Poster, {
              }
          });       
    },
+   
+   getSequence: function() {
+     return $$('.poster-spot');
+   },
+   
+   getTextAreaId: function(row) {
+     return 'poster-annotation-' + Poster.getRowOrder(row);
+   },
+   
+   //Convenience shortcuts for TinyMCE
+   addEditor: function(element) {
+       try{
+           tinyMCE.execCommand('mceAddControl', false, Poster.getTextAreaId(element));
+       }catch (e) {console.debug(e);}
+   },
+   
+   removeEditor: function(element) {
+       try{
+           tinyMCE.execCommand('mceRemoveControl', false, Poster.getTextAreaId(element));
+       }catch (e) {console.debug(e);}
+   },
+   
    //Activate the drag/drop for the poster
    makeSortable: function() {
       //Make the poster spots sortables
@@ -51,7 +75,7 @@ Object.extend(Poster, {
       };
       //Based on: http://www.neotrinity.at/2007/06/26/scriptaculous-move/
       var moveRow = function(list, row, dir) {
-          var sequence=getSequence();          
+          var sequence=Poster.getSequence();          
           for (var j=0; j<sequence.length; j++) {
               var i = j - dir;
               if (sequence[j]==row && i >= 0 && i <= sequence.length) {
@@ -63,38 +87,39 @@ Object.extend(Poster, {
           }
           setSequence(sequence);          
       };
-      var getSequence = function() {
-          return $$('.poster-spot');
-      };
             
       //Set the sequence in place w/o using Scriptaculous
       //Hacked from Scriptaculous's Sortable.setSequence()
       var setSequence = function(newSequence) {
         //Obtain the original elements
-        var originals = getSequence();
-                
+        var originals = Poster.getSequence();
+        console.debug(originals);    
         var nodeMap = {};
         originals.each(function(n){
             nodeMap[n.id] = [n, n.parentNode];
-            tinyMCE.execCommand('mceRemoveControl', false, getTextAreaId(n));
+            Poster.removeEditor(n);
             n.parentNode.removeChild(n);    
         });
+        
+        debugOrder();
         
         newSequence.each(function(row, index) {
           var n = nodeMap[row.id];
           if (n) {
             n[1].appendChild(n[0]);
             //Put the WYSIWYG back in
-            tinyMCE.execCommand('mceAddControl', false, getTextAreaId(n[0]));
+            Poster.addEditor(n[0]);
             delete nodeMap[row.id];
           }
         });
+        
+        debugOrder();
       };
       
       var debugOrder = function() {
           var ids="";
-          getSequence().each(function(row){
-              ids += getRowOrder(row) + ',';
+          Poster.getSequence().each(function(row){
+              ids += Poster.getRowOrder(row) + ',';
           });
           console.debug(ids);
       }
@@ -103,14 +128,6 @@ Object.extend(Poster, {
       var getRow = function(element) {
           var posterSpot = element.up('.poster-spot');
         return posterSpot;
-      }
-      
-      var getTextAreaId = function(row) {
-          return 'poster-annotation-' + getRowOrder(row);
-      }
-      
-      var getRowOrder = function(row) {
-          return parseInt(row.id.gsub('poster-spot-', ''));          
       }
       
       var isLastRow = function(row) {
@@ -141,7 +158,7 @@ Object.extend(Poster, {
           Event.stop(e);
           var row = getRow(this);
           //Remove the current row from the sequence and unshift it to the front of the array
-          var newSequence = getSequence().reject(function(entry){return (row == entry);});
+          var newSequence = Poster.getSequence().reject(function(entry){return (row == entry);});
           newSequence.unshift(row);
           setSequence(newSequence);
       });
@@ -150,19 +167,36 @@ Object.extend(Poster, {
          Event.stop(e);
          var row = getRow(this);
          //Remove the current row from the sequence and push it to the end of the array
-         var newSequence = getSequence().reject(function(entry){return (row == entry);});
+         var newSequence = Poster.getSequence().reject(function(entry){return (row == entry);});
          newSequence.push(row);
          setSequence(newSequence);
       });
     },
     
+    getRowOrder: function(row) {
+        return parseInt(row.id.gsub('poster-spot-', ''));          
+    },
+    
+    reorder: function() {
+        Poster.getSequence().each(function(row, index){
+            Poster.removeEditor(row);
+            var textarea = $(Poster.getTextAreaId(row));
+            textarea.id = 'poster-annotation-' + (index + 1);
+            row.id = 'poster-spot-' + (index + 1);
+            console.debug(row);
+            Poster.addEditor(row);
+        });
+    },
+    
     //This will make all buttons with a class="delete" able to delete their entry on the form
     makeDeletable: function(entry) {
-        var deleteButton = entry.getElementsBySelector('.delete').first();
-        
-        deleteButton.observe('click', function(e){
+        $$('.delete').invoke('observe', 'click', function(e){
             Event.stop(e);
-            Poster.onDeleteEntry(entry);
+            var entry = this.up('.poster-spot');
+            if(entry) {
+                Poster.onDeleteEntry(entry);
+                Poster.reorder();
+            }
         });       
     },
     
@@ -170,6 +204,7 @@ Object.extend(Poster, {
     //@todo Fire an AJAX call to delete the entry from the database
     onDeleteEntry: function(entry) {
         if(confirm('Are you sure you want to delete this?')) {
+            Poster.removeEditor(entry);
             entry.parentNode.removeChild(entry);
         }
     },
@@ -189,8 +224,21 @@ Event.observe(window, 'load', function(){
         //@testing Grab the 'i' value from the poster-spot loop
         //This may not be necessary for the working version, as poster will be saved incrementally
         //And the number of current spots used will be available from the database
-        var i = parseInt($$('.poster-spot').size()) + 1;
-                
+        function getHighest() {
+            var high = 0;
+            var current = 0;
+            var rows = $$('.poster-spot');
+            rows.each(function(el){
+                current = Poster.getRowOrder(el);
+                if(current > high) high = current;
+            });
+            
+            return high;
+        }
+        
+//        var i = parseInt($$('.poster-spot').size()) + 1;
+        var i = getHighest() + 1;
+        
         //This URL is defined on the form.php page that calls this JS
        new Ajax.Updater('poster-canvas', Poster.placeholderUrl, {
            parameters: 'item_id=' + id + '&i=' + i,
