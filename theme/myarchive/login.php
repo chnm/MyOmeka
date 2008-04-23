@@ -1,5 +1,6 @@
 <?php head(); ?>
 
+<div id="login-box" style="width: 250px; border: 1px; padding: 25px;">
 <h1>Login</h1>
 	<?php echo flash();?>
 <form id="login-form" action="<?php echo uri('myarchive/login');?>" method="post" accept-charset="utf-8">
@@ -18,5 +19,8 @@
 
 <li id="forgotpassword"><a href="<?php echo uri('myarchive/forgot'); ?>">Lost your password?</a></li>
 </ul>
+</div>
+
+<?php include('register.php'); ?>
 
 <?php foot(); ?>

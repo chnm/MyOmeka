@@ -1,21 +1,21 @@
 <?php 
+/* MyArchive Plugin */
 
-define('MYARCHIVE_PLUGIN_VERSION', '0.1dev');
-add_theme_pages('theme', 'public');
-add_controllers();
-/**
- * THE COMMENTED OUT STUFF IS OLD CODE, MAY HELP OR JUST IGNORE IT - [KBK]
- *
- * @package MyArchive plugin
- **/
-//add_plugin_hook('initialize', 'myarchive_init');
+define('MYARCHIVE_PLUGIN_VERSION', '0.2dev');
 
-/*function myarchive_init()
-{
+add_plugin_hook('initialize', 'myarchive_initialize');
+add_plugin_hook('install', 'myarchive_install');
+add_plugin_hook('theme_header', 'myarchive_css');
+
+add_controllers('controllers');
+
+function myarchive_initialize()
+{	
+	add_theme_pages('theme', 'public');
+	
 	//Define some special ACL rules for this plugin
 		
-
-		$acl = Zend::Registry( 'acl' );
+	$acl = Zend_registry::get( 'acl' );
 
 	//Come up with some terminology for this
 	$acl->addRole(new Zend_Acl_Role('myarchive'));
@@ -26,10 +26,21 @@ add_controllers();
 	$acl->allow('myarchive',	'MyArchive',array('favorite'));	
 	$acl->allow('researcher',	'MyArchive',array('favorite'));
 	$acl->allow('admin',		'MyArchive',array('favorite'));
-	$acl->allow('contributor',	'MyArchive',array('favorite'));			
+	$acl->allow('contributor',	'MyArchive',array('favorite'));		
+}
+
+function myarchive_install()
+{
+	set_option('myarchive_plugin_version', MYARCHIVE_PLUGIN_VERSION);
 	
-	add_theme_pages('theme', 'both');
-	add_controllers();
+	//We want to add the 'favorite' entity relationship to the entity_relationships table if needed
+	
+}
+
+function myarchive_css()
+{
+// improperly passing the web route to css file in plugin theme css folder.  Fix before full-release [DL]
+//	echo "<link rel=\"stylesheet\" media=\"print\" href=\"WEB_PLUGIN.DIRECTORY_SEPARATOR.'theme'.DIRECTORY_SEPARATOR.'css'.DIRECTORY_SEPARATOR.'myarchive.css'\" />";
 }
 
 add_plugin_hook('item_browse_sql', 'myarchive_show_only_my_items');
@@ -40,7 +51,7 @@ add_plugin_hook('item_browse_sql', 'myarchive_show_only_my_items');
  *
  * @return void
  **/
-/*
+
 function myarchive_show_only_my_items($select, $params)
 {
 	$user = current_user();
@@ -72,16 +83,6 @@ function myarchive_show_only_my_items($select, $params)
 		}	
 	}
 }
-
-add_plugin_hook('install', 'myarchive_install');
-
-function myarchive_install()
-{
-	set_option('myarchive_plugin_version', MYARCHIVE_PLUGIN_VERSION);
-	
-	//We want to add the 'favorite' entity relationship to the entity_relationships table if needed
-	
-}*/
 
 function mystuff_favorite_link()
 {
@@ -166,3 +167,4 @@ function poster_icon_html($item) {
     }
 }
 
+?>
