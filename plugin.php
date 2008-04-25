@@ -30,8 +30,27 @@ function myarchive_initialize()
 }
 
 function myarchive_install()
-{
+{	
 	set_option('myarchive_plugin_version', MYARCHIVE_PLUGIN_VERSION);
+	
+	// Create new tables to support poster building
+	$db = get_db();
+	$db->exec(  "CREATE TABLE IF NOT EXISTS {$db->prefix}posters ( 
+                    `id` BIGINT UNSIGNED NOT NULL auto_increment PRIMARY KEY, 
+            	    `title` VARCHAR(255) NOT NULL, 
+            	    `description` TEXT, 
+            		`user_id` BIGINT UNSIGNED NOT NULL,
+            		`date_created` TIMESTAMP NOT NULL default '0000-00-00 00:00:00',
+            		`date_modified` TIMESTAMP NOT NULL default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP
+            	) ENGINE = MYISAM;");
+	
+	$db->exec(  "CREATE TABLE IF NOT EXISTS {$db->prefix}posters_items ( 
+                    `id` BIGINT UNSIGNED NOT NULL auto_increment PRIMARY KEY, 
+            	    `annotation` TEXT, 
+            		`poster_id` BIGINT UNSIGNED NOT NULL,
+            		`item_id` BIGINT UNSIGNED NOT NULL,
+            		`order` INT NOT NULL
+            	) ENGINE = MYISAM;");
 	
 	//We want to add the 'favorite' entity relationship to the entity_relationships table if needed
 	

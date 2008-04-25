@@ -9,8 +9,11 @@ Object.extend(Poster, {
        	mode : "textareas",
        	theme: "advanced",
        	theme_advanced_toolbar_location : "top",
-       	theme_advanced_disable: "separator,styleselect,indent,outdent,anchor,image,cleanup,help,sub,sup,charmap,visualaid,hr,removeformat,link,unlink,code",
-       	theme_advanced_buttons3 : ""
+       	theme_advanced_buttons1 : "bold,italic,underline,justifyleft,justifycenter,justifyright,bullist,numlist,link,formatselect",
+		theme_advanced_buttons2 : "",
+		theme_advanced_buttons3 : "",
+		theme_advanced_toolbar_align : "left"
+		
        });
 
        Event.observe('poster-form', 'submit', function(){

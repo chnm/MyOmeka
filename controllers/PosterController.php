@@ -2,6 +2,10 @@
 /**
 * MyPoster controller
 */
+
+// Is there a better way to handle this path?
+require_once "plugins/MyArchive/models/Poster.php";
+
 class PosterController extends Omeka_Controller_Action
 {
     public function indexAction()
@@ -33,7 +37,10 @@ class PosterController extends Omeka_Controller_Action
     }
     
     public function saveAction()
-    {
+    {   
+        $poster = new Poster;
+        $params = $this->getRequest()->getParams();
+        
         var_dump( $this->getRequest()->getParams() );
     }
 
