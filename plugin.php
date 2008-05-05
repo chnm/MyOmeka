@@ -49,11 +49,16 @@ function myarchive_install()
             	    `annotation` TEXT, 
             		`poster_id` BIGINT UNSIGNED NOT NULL,
             		`item_id` BIGINT UNSIGNED NOT NULL,
-            		`order` INT NOT NULL
+            		`ordernum` INT NOT NULL
             	) ENGINE = MYISAM;");
-	
-	//We want to add the 'favorite' entity relationship to the entity_relationships table if needed
-	
+
+	$db->exec(  "CREATE TABLE IF NOT EXISTS {$db->prefix}favorites ( 
+                    `id` BIGINT UNSIGNED NOT NULL auto_increment PRIMARY KEY, 
+            	    `annotation` TEXT, 
+            		`user_id` BIGINT UNSIGNED NOT NULL,
+            		`item_id` BIGINT UNSIGNED NOT NULL,
+            		`date_modified` TIMESTAMP NOT NULL default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP
+            	) ENGINE = MYISAM;");
 }
 
 function myarchive_css()
