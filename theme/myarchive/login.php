@@ -1,9 +1,9 @@
-<?php head(); ?>
 
-<div id="login-box" style="width: 250px; border: 1px; padding: 25px;">
+
+<div id="myomeka-login-box">
 <h1>Login</h1>
 	<?php echo flash();?>
-<form id="login-form" action="<?php echo uri('myarchive/login');?>" method="post" accept-charset="utf-8">
+<form id="myomeka-login-form" action="<?php echo uri('myarchive/login');?>" method="post" accept-charset="utf-8">
 	<fieldset>
 		<div class="field">
 	<label for="username">Username</label> 
@@ -17,10 +17,6 @@
 	<input type="submit" class="login" value="Login" />
 </form>
 
-<li id="forgotpassword"><a href="<?php echo uri('myarchive/forgot'); ?>">Lost your password?</a></li>
+<li id="myomeka-forgotpassword"><a href="<?php echo uri('myarchive/forgot'); ?>">Lost your password?</a></li>
 </ul>
 </div>
-
-<?php include('register.php'); ?>
-
-<?php foot(); ?>

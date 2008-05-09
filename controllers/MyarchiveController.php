@@ -1,12 +1,18 @@
 <?php 
 /**
-* MyArchive controller
+*  MyArchive Controller
+*
+*  An incredible amount of this controller is a modified version of what's currently
+*  found in the UsersController.  Because the routes are currently hard-coded 
+*  (as of 0.9.1.1 release) there's no way around this.  A more agile Omeka core will
+*  make this much simpler [DL]
+*
+*  PS: doing registration through an external controller is currently stinks
+*
 */
 
-/*require_once MODEL_DIR.DIRECTORY_SEPARATOR.'User.php';
+require_once MODEL_DIR.DIRECTORY_SEPARATOR.'User.php';
 require_once 'Omeka/Controller/Action.php';
-require_once 'Zend/Filter/Input.php';
-*/
 
 class MyArchiveController extends Omeka_Controller_Action
 {
@@ -47,7 +53,7 @@ class MyArchiveController extends Omeka_Controller_Action
 			 	echo ('There was an error logging you in.  Please try again, or register a new account.');
 			}
 		}
-		$this->render('myarchive/login.php');
+		$this->render('myarchive/index.php');
 	}
 	
 	public function logoutAction()
@@ -58,12 +64,6 @@ class MyArchiveController extends Omeka_Controller_Action
 		$this->_redirect('myarchive');
 	}
 	
-	public function forgotAction()
-	{
-//  fix this [DL]
-//		$this->_forward('users', 'forgotPassword', array('renderPage'=>'myarchive/forgot.php'));
-	}
-	
 	/**
 	 * Register thyself for a user account with Omeka
 	 *
@@ -71,27 +71,119 @@ class MyArchiveController extends Omeka_Controller_Action
 	 **/
 	public function registerAction()
 	{
-		$user = new User();
-		
+	$user = new User();
+
+	$user->role = "MyArchive";
+	
 		try {
 			if($user->saveForm($_POST)) {
-				
+
 				$user->email = $_POST['email'];
+				
 				$this->sendActivationEmail($user);
 				
 				$this->flashSuccess('User was added successfully!');
 
 				//Redirect to the main user browse page
-				$this->_redirect('dashboard');
+				$this->_redirect('myarchive/dashboard');
 			}
 		} catch (Omeka_Validator_Exception $e) {
-			//$this->flashValidationErrors($e);
-			echo "error!";
+			$this->flashValidationErrors($e);
+			echo $e;
+			//$this->_redirect('myarchive');
 		}
 			
-//		return $this->_forward('myarchive', 'dashboard');	
+//		return $this->_forward('myarchive', 'dashboard');
+	
+	}
 
-//	echo "test!";
+	public function sendActivationEmail($user)
+	{
+		$ua = new UsersActivations;
+		$ua->user_id = $user->id;
+		$ua->save();
+		
+		//send the user an email telling them about their great new user account
+				
+		$site_title = get_option('site_title');
+		$from = get_option('administrator_email');
+		
+		$body = "Welcome!\n\nYour account for the ".$site_title." archive has been created. Please click the following link to activate your account:\n\n"
+		.WEB_ROOT."/myarchive/activate?u={$ua->url}\n\n (or use any other page on the site).\n\nBe aware that we log you out after 15 minutes of inactivity to help protect people using shared computers (at libraries, for instance).\n\n".$site_title." Administrator";
+		$title = "Activate your account with the ".$site_title." Archive";
+		$header = 'From: '.$from. "\n" . 'X-Mailer: PHP/' . phpversion();
+		return mail($user->email, $title, $body, $header);
+	}
+
+	public function activateAction()
+	{
+		$hash = $this->_getParam('u');
+		$ua = $this->getTable('UsersActivations')->findBySql("url = ?", array($hash), true);
+		
+		if(!$ua) {
+			$this->errorAction();
+			return;
+		}
+		
+		if(!empty($_POST)) {
+			if($_POST['new_password1'] == $_POST['new_password2']) {
+				$ua->User->password = $_POST['new_password1'];
+				$ua->User->active = 1;
+				$ua->User->save();
+				$ua->delete();
+				$this->_redirect('myarchive');				
+			}
+		}
+		$user = $ua->User;
+		$this->render('myarchive/activate.php', compact('user'));
+	}
+
+	public function forgotAction()
+	{
+		
+		//If the user's email address has been submitted, then make a new temp activation url and email it
+		if(!empty($_POST)) {
+			
+			$email = $_POST['email'];
+			$ua = new UsersActivations;
+			
+			$user = $user->_table->findByEmail($email);
+			
+			
+			if($user) {
+				//Create the activation url
+				
+			try {	
+				$ua->user_id = $user->id;
+				$ua->save();
+				
+				$site_title = get_option('site_title');
+				
+				//Send the email with the activation url
+				$url = WEB_ROOT.'/myarchive/activate?u='.$ua->url;
+				$body 	= "Please follow this link to reset your password:\n\n";
+				$body  .= $url."\n\n";
+				$body  .= "$site_title Administrator";		
+				
+				$admin_email = get_option('administrator_email');
+				$title = "[$site_title] Reset Your Password";
+				$header = 'From: '.$admin_email. "\n" . 'X-Mailer: PHP/' . phpversion();
+				
+				mail($email,$title, $body, $header);
+				$this->flash('Your password has been emailed');	
+			} catch (Exception $e) {
+				  $this->flash('your password has already been sent to your email address');
+			}
+			
+			}else {
+				//If that email address doesn't exist
+				
+				$this->flash('The email address you provided is invalid.');
+			}			
+
+		}
+		
+		return $this->render('myarchive/forgotPassword.php');
 	}
 
 }

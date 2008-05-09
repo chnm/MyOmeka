@@ -63,8 +63,8 @@ function myarchive_install()
 
 function myarchive_css()
 {
-// improperly passing the web route to css file in plugin theme css folder.  Fix before full-release [DL]
-//	echo "<link rel=\"stylesheet\" media=\"print\" href=\"WEB_PLUGIN.DIRECTORY_SEPARATOR.'theme'.DIRECTORY_SEPARATOR.'css'.DIRECTORY_SEPARATOR.'myarchive.css'\" />";
+	$path = WEB_DIR.DIRECTORY_SEPARATOR.'plugins'.DIRECTORY_SEPARATOR.'MyArchive'.DIRECTORY_SEPARATOR.'theme'.DIRECTORY_SEPARATOR.'css'.DIRECTORY_SEPARATOR.'myarchive.css';
+	echo "<link rel=\"stylesheet\" media=\"screen\" href=\"$path\" />";
 }
 
 add_plugin_hook('item_browse_sql', 'myarchive_show_only_my_items');
@@ -108,7 +108,7 @@ function myarchive_show_only_my_items($select, $params)
 	}
 }
 
-function mystuff_favorite_link()
+function mystuff_favorite_link($item)
 {
 	?>
 	<style type="text/css" media="screen">
@@ -151,13 +151,15 @@ function mystuff_favorite_link()
 		var saveAnnotation = function() {
 			var annotation = $('annotation').value;
 			var tags = $('tags').value;
+			var item_id = <?php echo $item->id; ?>;
 			
 			//Make a spot on the page for the saved annotation
 			
-			new Ajax.Updater(container, "<?php echo uri('_favorite_saved'); ?>", {
+			new Ajax.Updater(container, "<?php echo uri('favorite/add'); ?>", {
 			    parameters: {
 			        annotation: annotation,
-			        tags: tags
+			        tags: tags,
+					item_id: item_id
 			    },
 			    method: 'get',
 			    onComplete: function(t) {
