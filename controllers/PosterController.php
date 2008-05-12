@@ -85,7 +85,7 @@ class PosterController extends Omeka_Controller_Action
                 
                 $body = $user->username . " shared a poster with you on $site_title. \n\n";
                 $body .= "Click here to view the poster:\n";
-                $body .= WEB_ROOT . "poster/view/" . $poster_id;
+                $body .= WEB_ROOT . "/poster/view/" . $poster_id;
                 
                 $header = "From: $from\n";
                 $header .= "X-Mailer: PHP/" . phpversion();

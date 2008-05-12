@@ -112,7 +112,7 @@
     </div> 
     <?php common('_item_widget', compact('items')); ?>
     
-    <input type="submit" name="save_poster" value="Save Poster" id="save_poster" /> or <a href="<?php echo uri('myarchive/dashboard'); ?>">Discard changes and return to the dashboard</a>
+    <input type="submit" name="save_poster" value="Save Poster" id="save_poster" /> or <a href="<?php echo uri('myomeka/dashboard'); ?>">Discard changes and return to the dashboard</a>
 </form>
 </div>
 <?php foot(); ?>
