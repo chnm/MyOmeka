@@ -135,7 +135,7 @@ function mystuff_favorite_link($item)
 	    var container = $('favoriting');
 	    
 		var makeFavorite = function() {
-			var url = "<?php echo uri('_favorite_form'); ?>";
+			var url = "<?php echo uri('favorite/_favorite_form'); ?>";
 			new Ajax.Updater(container, url, {
 				onSuccess: function(t) {
 					Effect.Appear(container);					
