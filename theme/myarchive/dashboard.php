@@ -13,7 +13,16 @@
 <?php //display_item_list($items); ?>
 
 <h2>Your Posters</h2>
+<?php if(count($posters) > 0): ?>
+    <?php foreach($posters as $poster): ?>
+        <ul id="poster-list">            
+           <li><?php echo $poster->title; ?><br/><a href="<?php echo uri('poster/view/'.$poster->id); ?>">view</a> <a href="<?php echo uri('poster/editPoster/'.$poster->id); ?>">edit</a> <a href="">share</a></li>
+        </ul>
+    <?php endforeach; ?>
+<?php else: ?>
+    You haven't made any posters yet.
+<?php endif; ?>
 
-<h3><a href="<?php echo uri('poster/add/'); ?>">Create A Poster From Your Favorite Items</a></h3>
+<h3><a href="<?php echo uri('poster/add/'); ?>">Create a new poster from your favorite items</a></h3>
 
 <?php foot(); ?>

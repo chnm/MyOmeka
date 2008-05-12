@@ -6,9 +6,7 @@
         <a href="#" class="move-top">Move to Top</a>
         <a href="#" class="move-bottom">Move to Bottom</a>
     </div>
-    
-    
-    
+
     <input type="hidden" name="items[]" value="<?php echo $item->id; ?>" />
         
     <div class="item-canvas">

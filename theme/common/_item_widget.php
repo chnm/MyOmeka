@@ -1,6 +1,6 @@
 <?php 
     //Provide some dummy data to this partial
-    $items = items(array('per_page'=>9)); 
+//    $items = items(array('per_page'=>9)); 
     $currentItem = current($items);
 ?>
 <style type="text/css" media="screen">
@@ -59,7 +59,7 @@
 	#pagination li {display:inline;}
 	#pagination li {display:inline; padding: 0 .5em;}
 </style>
-<div id="item-widget">
+<div id="item-widget" style="display:none;">
     <div id="item-info">
         <h2>View Item Info</h2>
         <div id="item-view">
@@ -73,7 +73,7 @@
         <?php foreach($items as $key => $item):?>
         <div class="item">
             <?php //@testing RENAME THIS URL TO A PROPER CONTROLLER-BASED URL ?>
-        	<a href="<?php echo uri('common/_item_view', array('id'=>$item->id)); ?>"><?php echo poster_icon_html($item); ?></a>
+        	<a href="<?php echo uri('common/_item_view', array('id'=>$item->id)); ?>"><?php //echo poster_icon_html($item); ?></a>
         	<div class="item-title"><em><?php echo h(snippet($item->title, 0, 150)); ?></em></div>
         </div>
         <?php endforeach; ?>

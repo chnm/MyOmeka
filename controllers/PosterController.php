@@ -5,9 +5,12 @@
 
 // Is there a better way to handle this path?
 require_once "plugins/MyArchive/models/Poster.php";
+require_once "plugins/MyArchive/models/Favorite.php";
 
 class PosterController extends Omeka_Controller_Action
 {
+    protected $_modelClass = "Poster";
+    
     public function indexAction()
     {
         $this->_forward('browse');
@@ -31,18 +34,63 @@ class PosterController extends Omeka_Controller_Action
         $this->_forward('browse', 'items', null, array('renderPage'=>'myposter/_choose_item.php'));
     }
     
-    public function addAction()
+    public function editPosterAction()
     {
-        return $this->render('myposter/form.php');
+        $poster_id = $this->_getParam('id');
+        
+        if ($poster_id == "new") {
+            $poster = newPoster();
+        } else {
+            // Get the poster object
+            $poster = $this->findById();
+        
+            // Get items already part of the poster
+            $posterItems = $poster->getPosterItems($poster_id);
+            
+            // Get all favorited items
+            $favs = new Favorite();
+            $items = $favs->getFavoriteItemsByUser(1);
+        }
+        return $this->render('myposter/form.php', compact("poster","posterItems","items"));
+    }
+    
+    public function viewAction()
+    {
+        $poster_id = $this->_getParam('id');
+        
+        // Get the poster object
+        $poster = $this->findById();
+    
+        // Get items already part of the poster
+        $posterItems = $poster->getPosterItems($poster_id);
+        
+        return $this->render('myposter/viewPoster.php', compact("poster","posterItems"));
     }
     
     public function saveAction()
-    {   
-        $poster = new Poster;
-        $params = $this->getRequest()->getParams();
+    {
+        $poster = new Poster();
+        $poster->title = "lalala";
+        $poster->user_id = 232;
+        $poster->date_created = date( 'Y-m-d H:i:s', time() );
         
-        var_dump( $this->getRequest()->getParams() );
+        $poster->save();
+        
+        $params = $this->getRequest()->getParams();
+        var_dump( $poster );
     }
+
+
+    private function newPoster($user_id, $title = 'untitled', $description = ''){
+        $poster = new Poster();
+        $poster->title = $title;
+        $poster->user_id = $user_id;
+        $poster->description = $description;
+        $poster->date_created = date( 'Y-m-d H:i:s', time() );
+        $poster->save();        
+        return $poster;
+    }
+
 
     ////////////////////////////////////////
     ////// AJAX PARTIALS ////////

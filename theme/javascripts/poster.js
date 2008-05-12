@@ -22,6 +22,12 @@ Object.extend(Poster, {
        
        Poster.makeSortable();  
        Poster.makeDeletable();
+       
+       // Make the items-widget div a modal pop-up
+       /*
+        TODO this needs to not be a hard coded path
+       */
+       iBox.setPath('/omeka/plugins/MyArchive/theme/javascripts/ibox/');
    },
    saveForm: function() {
        //Save the poster every time we change the order

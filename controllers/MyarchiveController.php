@@ -12,6 +12,7 @@
 */
 
 require_once MODEL_DIR.DIRECTORY_SEPARATOR.'User.php';
+require_once "plugins/MyArchive/models/Poster.php";
 require_once 'Omeka/Controller/Action.php';
 
 class MyArchiveController extends Omeka_Controller_Action
@@ -24,8 +25,12 @@ class MyArchiveController extends Omeka_Controller_Action
 	
 	public function dashboardAction()
 	{
-		if($current = Omeka::loggedIn()) {		
-			$this->render('myarchive/dashboard.php');
+		if($current = Omeka::loggedIn()) {
+		    // Get the user's existing posters
+            $posters = new Poster();
+            $posters = $posters->getUserPosters(1);
+		    
+			$this->render('myarchive/dashboard.php', compact("posters"));
 		} else {
         	$this->_forward('login');			
 		}
