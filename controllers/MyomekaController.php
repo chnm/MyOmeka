@@ -28,8 +28,8 @@ class MyOmekaController extends Omeka_Controller_Action
 		if($current = Omeka::loggedIn()) {
 		    // Get the user's existing posters
             $posters = new Poster();
-            $posters = $posters->getUserPosters(1);
-		    
+            $posters = $posters->getUserPosters($current->id);
+
 			$this->render('myomeka/dashboard.php', compact("posters"));
 		} else {
         	$this->_forward('login');			

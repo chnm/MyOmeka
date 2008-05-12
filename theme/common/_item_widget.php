@@ -1,8 +1,3 @@
-<?php 
-    //Provide some dummy data to this partial
-//    $items = items(array('per_page'=>9)); 
-    $currentItem = current($items);
-?>
 <style type="text/css" media="screen">
     #item-widget {
         display:block;
@@ -63,20 +58,26 @@
     <div id="item-info">
         <h2>View Item Info</h2>
         <div id="item-view">
-            <?php common('_item_view', array('item'=>$currentItem)); ?>
+            <?php if(count($items)):?>
+                <?php common('_item_view', array('item'=>$currentItem)); ?>
+            <?php endif; ?>
         </div>
     </div>
     
     <div id="choose-item">
         <h2>Choose From Among Your Annotated Items</h2>
-
-        <?php foreach($items as $key => $item):?>
-        <div class="item">
-            <?php //@testing RENAME THIS URL TO A PROPER CONTROLLER-BASED URL ?>
-        	<a href="<?php echo uri('common/_item_view', array('id'=>$item->id)); ?>"><?php //echo poster_icon_html($item); ?></a>
-        	<div class="item-title"><em><?php echo h(snippet($item->title, 0, 150)); ?></em></div>
-        </div>
-        <?php endforeach; ?>
+        <?php if(count($items)):?>
+            <?php $currentItem = current($items); ?>
+            <?php foreach($items as $key => $item):?>
+            <div class="item">
+                <?php //@testing RENAME THIS URL TO A PROPER CONTROLLER-BASED URL ?>
+            	<a href="<?php echo uri('common/_item_view', array('id'=>$item->id)); ?>"><?php //echo poster_icon_html($item); ?></a>
+            	<div class="item-title"><em><?php echo h(snippet($item->title, 0, 150)); ?></em></div>
+            </div>
+            <?php endforeach; ?>
+        <?php else: ?>
+            <p>You have you favorite items before you can add those items to a poster</p>
+        <?php endif; ?>
         
         <div id="pagination">
             <?php //@testing RENAME THIS URL TO A PROPER ONE ?>

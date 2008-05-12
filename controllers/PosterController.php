@@ -34,24 +34,24 @@ class PosterController extends Omeka_Controller_Action
         $this->_forward('browse', 'items', null, array('renderPage'=>'myposter/_choose_item.php'));
     }
     
-    public function editPosterAction()
-    {
+    public function editAction()
+    {        
         $poster_id = $this->_getParam('id');
         
-        if ($poster_id == "new") {
-            $poster = newPoster();
-        } else {
-            // Get the poster object
-            $poster = $this->findById();
+        // Get the current user
+        $user = Omeka::loggedIn();
         
-            // Get items already part of the poster
-            $posterItems = $poster->getPosterItems($poster_id);
-            
-            // Get all favorited items
-            $favs = new Favorite();
-            $items = $favs->getFavoriteItemsByUser(1);
-        }
-        return $this->render('myposter/form.php', compact("poster","posterItems","items"));
+        // Get the poster object
+        $poster = $this->findById();
+    
+        // Get items already part of the poster
+        $posterItems = $poster->getPosterItems($poster_id);
+        
+        // Get all favorited items
+        $favs = new Favorite();
+        $items = $favs->getFavoriteItemsByUser($user->id);
+
+        return $this->render('myposter/editPoster.php', compact("poster","posterItems","items"));
     }
     
     public function viewAction()
@@ -65,6 +65,39 @@ class PosterController extends Omeka_Controller_Action
         $posterItems = $poster->getPosterItems($poster_id);
         
         return $this->render('myposter/viewPoster.php', compact("poster","posterItems"));
+    }
+    
+    public function shareAction()
+    {   
+        $poster_id = $this->_getParam('id');
+        
+        // Get the poster object
+        $poster = $this->findById();
+                    
+        // If form is being submitted, handle it
+        if($emailTo = $this->_getParam('emailTo')){
+            $validator = new Zend_Validate_EmailAddress();
+            $user = Omeka::loggedIn();
+            if($validator->isValid($emailTo)){
+                $site_title = get_option('site_title');
+        		$from = get_option('administrator_email');
+                $subject = $user->username . " shared a poster with you";
+                
+                $body = $user->username . " shared a poster with you on $site_title. \n\n";
+                $body .= "Click here to view the poster:\n";
+                $body .= WEB_ROOT . "poster/view/" . $poster_id;
+                
+                $header = "From: $from\n";
+                $header .= "X-Mailer: PHP/" . phpversion();
+
+                mail($emailTo, $subject, $body, $header);
+                $emailSent = true;                
+            } else {
+                $this->flash("Invalid email address");
+            }
+        }
+        
+        return $this->render('myposter/sharePoster.php', compact("poster", "emailSent","emailTo"));   
     }
     
     public function saveAction()
@@ -81,14 +114,34 @@ class PosterController extends Omeka_Controller_Action
     }
 
 
-    private function newPoster($user_id, $title = 'untitled', $description = ''){
+    public function newAction(){
+
+        $user = Omeka::loggedIn();
+        
         $poster = new Poster();
-        $poster->title = $title;
-        $poster->user_id = $user_id;
-        $poster->description = $description;
+        $poster->title = 'untitled';
+        $poster->user_id = $user->id;
+        $poster->description = '';
         $poster->date_created = date( 'Y-m-d H:i:s', time() );
-        $poster->save();        
-        return $poster;
+        $poster->save();
+        
+        return $this->_redirect('myposter/editPoster/' . $poster->id);
+        
+    }
+    
+    public function deleteAction()
+    {   
+        // Get the poster object
+        $poster_id = $this->_getParam('id');
+        $poster = $this->findById();
+        
+        // Check to make sure the poster belongs to the logged in user
+        $user = Omeka::loggedIn();
+        if($user->id === $poster->user_id){
+            $poster->delete();
+            $this->flash("\"$poster->title\" was successfully deleted");
+        }
+        return $this->_redirect('myomeka/dashboard');
     }
 
 
