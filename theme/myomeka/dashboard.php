@@ -2,7 +2,7 @@
 
 <?php 
 	$user = current_user();
-	echo "<p>logged in as $user->username | <a href=\"" . uri('myarchive/logout/') . "\">Logout</a></p>";
+	echo "<p>logged in as $user->username | <a href=\"" . uri('myomeka/logout/') . "\">Logout</a></p>";
 ?>
 
 <h1>My Archive Dashboard</h1>

@@ -1,6 +1,6 @@
 <div id="myomeka-register-box">
 <h1>Register</h1>
-<form id="myomeka-register-form" action="<?php echo uri('myarchive/register');?>" method="post" accept-charset="utf-8">
+<form id="myomeka-register-form" action="<?php echo uri('myomeka/register');?>" method="post" accept-charset="utf-8">
 <?php if(!isset($user)) {
 	$user = new User;
 	$user->setArray($_POST);

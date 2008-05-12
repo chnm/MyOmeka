@@ -1,6 +1,6 @@
 <?php 
 /**
-*  MyArchive Controller
+*  MyOmeka Controller
 *
 *  An incredible amount of this controller is a modified version of what's currently
 *  found in the UsersController.  Because the routes are currently hard-coded 
@@ -12,10 +12,10 @@
 */
 
 require_once MODEL_DIR.DIRECTORY_SEPARATOR.'User.php';
-require_once "plugins/MyArchive/models/Poster.php";
+require_once "plugins/MyOmeka/models/Poster.php";
 require_once 'Omeka/Controller/Action.php';
 
-class MyArchiveController extends Omeka_Controller_Action
+class MyOmekaController extends Omeka_Controller_Action
 {
 		
 	public function indexAction()
@@ -30,7 +30,7 @@ class MyArchiveController extends Omeka_Controller_Action
             $posters = new Poster();
             $posters = $posters->getUserPosters(1);
 		    
-			$this->render('myarchive/dashboard.php', compact("posters"));
+			$this->render('myomeka/dashboard.php', compact("posters"));
 		} else {
         	$this->_forward('login');			
 		}
@@ -52,13 +52,13 @@ class MyArchiveController extends Omeka_Controller_Action
 			$token = $auth->authenticate($adapter);
 
 			if ($token->isValid()) {
-				$this->_redirect('myarchive/dashboard/');
+				$this->_redirect('myomeka/dashboard/');
 			} else {		
 // should throw an exception and not echo error.  I had issues with this, even when trying to flash() the exception on the public-side.  revisit before releasing plugin [DL]
 			 	echo ('There was an error logging you in.  Please try again, or register a new account.');
 			}
 		}
-		$this->render('myarchive/index.php');
+		$this->render('myomeka/index.php');
 	}
 	
 	public function logoutAction()
@@ -66,7 +66,7 @@ class MyArchiveController extends Omeka_Controller_Action
 		$auth = $this->_auth;
 		//http://framework.zend.com/manual/en/zend.auth.html
 		$auth->clearIdentity();
-		$this->_redirect('myarchive');
+		$this->_redirect('myomeka');
 	}
 	
 	/**
@@ -78,7 +78,7 @@ class MyArchiveController extends Omeka_Controller_Action
 	{
 	$user = new User();
 
-	$user->role = "MyArchive";
+	$user->role = "MyOmeka";
 	
 		try {
 			if($user->saveForm($_POST)) {
@@ -90,15 +90,15 @@ class MyArchiveController extends Omeka_Controller_Action
 				$this->flashSuccess('User was added successfully!');
 
 				//Redirect to the main user browse page
-				$this->_redirect('myarchive/dashboard');
+				$this->_redirect('myomeka/dashboard');
 			}
 		} catch (Omeka_Validator_Exception $e) {
 			$this->flashValidationErrors($e);
 			echo $e;
-			//$this->_redirect('myarchive');
+			//$this->_redirect('myomeka');
 		}
 			
-//		return $this->_forward('myarchive', 'dashboard');
+//		return $this->_forward('myomeka', 'dashboard');
 	
 	}
 
@@ -114,7 +114,7 @@ class MyArchiveController extends Omeka_Controller_Action
 		$from = get_option('administrator_email');
 		
 		$body = "Welcome!\n\nYour account for the ".$site_title." archive has been created. Please click the following link to activate your account:\n\n"
-		.WEB_ROOT."/myarchive/activate?u={$ua->url}\n\n (or use any other page on the site).\n\nBe aware that we log you out after 15 minutes of inactivity to help protect people using shared computers (at libraries, for instance).\n\n".$site_title." Administrator";
+		.WEB_ROOT."/myomeka/activate?u={$ua->url}\n\n (or use any other page on the site).\n\nBe aware that we log you out after 15 minutes of inactivity to help protect people using shared computers (at libraries, for instance).\n\n".$site_title." Administrator";
 		$title = "Activate your account with the ".$site_title." Archive";
 		$header = 'From: '.$from. "\n" . 'X-Mailer: PHP/' . phpversion();
 		return mail($user->email, $title, $body, $header);
@@ -136,11 +136,11 @@ class MyArchiveController extends Omeka_Controller_Action
 				$ua->User->active = 1;
 				$ua->User->save();
 				$ua->delete();
-				$this->_redirect('myarchive');				
+				$this->_redirect('myomeka');				
 			}
 		}
 		$user = $ua->User;
-		$this->render('myarchive/activate.php', compact('user'));
+		$this->render('myomeka/activate.php', compact('user'));
 	}
 
 	public function forgotAction()
@@ -165,7 +165,7 @@ class MyArchiveController extends Omeka_Controller_Action
 				$site_title = get_option('site_title');
 				
 				//Send the email with the activation url
-				$url = WEB_ROOT.'/myarchive/activate?u='.$ua->url;
+				$url = WEB_ROOT.'/myomeka/activate?u='.$ua->url;
 				$body 	= "Please follow this link to reset your password:\n\n";
 				$body  .= $url."\n\n";
 				$body  .= "$site_title Administrator";		
@@ -188,7 +188,7 @@ class MyArchiveController extends Omeka_Controller_Action
 
 		}
 		
-		return $this->render('myarchive/forgotPassword.php');
+		return $this->render('myomeka/forgotPassword.php');
 	}
 
 }

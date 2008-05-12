@@ -1,15 +1,15 @@
 <?php 
-/* MyArchive Plugin */
+/* MyOmeka Plugin */
 
-define('MYARCHIVE_PLUGIN_VERSION', '0.2dev');
+define('MYOMEKA_PLUGIN_VERSION', '0.2dev');
 
-add_plugin_hook('initialize', 'myarchive_initialize');
-add_plugin_hook('install', 'myarchive_install');
-add_plugin_hook('theme_header', 'myarchive_css');
+add_plugin_hook('initialize', 'myomeka_initialize');
+add_plugin_hook('install', 'myomeka_install');
+add_plugin_hook('theme_header', 'myomeka_css');
 
 add_controllers('controllers');
 
-function myarchive_initialize()
+function myomeka_initialize()
 {	
 	add_theme_pages('theme', 'public');
 	
@@ -18,20 +18,20 @@ function myarchive_initialize()
 	$acl = Zend_registry::get( 'acl' );
 
 	//Come up with some terminology for this
-	$acl->addRole(new Zend_Acl_Role('myarchive'));
+	$acl->addRole(new Zend_Acl_Role('myomeka'));
 
-	$acl->registerRule(new Zend_Acl_Resource('MyArchive'), array('favorite'));
+	$acl->registerRule(new Zend_Acl_Resource('MyOmeka'), array('favorite'));
 
 	//The new role and all the existing roles, should be able to list certain items as 'favorites'
-	$acl->allow('myarchive',	'MyArchive',array('favorite'));	
-	$acl->allow('researcher',	'MyArchive',array('favorite'));
-	$acl->allow('admin',		'MyArchive',array('favorite'));
-	$acl->allow('contributor',	'MyArchive',array('favorite'));		
+	$acl->allow('myomeka',	'MyOmeka',array('favorite'));	
+	$acl->allow('researcher',	'MyOmeka',array('favorite'));
+	$acl->allow('admin',		'MyOmeka',array('favorite'));
+	$acl->allow('contributor',	'MyOmeka',array('favorite'));		
 }
 
-function myarchive_install()
+function myomeka_install()
 {	
-	set_option('myarchive_plugin_version', MYARCHIVE_PLUGIN_VERSION);
+	set_option('myomeka_plugin_version', MYOMEKA_PLUGIN_VERSION);
 	
 	// Create new tables to support poster building
 	$db = get_db();
@@ -61,22 +61,22 @@ function myarchive_install()
             	) ENGINE = MYISAM;");
 }
 
-function myarchive_css()
+function myomeka_css()
 {
-	$path = WEB_DIR.DIRECTORY_SEPARATOR.'plugins'.DIRECTORY_SEPARATOR.'MyArchive'.DIRECTORY_SEPARATOR.'theme'.DIRECTORY_SEPARATOR.'css'.DIRECTORY_SEPARATOR.'myarchive.css';
+	$path = WEB_DIR.DIRECTORY_SEPARATOR.'plugins'.DIRECTORY_SEPARATOR.'MyOmeka'.DIRECTORY_SEPARATOR.'theme'.DIRECTORY_SEPARATOR.'css'.DIRECTORY_SEPARATOR.'myomeka.css';
 	echo "<link rel=\"stylesheet\" media=\"screen\" href=\"$path\" />";
 }
 
-add_plugin_hook('item_browse_sql', 'myarchive_show_only_my_items');
+add_plugin_hook('item_browse_sql', 'myomeka_show_only_my_items');
 
 /**
- * This allows the MyArchive controller to pass arbitrary parameters when 
+ * This allows the MyOmeka controller to pass arbitrary parameters when 
  * retrieving items so that we only retrieve items that were added by a user, etc.
  *
  * @return void
  **/
 
-function myarchive_show_only_my_items($select, $params)
+function myomeka_show_only_my_items($select, $params)
 {
 	$user = current_user();
 	

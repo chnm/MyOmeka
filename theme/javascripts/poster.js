@@ -27,7 +27,7 @@ Object.extend(Poster, {
        /*
         TODO this needs to not be a hard coded path
        */
-       iBox.setPath('/omeka/plugins/MyArchive/theme/javascripts/ibox/');
+       iBox.setPath('/omeka/plugins/MyOmeka/theme/javascripts/ibox/');
    },
    saveForm: function() {
        //Save the poster every time we change the order

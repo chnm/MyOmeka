@@ -4,8 +4,8 @@
 */
 
 // Is there a better way to handle this path?
-require_once "plugins/MyArchive/models/Poster.php";
-require_once "plugins/MyArchive/models/Favorite.php";
+require_once "plugins/MyOmeka/models/Poster.php";
+require_once "plugins/MyOmeka/models/Favorite.php";
 
 class PosterController extends Omeka_Controller_Action
 {

@@ -3,7 +3,7 @@
 <div id="myomeka-login-box">
 <h1>Login</h1>
 	<?php echo flash();?>
-<form id="myomeka-login-form" action="<?php echo uri('myarchive/login');?>" method="post" accept-charset="utf-8">
+<form id="myomeka-login-form" action="<?php echo uri('myomeka/login');?>" method="post" accept-charset="utf-8">
 	<fieldset>
 		<div class="field">
 	<label for="username">Username</label> 
@@ -17,6 +17,6 @@
 	<input type="submit" class="login" value="Login" />
 </form>
 
-<li id="myomeka-forgotpassword"><a href="<?php echo uri('myarchive/forgot'); ?>">Lost your password?</a></li>
+<li id="myomeka-forgotpassword"><a href="<?php echo uri('myomeka/forgot'); ?>">Lost your password?</a></li>
 </ul>
 </div>

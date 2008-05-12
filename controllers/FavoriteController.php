@@ -1,12 +1,12 @@
 <?php
 /**
 * Favorite Controller
-* probably silly to separate this from MyArchive, but in the long-term
+* probably silly to separate this from MyOmeka, but in the long-term
 * it may make sense.  Maybe not.  [DL]
 *
 **/
 
-require_once "plugins/MyArchive/models/Favorite.php";
+require_once "plugins/MyOmeka/models/Favorite.php";
 require_once "Omeka/Controller/Action.php";
 
 class FavoriteController extends Omeka_Controller_Action
