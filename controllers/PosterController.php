@@ -35,7 +35,7 @@ class PosterController extends Omeka_Controller_Action
     }
     
     public function editAction()
-    {        
+    {   
         $poster_id = $this->_getParam('id');
         
         // Get the current user
@@ -43,14 +43,14 @@ class PosterController extends Omeka_Controller_Action
         
         // Get the poster object
         $poster = $this->findById();
-    
+            
         // Get items already part of the poster
         $posterItems = $poster->getPosterItems($poster_id);
         
         // Get all favorited items
         $favs = new Favorite();
         $items = $favs->getFavoriteItemsByUser($user->id);
-
+        
         return $this->render('myposter/editPoster.php', compact("poster","posterItems","items"));
     }
     
@@ -126,7 +126,7 @@ class PosterController extends Omeka_Controller_Action
         $poster->date_created = date( 'Y-m-d H:i:s', time() );
         $poster->save();
         
-        return $this->_redirect('myposter/editPoster/' . $poster->id);
+        return $this->_redirect('poster/edit/' . $poster->id);
         
     }
     
