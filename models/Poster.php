@@ -29,7 +29,22 @@ class Poster extends Omeka_Record{
                                                         ORDER BY ordernum");
     }
     
-    public function _delete()
+    public function updateItems(&$params)
+    {   
+        if(is_numeric($params['itemCount'])){
+            $this->deletePosterItems();
+            foreach(range(1, $params['itemCount']) as $ordernum){
+                $item = new PosterItem();
+                $item->annotation = $params['annotation-' . $ordernum];
+                $item->poster_id = $this->id;
+                $item->item_id = $params['id-' . $ordernum];
+                $item->ordernum = $ordernum;
+                $item->save();
+            }
+        }        
+    }
+    
+    private function deletePosterItems()
     {
         // Delete entries from posters_items table
         $db = get_db();
@@ -39,6 +54,11 @@ class Poster extends Omeka_Record{
         foreach($posters_items as $poster_item){
             $poster_item->delete();
         }
+    }
+    
+    public function _delete()
+    {
+        $this->deletePosterItems();
     }
 }
 

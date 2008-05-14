@@ -101,16 +101,17 @@ class PosterController extends Omeka_Controller_Action
     }
     
     public function saveAction()
-    {
-        $poster = new Poster();
-        $poster->title = "lalala";
-        $poster->user_id = 232;
-        $poster->date_created = date( 'Y-m-d H:i:s', time() );
-        
-        $poster->save();
-        
+    {   
         $params = $this->getRequest()->getParams();
-        var_dump( $poster );
+        
+        // Get the poster object
+        $poster = $this->findById();
+        $poster->title = $params['title'];
+        $poster->description = $params['description'];
+        $poster->updateItems($params);
+        $poster->save();
+    
+        $this->_redirect("myomeka/dashboard");
     }
 
 

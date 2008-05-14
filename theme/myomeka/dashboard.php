@@ -1,4 +1,7 @@
-<?php head(); ?>
+<?php 
+    head(); 
+    echo js('dashboard');
+?>
 
 <?php 
 	$user = current_user();
@@ -21,7 +24,7 @@
                 <a href="<?php echo uri('poster/view/'.$poster->id); ?>">view</a> 
                 <a href="<?php echo uri('poster/edit/'.$poster->id); ?>">edit</a> 
                 <a href="<?php echo uri('poster/share/'.$poster->id); ?>">share</a>
-                <a href="<?php echo uri('poster/delete/'.$poster->id); ?>">delete</a>
+                <a href="<?php echo uri('poster/delete/'.$poster->id); ?>" class="delete-poster-link">delete</a>
             </li>
         </ul>
     <?php endforeach; ?>

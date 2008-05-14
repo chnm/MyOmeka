@@ -3,7 +3,7 @@ Poster = new Object();
 Object.extend(Poster, {
         
     //Everything that takes place when the form loads
-   formLoad: function() {
+   init: function() {
        //WYSIWYG Editor
        tinyMCE.init({
        	mode : "textareas",
@@ -14,215 +14,114 @@ Object.extend(Poster, {
 		theme_advanced_buttons3 : "",
 		theme_advanced_toolbar_align : "left"
 		
-       });
-
-       Event.observe('poster-form', 'submit', function(){
-         return false; 
-       });     
-       
-       Poster.makeSortable();  
-       Poster.makeDeletable();
+       });   
        
        // Make the items-widget div a modal pop-up
        /*
         TODO this needs to not be a hard coded path
        */
        iBox.setPath('/omeka/plugins/MyOmeka/theme/javascripts/ibox/');
+
+       /**
+        Code to run before we move an item
+       */
+       $$('.poster-control').invoke('observe', 'click', function(e){
+           $$("#poster-canvas textarea").each(function(n){
+               tinyMCE.execCommand('mceRemoveControl', false, n.id);
+           });
+       });
+       
+       /**
+        Bind move up buttons
+       */
+       $$('.move-up').invoke('observe', 'click', function(e){
+           $('poster-canvas').insertBefore(this.up('.poster-spot'), this.up('.poster-spot').previous());
+       });
+       
+       /**
+        Bind move down buttons
+       */
+       $$('.move-down').invoke('observe', 'click', function(e){
+           $('poster-canvas').insertBefore(this.up('.poster-spot').next(), this.up('.poster-spot'));
+       });
+       
+       /**
+        Bind move top buttons
+       */
+       $$('.move-top').invoke('observe', 'click', function(e){
+           $('poster-canvas').insertBefore(this.up('.poster-spot'), this.up('.poster-spot').siblings().first());
+       });
+       
+       /**
+        Bind move bottom buttons
+       */
+       $$('.move-bottom').invoke('observe', 'click', function(e){
+           $('poster-canvas').appendChild(this.up('.poster-spot'));
+       });
+
+       /**
+        Bind delete buttons
+       */
+       $$('.delete').invoke('observe', 'click', function(e){
+           this.up('.poster-spot').remove();
+       });
+       
+       /**
+        Code to run after we move an item
+       */
+       $$('.poster-control').invoke('observe', 'click', function(e){
+           Poster.hideExtraControls();
+           $$("#poster-canvas textarea").each(function(n){
+               tinyMCE.execCommand('mceAddControl', false, n.id);
+           });
+           Event.stop(e);
+       });
+       
+       /**
+        Code to run when the form is submitted
+       */
+       $$('form').invoke('observe', 'submit', function(e){
+           // index the form element names
+           index = 1;
+           $$(".annotation textarea").each(function(n){
+               n.setAttribute("name","annotation-"+index);
+               n.up(".poster-spot").down(".hidden-item-id").setAttribute("name","id-"+index);
+               index++;
+           });
+           // Update the item count
+           $("itemCount").setAttribute("value", index-1);
+       });
+       
+       // When the form loads, hide up and down controls that can't be used
+       Poster.hideExtraControls();
+       
    },
-   saveForm: function() {
-       //Save the poster every time we change the order
-         $('poster-form').request({
-             onComplete: function(t) {
-//                  alert(t.responseText);
-             }
-         });       
-   },
-   
-   getSequence: function() {
-     return $$('.poster-spot');
-   },
-   
-   getTextAreaId: function(row) {
-     return 'poster-annotation-' + Poster.getRowOrder(row);
-   },
-   
-   //Convenience shortcuts for TinyMCE
-   addEditor: function(element) {
-       try{
-           tinyMCE.execCommand('mceAddControl', false, Poster.getTextAreaId(element));
-       }catch (e) {console.debug(e);}
-   },
-   
-   removeEditor: function(element) {
-       try{
-           tinyMCE.execCommand('mceRemoveControl', false, Poster.getTextAreaId(element));
-       }catch (e) {console.debug(e);}
-   },
-   
-   //Activate the drag/drop for the poster
-   makeSortable: function() {
-      //Make the poster spots sortables
-/*       Sortable.create('poster-canvas', {
-          tag: "div",
-          only: "poster-spot",
-//          constraint: false,
-//          overlap: 'horizontal',
-          scroll: window,
-   //       hoverclass: 'drop-on-spot',
-          onHover: function(e) {
-              alert(e);
-          },
-          onUpdate: function() {
-             alert(Sortable.sequence('poster-canvas')); 
-          }
-      }); */
-      var moveUp = function(list, row) {
-          moveRow(list, row, 1);
-      };
-      var moveDown = function(list, row) {
-          moveRow(list, row, -1);
-      };
-      //Based on: http://www.neotrinity.at/2007/06/26/scriptaculous-move/
-      var moveRow = function(list, row, dir) {
-          var sequence=Poster.getSequence();          
-          for (var j=0; j<sequence.length; j++) {
-              var i = j - dir;
-              if (sequence[j]==row && i >= 0 && i <= sequence.length) {
-                  var temp=sequence[i];
-                  sequence[i]=row;
-                  sequence[j]=temp;
-                  break;
-              }
-          }
-          setSequence(sequence);          
-      };
-            
-      //Set the sequence in place w/o using Scriptaculous
-      //Hacked from Scriptaculous's Sortable.setSequence()
-      var setSequence = function(newSequence) {
-        //Obtain the original elements
-        var originals = Poster.getSequence();
-        console.debug(originals);    
-        var nodeMap = {};
-        originals.each(function(n){
-            nodeMap[n.id] = [n, n.parentNode];
-            Poster.removeEditor(n);
-            n.parentNode.removeChild(n);    
-        });
-        
-        debugOrder();
-        
-        newSequence.each(function(row, index) {
-          var n = nodeMap[row.id];
-          if (n) {
-            n[1].appendChild(n[0]);
-            //Put the WYSIWYG back in
-            Poster.addEditor(n[0]);
-            delete nodeMap[row.id];
-          }
-        });
-        
-        debugOrder();
-      };
-      
-      var debugOrder = function() {
-          var ids="";
-          Poster.getSequence().each(function(row){
-              ids += Poster.getRowOrder(row) + ',';
-          });
-          console.debug(ids);
-      }
-      
-      //Parse the row from the ID of the entry for the clicked element
-      var getRow = function(element) {
-          var posterSpot = element.up('.poster-spot');
-        return posterSpot;
-      }
-      
-      var isLastRow = function(row) {
-          return !(row.next('.poster-spot'));
-      }
-      
-      var isFirstRow = function(row) {
-          return !(row.previous('.poster-spot'));
-      }
-      
-      $$('.move-up').invoke('observe', 'click', function(e){
-          Event.stop(e);
-          var row = getRow(this);
-          if(!isFirstRow(row)) {
-              moveUp('poster-canvas', row);
-          }
-      });
-      
-      $$('.move-down').invoke('observe', 'click', function(e){
-         Event.stop(e);
-         var row = getRow(this);
-         if(!isLastRow(row)) {
-             moveDown('poster-canvas', row);
-         }
-      });
-      
-      $$('.move-top').invoke('observe', 'click', function(e){
-          Event.stop(e);
-          var row = getRow(this);
-          //Remove the current row from the sequence and unshift it to the front of the array
-          var newSequence = Poster.getSequence().reject(function(entry){return (row == entry);});
-          newSequence.unshift(row);
-          setSequence(newSequence);
-      });
-      
-      $$('.move-bottom').invoke('observe', 'click', function(e){
-         Event.stop(e);
-         var row = getRow(this);
-         //Remove the current row from the sequence and push it to the end of the array
-         var newSequence = Poster.getSequence().reject(function(entry){return (row == entry);});
-         newSequence.push(row);
-         setSequence(newSequence);
-      });
-    },
     
-    getRowOrder: function(row) {
-        return parseInt(row.id.gsub('poster-spot-', ''));          
-    },
-    
-    reorder: function() {
-        Poster.getSequence().each(function(row, index){
-            Poster.removeEditor(row);
-            var textarea = $(Poster.getTextAreaId(row));
-            textarea.id = 'poster-annotation-' + (index + 1);
-            row.id = 'poster-spot-' + (index + 1);
-            console.debug(row);
-            Poster.addEditor(row);
+    /**
+    Finds all of the poster items and sequentially indexes their textarea name.
+    */
+    setOrderNums: function() {
+        index = 1;
+        $$(".annotation textarea").each(function(n){
+            n.setAttribute("name","annotation-"+index);
+            n.setAttribute("id","annotation-"+index);
+            index++;
         });
     },
     
-    //This will make all buttons with a class="delete" able to delete their entry on the form
-    makeDeletable: function(entry) {
-        $$('.delete').invoke('observe', 'click', function(e){
-            Event.stop(e);
-            var entry = this.up('.poster-spot');
-            if(entry) {
-                Poster.onDeleteEntry(entry);
-                Poster.reorder();
-            }
-        });       
+    /**
+    Hides the move up and down options on the top and bottom items
+    */
+    hideExtraControls: function() {
+        $$('.poster-control').invoke("show");
+        $$('.move-up').first().hide();
+        $$('.move-top').first().hide();
+        $$('.move-down').last().hide();
+        $$('.move-bottom').last().hide();
     },
-    
-    //Remove the entry from the page, and from the sortables list
-    //@todo Fire an AJAX call to delete the entry from the database
-    onDeleteEntry: function(entry) {
-        if(confirm('Are you sure you want to delete this?')) {
-            Poster.removeEditor(entry);
-            entry.parentNode.removeChild(entry);
-        }
-    },
-    //Some properties that need to be set via PHP on the form
-    //The URL for the AJAX request to load a new entry on the poster form
-    placeholderUrl: null
 });
 
-Event.observe(window, 'load', Poster.formLoad);
+Event.observe(window, 'load', Poster.init );
 
 //Separates all the widget's JS into its own window event loader
 Event.observe(window, 'load', function(){
@@ -332,4 +231,5 @@ Object.extend(ItemWidget, {
     onChooseItem: function(itemId) {alert(itemId)},
 });
 
-$RF = function(form, name) {return Form.getInputs(form,'radio',name).find(function(radio) { return radio.checked; }).value; };
+// What is this?
+//$RF = function(form, name) {return Form.getInputs(form,'radio',name).find(function(radio) { return radio.checked; }).value; };
