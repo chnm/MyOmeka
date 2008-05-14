@@ -1,4 +1,4 @@
-<img src="<?php echo img('favorite-on.gif'); ?>" />
+<img src="<?php echo img('heart.php'); ?>" /> Listed as one of your favorites
 <div id="saved-annotation">
 <h3>Your annotation:</h3>
 
@@ -9,6 +9,6 @@
         <?php echo htmlentities($_GET['tags']); ?>
     </div>
 
-    <a href="#" id="edit-annotation">Edit your annotation</a>
+    <a href="#" id="edit-annotation">Edit your Favorites</a>
 
 </div>

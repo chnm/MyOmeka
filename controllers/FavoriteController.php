@@ -1,8 +1,8 @@
 <?php
 /**
-* Favorite Controller
-* probably silly to separate this from MyOmeka, but in the long-term
-* it may make sense.  Maybe not.  [DL]
+*  Favorite Controller
+*  probably silly to separate this from MyOmeka, but in the long-term
+*  it may make sense.  Maybe not.  [DL]
 *
 **/
 
@@ -29,7 +29,8 @@ class FavoriteController extends Omeka_Controller_Action
 			$favorite->item_id = $item_id;
 			$favorite->save();
 			
-			echo "saved!";
+		$this->render('favorite/_favorite_saved.php');
+		
 		} else {
 			echo "not logged in";
 		}

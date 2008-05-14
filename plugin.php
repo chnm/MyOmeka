@@ -128,7 +128,7 @@ function mystuff_favorite_link($item)
 	</style>
 	
 	<div id="favoriting">
-		<a href="#" id="favorite-off"><img src="<?php echo img('favorite-off.gif'); ?>" /></a>
+		<img src="<?php echo img('heart_add.png'); ?>" /> <a href="#" id="favorite-off">Mark as Favorite</a>
 	</div>
 	
 	<script type="text/javascript" charset="utf-8">
