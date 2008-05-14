@@ -1,9 +1,13 @@
 <?php 
     head();
-    echo js('poster');
     echo js('tiny_mce/tiny_mce'); 
-    echo js('ibox/ibox'); 
+    echo js('ibox/ibox');
+    echo js('poster');
 ?>
+<script type="text/javascript" charset="utf-8">
+    // Make the items-widget div a modal pop-up
+    iBox.setPath('<?php echo WEB_ROOT; ?>/plugins/MyOmeka/theme/javascripts/ibox/');
+</script>
 <style type="text/css" media="screen">
     #description {
         height:200px;
@@ -64,33 +68,32 @@
         float:right;
     }    
 </style>
-
 <div id="primary">
-<form action="<?php echo uri('poster/save/'.$poster->id); ?>" method="post" accept-charset="utf-8" id="poster-form">
-    <div class="field">
-        <label for="title">Title of Poster:</label>
-        <input type="text" name="title" value="<?php echo $poster->title;?>" id="title" />
-    </div>
+    <form action="<?php echo uri('poster/save/'.$poster->id); ?>" method="post" accept-charset="utf-8" id="poster-form">
+        <div class="field">
+            <label for="title">Title of Poster:</label>
+            <input type="text" name="title" value="<?php echo $poster->title;?>" id="title" />
+        </div>
     
-    <div class="field">
-        <label for="description">Description:</label>
-        <textarea name="description" id="description"><?php echo $poster->description;?></textarea>
-    </div>
+        <div class="field">
+            <label for="description">Description:</label>
+            <textarea name="description" id="description"><?php echo $poster->description;?></textarea>
+        </div>
     
-    <h2>Poster Items</h2>
-    <a href="#item-widget" rel="ibox&amp;width=850" title="Chose on of your favorites to add">Add an item</a>
-    <div id="poster-canvas">
-    <?php 
-        if(count($posterItems)){
-            foreach($posterItems as $posterItem){
-                common('_spot', array('posterItem'=>$posterItem));
-            }   
-        }
-    ?>
-    </div> 
+        <h2>Poster Items</h2>
+        <a href="#item-widget" rel="ibox&amp;width=850" title="Chose on of your favorites to add">Add an item</a>
+        <div id="poster-canvas">
+        <?php 
+            if(count($posterItems)){
+                foreach($posterItems as $posterItem){
+                    common('_spot', array('posterItem'=>$posterItem));
+                }   
+            }
+        ?>
+        </div>
+        <input type="hidden" name="itemCount" value="0" id="itemCount"/>
+        <input type="submit" name="save_poster" value="Save Poster" id="save_poster" /> or <a href="<?php echo uri('myomeka/dashboard'); ?>">Discard changes and return to the dashboard</a>
+    </form>
     <?php common('_item_widget', compact('items')); ?>
-    <input type="hidden" name="itemCount" value="0" id="itemCount"/>
-    <input type="submit" name="save_poster" value="Save Poster" id="save_poster" /> or <a href="<?php echo uri('myomeka/dashboard'); ?>">Discard changes and return to the dashboard</a>
-</form>
 </div>
 <?php foot(); ?>

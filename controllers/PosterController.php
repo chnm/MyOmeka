@@ -145,35 +145,11 @@ class PosterController extends Omeka_Controller_Action
         return $this->_redirect('myomeka/dashboard');
     }
 
-
-    ////////////////////////////////////////
-    ////// AJAX PARTIALS ////////
-    ///////////////////////////////////////
-    
-    public function placeholderAction()
-    {
-        $item = $this->getItemForDisplay();
-        
-        //@testing Retrieve this from the database and not from the query
-        $order = $this->_getParam('i');
-
-        return $this->render('myposter/_spot.php', array('i'=>$order, 'item'=>$item));
-    }
-    
-    /**
-     * Form will POST an item_id
-     * 
-     * @param string
-     * @return void
-     **/
-    protected function getItemForDisplay(Item $defaultItem=null)
-    {
-        $id = $this->_getParam('item_id');
-
-        if(!$id) {
-            return $defaultItem;
-        }else {
-            return get_db()->getTable('Item')->find((int) $id);
-        }
+    public function addPosterItemAction()
+    {   
+        $params = $this->getRequest()->getParams();
+        $id = $params['item-id'];
+        $posterItem = get_db()->getTable('Item')->find((int) $id);
+       return $this->render('common/_spot.php', compact("posterItem"));
     }
 }

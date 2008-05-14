@@ -1,10 +1,10 @@
 <div class="poster-spot">
     <div class="controls">
-        <img src="<?php echo img('delete.gif'); ?>" class="delete poster-control" title="Remove this item"/>
-        <img src="<?php echo img('arrow_up_up.png'); ?>" class="move-top poster-control" title="Move to the top"/>
-        <img src="<?php echo img('arrow_up.png'); ?>" class="move-up poster-control" title="Move up"/>
-        <img src="<?php echo img('arrow_down.png'); ?>" class="move-down poster-control" title="Move down"/>
-        <img src="<?php echo img('arrow_down_down.png'); ?>" class="move-bottom poster-control" title="Move to the bottm"/>
+        <a href="#" class="delete poster-control"><img src="<?php echo img('delete.gif'); ?>" title="Remove this item"/></a>
+        <a href="#" class="move-top poster-control"><img src="<?php echo img('arrow_up_up.png'); ?>"  title="Move to the top"/></a>
+        <a href="#" class="move-up poster-control"><img src="<?php echo img('arrow_up.png'); ?>"  title="Move up"/></a>
+        <a href="#" class="move-down poster-control"><img src="<?php echo img('arrow_down.png'); ?>"  title="Move down"/></a>
+        <a href="#" class="move-bottom poster-control"><img src="<?php echo img('arrow_down_down.png'); ?>"  title="Move to the bottm"/></a>
     </div>
 
     <div class="item-canvas">

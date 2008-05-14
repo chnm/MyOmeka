@@ -7,9 +7,8 @@
     
     #choose-item {
         display:block;
-        width: 430px;
+        width: 825px;
         height: 520px;
-        border: 1px solid #999;
         overflow:auto;
         padding:10px;
     }
@@ -37,7 +36,7 @@
         margin: 10px 50px 10px 50px;
     }
         
-    #choose-item .item {
+    #choose-item .favorite-item {
         display: block;
         width: 125px;
         height: 140px;
@@ -48,40 +47,24 @@
     #choose-item img {
         margin:10px;
     }
-    
-    #pagination {float:right; display:block;width:472px; padding:0.75em 0 0;text-align:right;clear:both;}
-    #pagination ul {text-align:right; line-height:1em; margin-bottom:0;}
-	#pagination li {display:inline;}
-	#pagination li {display:inline; padding: 0 .5em;}
+
 </style>
 <div id="item-widget" style="display:none;">
-    <div id="item-info">
-        <h2>View Item Info</h2>
-        <div id="item-view">
-            <?php if(count($items)):?>
-                <?php common('_item_view', array('item'=>$currentItem)); ?>
-            <?php endif; ?>
-        </div>
-    </div>
-    
     <div id="choose-item">
         <h2>Choose From Among Your Annotated Items</h2>
         <?php if(count($items)):?>
-            <?php $currentItem = current($items); ?>
-            <?php foreach($items as $key => $item):?>
-            <div class="item">
-                <?php //@testing RENAME THIS URL TO A PROPER CONTROLLER-BASED URL ?>
-            	<a href="<?php echo uri('common/_item_view', array('id'=>$item->id)); ?>"><?php //echo poster_icon_html($item); ?></a>
-            	<div class="item-title"><em><?php echo h(snippet($item->title, 0, 150)); ?></em></div>
+            <?php foreach($items as $item):?>
+            <div class="favorite-item">
+                <form action="<?php echo uri('poster/addPosterItem'); ?>" method="POST" accept-charset="utf-8">
+                    <?php echo poster_icon_html($item); ?>
+                	<div class="item-title"><em><?php echo h(snippet($item->title, 0, 150)); ?></em></div>
+                	<input type="hidden" name="item-id" value="<?php echo $item->id; ?>" class="favorite-item-id"/>
+                   <input type="submit" name="submit" value="Add this item"/>
+                </form>
             </div>
             <?php endforeach; ?>
         <?php else: ?>
             <p>You have you favorite items before you can add those items to a poster</p>
         <?php endif; ?>
-        
-        <div id="pagination">
-            <?php //@testing RENAME THIS URL TO A PROPER ONE ?>
-            <?php echo pagination_links(5,null,null,null,null,uri('common/_item_widget'), 'page'); ?>
-        </div>
     </div>
 </div>
