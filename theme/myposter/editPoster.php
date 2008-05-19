@@ -7,83 +7,27 @@
 <script type="text/javascript" charset="utf-8">
     // Make the items-widget div a modal pop-up
     iBox.setPath('<?php echo WEB_ROOT; ?>/plugins/MyOmeka/theme/javascripts/ibox/');
+    // Set the initial Item Count
+    Poster.itemCount = <?php echo count($posterItems); ?>
 </script>
-<style type="text/css" media="screen">
-    #description {
-        height:200px;
-    }
-    
-    .item {
-        display:block;
-        width: 100px;
-        height: 100px;
-        border: 1px dotted #999;
-        margin-right: 20px;
-    }
-    
-    .item-canvas {
-        float: left;
-    }
-    
-    .poster-spot {
-        display:block;
-        width: 650px;
-        border: 1px solid #999;
-        margin: 20px 0px 20px 10px;
-        padding: 10px 5px 10px 5px;
-    }
-    
-    #poster-canvas {
-        display:block;
-        width: 700px;
-        margin-top: 30px;
-    }
-    
-    .annotation {
-        display:block;
-        clear:none;
-        padding-left: 20px;
-    }
-    
-    .annotation textarea {
-        width: 470px;
-        height: 100px;
-        float: none;
-    }
-    
-    .annotation input {
-        float:right;
-    }
-    
-    .drop-on-spot {
-        border: 3px dotted red;
-    }
-    
-    .controls {
-        clear:both;
-        margin-bottom: 10px;
-    }
-    
-    .delete {
-        float:right;
-    }    
-</style>
-<div id="primary">
-    <form action="<?php echo uri('poster/save/'.$poster->id); ?>" method="post" accept-charset="utf-8" id="poster-form">
-        <div class="field">
-            <label for="title">Title of Poster:</label>
-            <input type="text" name="title" value="<?php echo $poster->title;?>" id="title" />
+<div id="myomeka-primary">
+    <form action="<?php echo uri('poster/save/'.$poster->id); ?>" method="post" accept-charset="utf-8" id="myomeka-poster-form">
+        <div class="myomeka-field">
+            <label for="myomeka-title">Title of Poster:</label>
+            <input type="text" name="title" value="<?php echo $poster->title;?>" id="myomeka-title" />
         </div>
     
-        <div class="field">
-            <label for="description">Description:</label>
-            <textarea name="description" id="description"><?php echo $poster->description;?></textarea>
+        <div class="myomeka-field">
+            <label for="myomeka-description">Description:</label>
+            <textarea name="description" id="myomeka-description" rows="8" cols="20"><?php echo $poster->description;?></textarea>
         </div>
     
         <h2>Poster Items</h2>
-        <a href="#item-widget" rel="ibox&amp;width=850" title="Chose on of your favorites to add">Add an item</a>
-        <div id="poster-canvas">
-        <?php 
+        <div>
+            <a href="#myomeka-item-widget" rel="ibox&amp;width=850" title="Chose on of your favorites to add">Add an item</a>
+        </div>
+        <div id="myomeka-poster-canvas">
+        <?php
             if(count($posterItems)){
                 foreach($posterItems as $posterItem){
                     common('_spot', array('posterItem'=>$posterItem));
@@ -91,8 +35,11 @@
             }
         ?>
         </div>
-        <input type="hidden" name="itemCount" value="0" id="itemCount"/>
-        <input type="submit" name="save_poster" value="Save Poster" id="save_poster" /> or <a href="<?php echo uri('myomeka/dashboard'); ?>">Discard changes and return to the dashboard</a>
+        <div id="myomeka-submit-poster">
+            <input type="submit" name="save_poster" value="Save Poster" /> or 
+            <a href="<?php echo uri('myomeka/dashboard'); ?>">Discard changes and return to the dashboard</a>
+            <input type="hidden" name="itemCount" value="<?php echo count($posterItems);?>" id="myomeka-itemCount"/>
+        </div>
     </form>
     <?php common('_item_widget', compact('items')); ?>
 </div>

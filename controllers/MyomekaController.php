@@ -13,6 +13,7 @@
 
 require_once MODEL_DIR.DIRECTORY_SEPARATOR.'User.php';
 require_once "plugins/MyOmeka/models/Poster.php";
+require_once "plugins/MyOmeka/models/Favorite.php";
 require_once 'Omeka/Controller/Action.php';
 
 class MyOmekaController extends Omeka_Controller_Action
@@ -29,8 +30,12 @@ class MyOmekaController extends Omeka_Controller_Action
 		    // Get the user's existing posters
             $posters = new Poster();
             $posters = $posters->getUserPosters($current->id);
-
-			$this->render('myomeka/dashboard.php', compact("posters"));
+            
+            // Get the user's favorite items
+            $favorites = new Favorite();
+            $favorites = $favorites->getFavoriteItemsByUser($current->id);
+            
+			$this->render('myomeka/dashboard.php', compact("posters","favorites"));
 		} else {
         	$this->_forward('login');			
 		}

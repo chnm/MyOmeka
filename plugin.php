@@ -63,8 +63,7 @@ function myomeka_install()
 
 function myomeka_css()
 {
-	$path = WEB_DIR.DIRECTORY_SEPARATOR.'plugins'.DIRECTORY_SEPARATOR.'MyOmeka'.DIRECTORY_SEPARATOR.'theme'.DIRECTORY_SEPARATOR.'css'.DIRECTORY_SEPARATOR.'myomeka.css';
-	echo "<link rel=\"stylesheet\" media=\"screen\" href=\"$path\" />";
+	//echo "<link rel=\"stylesheet\" media=\"screen\" href=\"".css('myomeka')."\" />";
 }
 
 add_plugin_hook('item_browse_sql', 'myomeka_show_only_my_items');
