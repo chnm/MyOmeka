@@ -1,4 +1,3 @@
-<img src="<?php echo img('heart.php'); ?>" /> Listed as one of your favorites
 <div id="saved-annotation">
 <h3>Your annotation:</h3>
 

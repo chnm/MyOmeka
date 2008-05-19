@@ -20,9 +20,10 @@ class FavoriteController extends Omeka_Controller_Action
 	{
 	if ($item_id = ($_GET['item_id'])) {
 		if($current = Omeka::loggedIn()) {	
+			
 			$annotation = $_GET['annotation'];
 			
-			$favorite = new Favorite;
+			$favorite = new Favorite();
 			
 			$favorite->user_id = current_user()->id;
 			$favorite->annotation = $annotation;
