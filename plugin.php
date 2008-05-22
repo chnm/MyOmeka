@@ -6,6 +6,8 @@ define('MYOMEKA_PLUGIN_VERSION', '0.2dev');
 add_plugin_hook('initialize', 'myomeka_initialize');
 add_plugin_hook('install', 'myomeka_install');
 add_plugin_hook('theme_header', 'myomeka_css');
+add_plugin_hook('config_form', 'myomeka_configForm');
+add_plugin_hook('config', 'myomeka_config');
 
 add_controllers('controllers');
 
@@ -173,6 +175,17 @@ function mystuff_favorite_link($item)
 	</script>
 	
 <?php
+}
+
+function myomeka_configForm() {
+?>
+<label for="myomeka_favname">The default name for the "favorites" feature is favorites.  This configuration page allows you to change favorites to something else if you wish:</label>
+<input type="text" name="myomeka_favname" size="90" value="<?php echo get_option('myomeka_favname'); ?>" id="map_key" />
+<?php
+}
+
+function myomeka_config() {
+	set_option('myomeka_favname', $_POST['myomeka_favname']);
 }
 
 function poster_icon_html($item) {
