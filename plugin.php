@@ -205,4 +205,13 @@ function poster_icon_html($item) {
     }
 }
 
+function myomeka_breadcrumb() {
+	
+}
+
+function myomeka_userloggedin_status() {
+	$user = current_user();
+	echo "<p>logged in as $user->username | <a href=\"" . uri('myomeka/logout/') . "\">Logout</a></p>";
+}
+
 ?>

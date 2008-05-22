@@ -1,8 +1,8 @@
 <?php 
     head(); 
     echo js('dashboard');
-	$user = current_user();
-	echo "<p>logged in as $user->username | <a href=\"" . uri('myomeka/logout/') . "\">Logout</a></p>";
+	myomeka_userloggedin_status();
+	myomeka_breadcrumb();
 ?>
 
 <h1>My Archive Dashboard</h1>
@@ -12,7 +12,7 @@
 <?php if(count($favorites) > 0): ?>
     <ul id="myomeka-favorite-list">            
         <?php foreach($favorites as $favorite): ?>
-            <li><?php echo $favorite->title; ?></li>
+            <li><a href="<?php echo WEB_DIR.DIRECTORY_SEPARATOR.'items'.DIRECTORY_SEPARATOR.'show'.DIRECTORY_SEPARATOR.$favorite->item_id; ?>"><?php echo $favorite->title; ?></a></li>
         <?php endforeach; ?>
     </ul>
 <?php else: ?>

@@ -1,4 +1,7 @@
-<?php head(); ?>
+<?php head(); 
+	myomeka_userloggedin_status();
+	myomeka_breadcrumb();
+?>
 <?php echo flash(); ?>
 <h1>Sharing "<?php echo $poster->title; ?>"</h1>
 <?php if($emailSent): ?>
