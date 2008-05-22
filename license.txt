@@ -1,0 +1,5 @@
+The MyOmeka plugin was created by the Center for History and New Media [http://chnm.gmu.edu] at George Mason University [http://gmu.edu] and is released under GPL3 license [http://www.gnu.org/licenses/gpl-3.0.html].
+
+Please consider sharing any use-case of this plugin on the Omeka Forums [http://omeka.org/forums/].
+
+The Fam Fam Fam icons used in this plugin were developed by Mark James.  [http://www.famfamfam.com/lab/icons/] - released under Creative Commons Attribution License (Version 2.5) [http://creativecommons.org/licenses/by/2.5/].
