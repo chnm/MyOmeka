@@ -10,6 +10,7 @@ add_plugin_hook('config_form', 'myomeka_configForm');
 add_plugin_hook('config', 'myomeka_config');
 
 add_controllers('controllers');
+require_once PLUGIN_DIR."/MyOmeka/models/Favorite.php";
 
 function myomeka_initialize()
 {	
@@ -54,6 +55,7 @@ function myomeka_install()
             		`ordernum` INT NOT NULL
             	) ENGINE = MYISAM;");
 
+	// Create Favorites table
 	$db->exec(  "CREATE TABLE IF NOT EXISTS {$db->prefix}favorites ( 
                     `id` BIGINT UNSIGNED NOT NULL auto_increment PRIMARY KEY, 
             	    `annotation` TEXT, 
@@ -65,7 +67,7 @@ function myomeka_install()
 
 function myomeka_css()
 {
-	//echo "<link rel=\"stylesheet\" media=\"screen\" href=\"".css('myomeka')."\" />";
+//	echo "<link rel=\"stylesheet\" media=\"screen\" href=\"".css('myomeka')."\" />";
 }
 
 add_plugin_hook('item_browse_sql', 'myomeka_show_only_my_items');
@@ -109,31 +111,37 @@ function myomeka_show_only_my_items($select, $params)
 	}
 }
 
-function mystuff_favorite_link($item)
+function myomeka_isItemFavorited()
+{
+	$user = current_user();
+	
+	$favorite = new Favorite;
+	
+	if ($favorite->getFavoriteItemsByUser($user->id, $item->id)){
+		return true;
+	} else {
+		return false;
+	}
+}
+
+function myomeka_favorite_link($item)
 {
 	?>
-	<style type="text/css" media="screen">
-		#favoriting input {font-size: 2em;}
-		#favoriting label {clear:both;}
-		#favoriting {
-		    display:block;
-		    clear:both;
-		    background-color: #f1c8ba;
-		    border: 1px dotted black;
-		    margin-bottom:50px;
-		    padding-left:30px;
-		    padding-top: 30px;
-		    padding-bottom: 20px;}
-		#favoriting textarea {float: none;clear:both;}
-		#saved-annotation {font-style: italic;font-size: 2em;clear:both;}
-	</style>
-	
-	<div id="favoriting">
-		<img src="<?php echo img('heart_add.png'); ?>" /> <a href="#" id="favorite-off">Mark as Favorite</a>
+	<div id="myomeka-favoriting">
+		<?php
+		if (Omeka::loggedIn()) {
+		?>
+			<img src="<?php echo img('heart_add.png'); ?>" /> <a href="#" id="favorite-off">Mark as Favorite</a>
+		<?php			
+		} else {
+			echo "To favorite an item you must be logged in";
+		}
+		?>
+
 	</div>
 	
 	<script type="text/javascript" charset="utf-8">
-	    var container = $('favoriting');
+	    var container = $('myomeka-favoriting');
 	    
 		var makeFavorite = function() {
 			var url = "<?php echo uri('favorite/_favorite_form'); ?>";
@@ -142,21 +150,21 @@ function mystuff_favorite_link($item)
 					Effect.Appear(container);					
 				},
 				onComplete: function(t) {
-					Event.observe('save-annotation', 'click', saveAnnotation);
+					Event.observe('save-annotation', 'click', saveFavorite);
 				}
 			});
 			
 			return false;
 		}
 		
-		var saveAnnotation = function() {
+		var saveFavorite = function() {
 			var annotation = $('annotation').value;
 			var tags = $('tags').value;
 			var item_id = <?php echo $item->id; ?>;
 			
 			//Make a spot on the page for the saved annotation
 			
-			new Ajax.Updater(container, "<?php echo uri('favorite/add'); ?>", {
+			new Ajax.Updater(container, "<?php echo uri('favorite/add/'.$item->id); ?>", {
 			    parameters: {
 			        annotation: annotation,
 			        tags: tags,
@@ -164,11 +172,30 @@ function mystuff_favorite_link($item)
 			    },
 			    method: 'get',
 			    onComplete: function(t) {
-			        Event.observe('edit-annotation', 'click', makeFavorite);
+			        Event.observe('edit-annotation', 'click', editFavorite);
 			    }
 			});
 						
 			return false;
+		}
+		
+		var editFavorite = function() {
+			new Ajax.Updater(container, "<?php echo uri('favorite/edit'.$item->id); ?>", {
+				onSuccess: function(t) {
+					Effect.Appear(container);					
+				}
+				onComplete: function(t) {
+			        Event.observe('delete-annotation', 'click', deleteFavorite);
+			    }
+			});
+		}
+
+		var deleteFavorite = function() {
+			new Ajax.Updater(container, "<?php echo uri('favorite/delete'.$item->id); ?>", {
+				onSuccess: function(t) {
+					Effect.Appear(container);					
+				}
+			});
 		}
 
 		Event.observe('favorite-off', 'click', makeFavorite);

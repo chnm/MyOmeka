@@ -2,7 +2,7 @@
     
 <div class="field">
 <label for="annotation">Enter your annotation:</label>
-<textarea name="annotation" id="annotation" rows="10" cols="20"></textarea>
+<textarea name="annotation" id="annotation" rows="10" cols="20"><?php echo $favorite->annotation ?></textarea>
 </div>
 
 <div class="field">
@@ -13,3 +13,7 @@
 <button type="button" id="save-annotation">Save Your Annotation</button>
 
 </form>
+
+<!-- if item already favorited, allow user to delete it
+
+<a href="#" id="delete-annotation">Delete Annotation</a> -->

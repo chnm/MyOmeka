@@ -12,7 +12,7 @@
 <?php if(count($favorites) > 0): ?>
     <ul id="myomeka-favorite-list">            
         <?php foreach($favorites as $favorite): ?>
-            <li><a href="<?php echo WEB_DIR.DIRECTORY_SEPARATOR.'items'.DIRECTORY_SEPARATOR.'show'.DIRECTORY_SEPARATOR.$favorite->item_id; ?>"><?php echo $favorite->title; ?></a></li>
+            <li><a href="<?php echo WEB_DIR.DIRECTORY_SEPARATOR.'items'.DIRECTORY_SEPARATOR.'show'.DIRECTORY_SEPARATOR.$favorite->item_id; ?>"><?php if ($favorite->title) { echo $favorite->title; } else { echo "[untitled]"; }?></a></li>
         <?php endforeach; ?>
     </ul>
 <?php else: ?>

@@ -13,13 +13,22 @@ class Favorite extends Omeka_Record{
             TODO do something about sql injection potential
         */
         $db = get_db();
-        return $db->getTable("Item")->fetchObjects("SELECT f.*, i.*
-                                                        FROM {$db->prefix}favorites f
-                                                        JOIN {$db->prefix}items i ON i.id = f.item_id
-                                                        WHERE f.user_id = $user_id");
+		$sql = "SELECT f.*, i.* FROM {$db->prefix}favorites f
+                    JOIN {$db->prefix}items i ON i.id = f.item_id
+                    WHERE f.user_id = $user_id";
+
+        return $db->getTable("Item")->fetchObjects($sql);
     }
-    
-    
+
+    public function getFavoriteByItemId($user_id, $item_id){
+
+        $db = get_db();
+		$sql = "SELECT f.* FROM {$db->prefix}favorites f 
+                    WHERE f.user_id = $user_id
+					AND f.item_id = $item_id";
+					
+        return $db->getTable("Favorite")->fetchObjects($sql);
+    }
 }
 
 ?>

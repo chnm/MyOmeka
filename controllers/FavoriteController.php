@@ -11,6 +11,8 @@ require_once "Omeka/Controller/Action.php";
 
 class FavoriteController extends Omeka_Controller_Action
 {
+    protected $_modelClass = "Favorite";
+
 	public function indexAction()
 	{
 		echo "something";
@@ -18,7 +20,7 @@ class FavoriteController extends Omeka_Controller_Action
 	
 	public function addAction()
 	{
-	if ($item_id = ($_GET['item_id'])) {
+	if ($item_id = $this->_getParam('id')) {
 		if($current = Omeka::loggedIn()) {	
 			
 			$annotation = $_GET['annotation'];
@@ -42,12 +44,43 @@ class FavoriteController extends Omeka_Controller_Action
 	
 	public function editAction()
 	{
-		
+    if ($item_id = $this->_getParam('id')) {
+		if($current = Omeka::loggedIn()) {	
+			$favorite = new Favorite();
+			
+			$favorite = $fav->getFavoriteByItemId($user->id, $item_id);	
+			$favorite->user_id = current_user()->id;
+			$favorite->annotation = $annotation;
+			$favorite->item_id = $item_id;
+			$favorite->save();
+		}			
+	} else {
+		echo "item_id is necessary";
+	}
 	}
 	
 	public function deleteAction()
-	{
-		
+	{	
+    if ($item_id = $this->_getParam('id')) {
+		$user = Omeka::loggedIn();
+
+   // Get the favorite object		
+		$fav = new Favorite;		
+		$favorite = $fav->getFavoriteByItemId($user->id, $item_id);
+
+		print_r($favorite);
+
+       // Check to make sure the favorite belongs to the logged in user
+		foreach ($favorite as $f) {
+        	if($user->id == $f->user_id){
+            	$f->delete();
+            	$this->flash("Favorite was successfully deleted");
+        	}
+		}
+    return $this->_redirect('myomeka/dashboard');	
+	} else {
+		echo "item_id is necessary";
+	}
 	}
 }
 ?>

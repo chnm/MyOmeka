@@ -1,4 +1,4 @@
-<div id="saved-annotation">
+<div id="omeka-saved-annotation">
 <h3>Your annotation:</h3>
 
     <div class="field"><?php echo htmlentities($_GET['annotation']); ?></div>
