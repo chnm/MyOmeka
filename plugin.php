@@ -15,6 +15,7 @@ require_once PLUGIN_DIR."/MyOmeka/models/Favorite.php";
 function myomeka_initialize()
 {	
 	add_theme_pages('theme', 'public');
+	add_theme_pages('shared', 'both');
 	
 	//Define some special ACL rules for this plugin
 		
@@ -67,7 +68,7 @@ function myomeka_install()
 
 function myomeka_css()
 {
-//	echo "<link rel=\"stylesheet\" media=\"screen\" href=\"".css('myomeka')."\" />";
+	echo "<link rel=\"stylesheet\" media=\"screen\" href=\"".css('myomeka')."\" />";
 }
 
 add_plugin_hook('item_browse_sql', 'myomeka_show_only_my_items');
@@ -111,33 +112,20 @@ function myomeka_show_only_my_items($select, $params)
 	}
 }
 
-function myomeka_isItemFavorited()
-{
-	$user = current_user();
-	
-	$favorite = new Favorite;
-	
-	if ($favorite->getFavoriteItemsByUser($user->id, $item->id)){
-		return true;
-	} else {
-		return false;
-	}
-}
-
 function myomeka_favorite_link($item)
 {
 	?>
 	<div id="myomeka-favoriting">
 		<?php
-		if (Omeka::loggedIn()) {
-		?>
-			<img src="<?php echo img('heart_add.png'); ?>" /> <a href="#" id="favorite-off">Mark as Favorite</a>
-		<?php			
-		} else {
-			echo "To favorite an item you must be logged in";
-		}
-		?>
 
+		$user = current_user();
+		$favorite = new Favorite;
+		
+		if ($favorite->getFavoriteByItemId($user->id, $item->id) > 0){
+			include(uri('favorite/_favorite_form'));
+		} else { ?>
+			<img src="<?php echo img('heart_add.png'); ?>" /> <a href="#" id="favorite-off">Mark as Favorite</a>
+		<?php } ?>
 	</div>
 	
 	<script type="text/javascript" charset="utf-8">
@@ -184,9 +172,6 @@ function myomeka_favorite_link($item)
 				onSuccess: function(t) {
 					Effect.Appear(container);					
 				}
-				onComplete: function(t) {
-			        Event.observe('delete-annotation', 'click', deleteFavorite);
-			    }
 			});
 		}
 

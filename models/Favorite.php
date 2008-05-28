@@ -23,11 +23,11 @@ class Favorite extends Omeka_Record{
     public function getFavoriteByItemId($user_id, $item_id){
 
         $db = get_db();
-		$sql = "SELECT f.* FROM {$db->prefix}favorites f 
-                    WHERE f.user_id = $user_id
-					AND f.item_id = $item_id";
+		$sql = "SELECT COUNT(f.id) FROM {$db->prefix}favorites f 
+                    WHERE f.user_id = ?
+					AND f.item_id = ?";
 					
-        return $db->getTable("Favorite")->fetchObjects($sql);
+        return $db->fetchOne($sql, array($user_id, $item_id));
     }
 }
 
