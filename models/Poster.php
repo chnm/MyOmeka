@@ -22,9 +22,10 @@ class Poster extends Omeka_Record{
             TODO do something about sql injection potential
         */
         $db = get_db();
-        return $db->getTable("Item")->fetchObjects("   SELECT p.*, i.*
+        return $db->getTable("Item")->fetchObjects("   SELECT p.*, i.*,f.annotation as 'favoriteAnnotation'
                                                         FROM {$db->prefix}posters_items p 
                                                         JOIN {$db->prefix}items i ON i.id = p.item_id
+                                                        JOIN {$db->prefix}favorites f ON f.item_id = p.item_id
                                                         WHERE p.poster_id = $poster_id
                                                         ORDER BY ordernum");
     }

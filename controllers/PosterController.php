@@ -39,19 +39,24 @@ class PosterController extends Omeka_Controller_Action
         $poster_id = $this->_getParam('id');
         
         // Get the current user
-        $user = Omeka::loggedIn();
+        if($user = Omeka::loggedIn()){            
+            // Get the poster object
+            $poster = $this->findById();
+
+            // Get items already part of the poster
+            $posterItems = $poster->getPosterItems($poster_id);
+
+            // Get all favorited items
+            $favs = new Favorite();
+            $items = $favs->getFavoriteItemsByUser($user->id);
+
+            return $this->render('myposter/editPoster.php', compact("poster","posterItems","items"));
+        } else {
+            /*
+                TODO User should be forwared to login screen...
+            */
+        }
         
-        // Get the poster object
-        $poster = $this->findById();
-            
-        // Get items already part of the poster
-        $posterItems = $poster->getPosterItems($poster_id);
-        
-        // Get all favorited items
-        $favs = new Favorite();
-        $items = $favs->getFavoriteItemsByUser($user->id);
-        
-        return $this->render('myposter/editPoster.php', compact("poster","posterItems","items"));
     }
     
     public function viewAction()

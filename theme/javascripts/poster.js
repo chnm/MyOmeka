@@ -49,8 +49,7 @@ Object.extend(Poster, {
            });
            Event.stop(e);
        });
-       
-       if(Poster.initialItemCount > 0){
+       if(Poster.itemCount > 0){
             // When the form loads, hide up and down controls that can't be used
             // Should maybe grey them out instead
             Poster.hideExtraControls();

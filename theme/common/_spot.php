@@ -27,6 +27,12 @@
             <?php echo $posterItem->annotation; ?>
         </textarea>
     </div>
+    <?php if ($posterItem->favoriteAnnotation): ?>
+        <div class="myomeka-notes">
+            <h3>My Notes</h3>
+            <?php echo $posterItem->favoriteAnnotation; ?>
+        </div>
+    <?php endif ?>
     <input  type="hidden" 
             name="itemID-<?php echo $posterItem->ordernum; ?>" 
             value="<?php echo $posterItem->id; ?>" 
