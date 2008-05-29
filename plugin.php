@@ -14,6 +14,8 @@ require_once PLUGIN_DIR."/MyOmeka/models/Favorite.php";
 
 function myomeka_initialize()
 {	
+    add_theme_pages('theme', 'public');
+    add_theme_pages('theme', 'admin'); 
 	add_theme_pages('shared', 'both');
 	add_navigation('Posters', 'poster/adminPosters');
 	
