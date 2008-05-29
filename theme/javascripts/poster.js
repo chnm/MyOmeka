@@ -30,13 +30,14 @@ Object.extend(Poster, {
            $("myomeka-itemCount").setAttribute("value", index-1);
        });
        
-        // Add favorites to poster with an AJAX call
-       $$(".myomeka-favorite-item form").invoke("observe", "submit", function(e){
+       // Add favorites to poster with an AJAX call
+       $$(".myomeka-additem-form").invoke("observe", "submit", function(e){
            new Ajax.Updater('myomeka-poster-canvas', this.action, {
-               parameters: { "item-id": this.down(".myomeka-favorite-item-id").readAttribute("value") },
+               parameters: { "item-id": this.down(".myomeka-additem-item-id").readAttribute("value") },
                insertion: Insertion.Bottom,
                onCreate: function(){
-                   
+                   // Disable submit buttons
+                   $$(".myomeka-additem-submit").each(function(n){n.disable();});
                    Poster.mceExecCommand("mceRemoveControl");
                },
                onComplete: function(){
@@ -44,6 +45,8 @@ Object.extend(Poster, {
                   Poster.hideExtraControls();
                   Poster.mceExecCommand("mceAddControl");
                   Poster.bindControls();
+                  // Enable submit buttons for next time
+                  $$(".myomeka-additem-submit").each(function(n){n.enable();});
                   iBox.hide();
                }
            });

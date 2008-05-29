@@ -8,16 +8,18 @@ class Poster extends Omeka_Record{
     public $date_created;
     
     public function getUserPosters($user_id){
-        /*
-            TODO do something about sql injection potential
-        */
-        $db = get_db();
-        return $db->getTable("Poster")->fetchObjects(" SELECT * 
-                                                        FROM {$db->prefix}posters 
-                                                        WHERE user_id = $user_id");
+        if(is_numeric($user_id)){
+            $db = get_db();
+            return $db->getTable("Poster")->fetchObjects(" SELECT * 
+                                                            FROM {$db->prefix}posters 
+                                                            WHERE user_id = $user_id");            
+        }
     }
     
     public function getPosters(){
+        /*
+            TODO Add paging here
+        */
         $db = get_db();
         return $db->getTable("Poster")->fetchObjects(" SELECT p.*, u.username
                                                         FROM {$db->prefix}posters p
@@ -25,16 +27,15 @@ class Poster extends Omeka_Record{
     }
     
     public function getPosterItems($poster_id){
-        /*
-            TODO do something about sql injection potential
-        */
-        $db = get_db();
-        return $db->getTable("Item")->fetchObjects("   SELECT p.*, i.*,f.annotation as 'favoriteAnnotation'
-                                                        FROM {$db->prefix}posters_items p 
-                                                        JOIN {$db->prefix}items i ON i.id = p.item_id
-                                                        JOIN {$db->prefix}favorites f ON f.item_id = p.item_id
-                                                        WHERE p.poster_id = $poster_id
-                                                        ORDER BY ordernum");
+        if(is_numeric($poster_id)){
+            $db = get_db();
+            return $db->getTable("Item")->fetchObjects("   SELECT p.*, i.*,f.annotation as 'favoriteAnnotation'
+                                                            FROM {$db->prefix}posters_items p 
+                                                            JOIN {$db->prefix}items i ON i.id = p.item_id
+                                                            JOIN {$db->prefix}favorites f ON f.item_id = p.item_id
+                                                            WHERE p.poster_id = $poster_id
+                                                            ORDER BY ordernum");
+        }
     }
     
     public function updateItems(&$params)

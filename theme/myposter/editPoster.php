@@ -30,7 +30,7 @@
     
         <h2>Poster Items</h2>
         <div>
-            <a href="#myomeka-item-widget" rel="ibox&amp;width=850" title="Chose on of your favorites to add">
+            <a href="#myomeka-additem-modal" rel="ibox&amp;width=450" title="Chose an item to add">
                 Add an item</a>
         </div>
         <div id="myomeka-poster-canvas">
@@ -52,6 +52,45 @@
             <input type="hidden" name="itemCount" value="<?php echo count($posterItems);?>" id="myomeka-itemCount"/>
         </div>
     </form>
-    <?php common('_item_widget', compact('items')); ?>
+    
+    <!-- Hidden div for modal pop-up -->
+    <div id="myomeka-additem-modal" style="display:none;">
+        <h2>Choose an item</h2>
+        <?php if(count($items)):?>
+            <?php foreach($items as $item):?>
+                <div class="myomeka-additem-item">
+                    <div class="myomeka-additem-image">
+                        <?php echo poster_icon_html($item); ?>
+                        <form action="<?php echo uri('poster/addPosterItem'); ?>" method="post" accept-charset="utf-8" class="myomeka-additem-form">
+                        	<input type="submit" name="submit" value="Add this item" class="myomeka-additem-submit"/>
+                        	<input type="hidden" name="item-id" value="<?php echo $item->id; ?>" class="myomeka-additem-item-id"/>
+                    	</form>
+                    </div>
+                    <div class="myomeka-additem-details">
+                        <dl>
+                            <?php if($item->title): ?>
+                                <dt>Title:</dt>
+                                <dd><?php echo $item->title;?></dd>
+                            <?php endif ?>
+                            <?php if($item->description): ?>
+                                <dt>Description:</dt>
+                                <dd><?php echo $item->description;?></dd>
+                            <?php endif ?>
+                            <?php if($item->creator): ?>
+                                <dt>creator:</dt>
+                                <dd><?php echo $item->creator;?></dd>
+                            <?php endif ?>
+                            <?php if($item->annotation): ?>
+                                <dt>My Notes:</dt>
+                                <dd><?php echo $item->annotation;?></dd>
+                            <?php endif ?>
+                        </dl>
+                    </div>
+                </div>
+            <?php endforeach; ?>
+        <?php else: ?>
+            <p>You have you favorite items before you can add those items to a poster</p>
+        <?php endif; ?>
+    </div>
 </div>
 <?php foot(); ?>

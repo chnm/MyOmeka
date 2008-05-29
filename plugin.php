@@ -15,7 +15,7 @@ require_once PLUGIN_DIR."/MyOmeka/models/Favorite.php";
 function myomeka_initialize()
 {	
     add_theme_pages('theme', 'public');
-    add_theme_pages('theme', 'admin'); 
+    add_theme_pages('theme', 'admin');
 	add_theme_pages('shared', 'both');
 	add_navigation('Posters', 'poster/adminPosters');
 	
@@ -206,16 +206,8 @@ function poster_icon_html($item) {
     //If we can get a square thumbnail out of it, use that
     if($thumbnail = square_thumbnail($item)) {
         return $thumbnail;
-    }
-    
-    switch ($item->Type->name) {
-        case 'Document':
-            return 'Document';
-            break;
-        
-        default:
-            return 'No Type given';
-            break;
+    } else {
+        return "<img alt='no image available' src='".img('noThumbnail.png')."'/>";
     }
 }
 

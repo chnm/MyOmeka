@@ -13,119 +13,20 @@ Dashboard and login stuff
 }
 
 /*
-Item Stuff
+Add item to posters model
 */
-
-#myomeka-item-widget {
-    display:block;
-    width: 800px;
-    height: 540px;
+.myomeka-additem-item{
+    margin:15px;
+    padding:15px;
+    border-top:1px solid #000;
+    overflow: auto;
+    height: 100%
 }
-
-#myomeka-choose-item {
-    display:block;
-    width: 825px;
-    height: 520px;
-    overflow:auto;
-    padding:10px;
-}
-    
-#myomeka-item-info {
-    clear:none;
-    display:block;
-    border: 1px solid #999;
-    float:right;
-    width: 320px;
-    height: 520px;
-    overflow:auto;
-    padding: 10px;
-}
-
-#myomeka-item-info .myomeka-field {
-    width: 280px;
-}
-    
-#myomeka-item-info .myomeka-item-id {
-    display:none;
-}    
-
-#myomeka-item-widget-add-item {
-    margin: 10px 50px 10px 50px;
-}
-    
-#myomeka-choose-item .myomeka-favorite-item {
-    display: block;
-    width: 125px;
-    height: 140px;
+.myomeka-additem-image{
     float:left;
-    margin: 5px;
 }
-
-#myomeka-choose-item img {
-    margin:10px;
-}
-
-/*
-Poster
-*/
-
-#myomeka-description {
-    height:200px;
-}
-
-.myomeka-item {
-    display:block;
-    width: 100px;
-    height: 100px;
-    border: 1px dotted #999;
-    margin-right: 20px;
-}
-
-.myomeka-item-canvas {
-    float: left;
-}
-
-.myomeka-poster-spot {
-    display:block;
-    width: 650px;
-    border: 1px solid #999;
-    margin: 20px 0px 20px 10px;
-    padding: 10px 5px 10px 5px;
-}
-
-#myomeka-poster-canvas {
-    display:block;
-    width: 700px;
-    margin-top: 30px;
-}
-
-.myomeka-annotation {
-    display:block;
-    clear:none;
-    padding-left: 20px;
-}
-
-.myomeka-annotation textarea {
-    width: 470px;
-    height: 100px;
-    float: none;
-}
-
-.myomeka-annotation input {
-    float:right;
-}
-
-.myomeka-drop-on-spot {
-    border: 3px dotted red;
-}
-
-.myomeka-controls {
-    clear:both;
-    margin-bottom: 10px;
-}
-
-.myomeka-delete {
-    float:right;
+.myomeka-additem-details{
+    float:left;
 }
 
 /*
