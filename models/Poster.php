@@ -17,6 +17,13 @@ class Poster extends Omeka_Record{
                                                         WHERE user_id = $user_id");
     }
     
+    public function getPosters(){
+        $db = get_db();
+        return $db->getTable("Poster")->fetchObjects(" SELECT p.*, u.username
+                                                        FROM {$db->prefix}posters p
+                                                        JOIN {$db->prefix}users u ON p.user_id = u.id");
+    }
+    
     public function getPosterItems($poster_id){
         /*
             TODO do something about sql injection potential

@@ -23,12 +23,15 @@
     
         <div class="myomeka-field">
             <label for="myomeka-description">Description:</label>
-            <textarea name="description" id="myomeka-description" rows="8" cols="20"><?php echo $poster->description;?></textarea>
+            <textarea name="description" id="myomeka-description" rows="8" cols="20">
+                <?php echo $poster->description;?>
+            </textarea>
         </div>
     
         <h2>Poster Items</h2>
         <div>
-            <a href="#myomeka-item-widget" rel="ibox&amp;width=850" title="Chose on of your favorites to add">Add an item</a>
+            <a href="#myomeka-item-widget" rel="ibox&amp;width=850" title="Chose on of your favorites to add">
+                Add an item</a>
         </div>
         <div id="myomeka-poster-canvas">
         <?php
@@ -41,7 +44,11 @@
         </div>
         <div id="myomeka-submit-poster">
             <input type="submit" name="save_poster" value="Save Poster" /> or 
-            <a href="<?php echo uri('myomeka/dashboard'); ?>">Discard changes and return to the dashboard</a>
+            <?php if (isset($_GET['return']) && $_GET['return'] == "admin"): ?>
+                <a href="<?php echo uri('poster/adminPosters'); ?>">Discard changes and return to poster administration</a>
+            <?php else: ?>
+                <a href="<?php echo uri('myomeka/dashboard'); ?>">Discard changes and return to the dashboard</a>
+            <?php endif ?>
             <input type="hidden" name="itemCount" value="<?php echo count($posterItems);?>" id="myomeka-itemCount"/>
         </div>
     </form>

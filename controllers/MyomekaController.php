@@ -12,8 +12,8 @@
 */
 
 require_once MODEL_DIR.DIRECTORY_SEPARATOR.'User.php';
-require_once "plugins/MyOmeka/models/Poster.php";
-require_once "plugins/MyOmeka/models/Favorite.php";
+require_once PLUGIN_DIR.DIRECTORY_SEPARATOR."MyOmeka".DIRECTORY_SEPARATOR."models".DIRECTORY_SEPARATOR."Poster.php";
+require_once PLUGIN_DIR.DIRECTORY_SEPARATOR."MyOmeka".DIRECTORY_SEPARATOR."models".DIRECTORY_SEPARATOR."Favorite.php";
 require_once 'Omeka/Controller/Action.php';
 
 class MyOmekaController extends Omeka_Controller_Action

@@ -3,9 +3,8 @@
 * MyPoster controller
 */
 
-// Is there a better way to handle this path?
-require_once "plugins/MyOmeka/models/Poster.php";
-require_once "plugins/MyOmeka/models/Favorite.php";
+require_once PLUGIN_DIR.DIRECTORY_SEPARATOR."MyOmeka".DIRECTORY_SEPARATOR."models".DIRECTORY_SEPARATOR."Poster.php";
+require_once PLUGIN_DIR.DIRECTORY_SEPARATOR."MyOmeka".DIRECTORY_SEPARATOR."models".DIRECTORY_SEPARATOR."Favorite.php";
 
 class PosterController extends Omeka_Controller_Action
 {
@@ -19,6 +18,15 @@ class PosterController extends Omeka_Controller_Action
     public function browseAction()
     {
         echo 'see all the posters done by people';
+    }
+    
+    public function adminPostersAction()
+    {   
+        // Get all of the posters on the site
+        $posters = new Poster();
+        $posters = $posters->getPosters();
+        
+        return $this->render('myposter/adminPoster.php',compact("posters"));
     }
     
     /**
@@ -139,6 +147,8 @@ class PosterController extends Omeka_Controller_Action
     {   
         // Get the poster object
         $poster_id = $this->_getParam('id');
+        $returnDestination = $this->_getParam('return');
+        
         $poster = $this->findById();
         
         // Check to make sure the poster belongs to the logged in user
@@ -147,7 +157,11 @@ class PosterController extends Omeka_Controller_Action
             $poster->delete();
             $this->flash("\"$poster->title\" was successfully deleted");
         }
-        return $this->_redirect('myomeka/dashboard');
+        if ($returnDestination) {
+            return $this->_redirect('poster/adminPosters');
+        } else {
+            return $this->_redirect('myomeka/dashboard');
+        }
     }
 
     public function addPosterItemAction()
