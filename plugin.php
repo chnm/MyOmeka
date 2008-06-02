@@ -126,7 +126,7 @@ function myomeka_favorite_link($item)
 		if ($favorite->getFavoriteByItemId($user->id, $item->id) > 0){
 			include(uri('favorite/_favorite_form'));
 		} else { ?>
-			<img src="<?php echo img('heart_add.png'); ?>" /> <a href="#" id="favorite-off">Mark as Favorite</a>
+			<img src="<?php echo img('add.png'); ?>" /> <a href="#" id="favorite-off">Mark as Favorite</a>
 		<?php } ?>
 	</div>
 	

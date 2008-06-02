@@ -6,19 +6,12 @@
 
 <div id="myomeka-primary">
 
-<h2>My Archive Dashboard</h2>
+<h2>My Omeka Dashboard</h2>
 <?php echo flash(); ?>
 
-<h3>Your Favorite Items</h3>
-<?php if(count($favorites) > 0): ?>
-    <ul id="myomeka-favorite-list">            
-        <?php foreach($favorites as $favorite): ?>
-            <li><a href="<?php echo WEB_DIR.DIRECTORY_SEPARATOR.'items'.DIRECTORY_SEPARATOR.'show'.DIRECTORY_SEPARATOR.$favorite->item_id; ?>"><?php if ($favorite->title) { echo $favorite->title; } else { echo "[untitled]"; }?></a></li>
-        <?php endforeach; ?>
-    </ul>
-<?php else: ?>
-    <p>You haven't favorited and items yet.</p>
-<?php endif; ?>
+
+
+<h4><a href="<?php echo uri('poster/new'); ?>">Create a new poster from your favorite items</a></h4>
 
 <h3>Your Posters</h3>
 <?php if(count($posters) > 0): ?>
@@ -37,7 +30,18 @@
     <p>You haven't made any posters yet.</p>
 <?php endif; ?>
 
-<h4><a href="<?php echo uri('poster/new'); ?>">Create a new poster from your favorite items</a></h4>
+<h3>Your Favorite Items</h3>
+<?php if(count($favorites) > 0): ?>
+    <ul id="myomeka-favorite-list">            
+        <?php foreach($favorites as $favorite): ?>
+            <li><a href="<?php echo WEB_DIR.DIRECTORY_SEPARATOR.'items'.DIRECTORY_SEPARATOR.'show'.DIRECTORY_SEPARATOR.$favorite->item_id; ?>"><?php if ($favorite->title) { echo $favorite->title; } else { echo "[untitled]"; }?></a></li>
+        <?php endforeach; ?>
+    </ul>
+<?php else: ?>
+    <p>You haven't favorited and items yet.</p>
+<?php endif; ?>
+
+
 
 </div><!-- end dashboard -->
 

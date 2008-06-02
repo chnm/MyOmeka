@@ -24,7 +24,7 @@ Add item to posters model
 Item Show Page
 */
 
-#myomeka-favoriting input {
+/*#myomeka-favoriting input {
 	font-size: 2em;
 }
 
@@ -50,4 +50,4 @@ Item Show Page
 #myomeka-saved-annotation {
 	font-style: italic;
 	font-size: 2em;clear:both;
-}
+}*/
