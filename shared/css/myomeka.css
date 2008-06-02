@@ -1,16 +1,7 @@
 /*
 Dashboard and login stuff
 */
-#myomeka-register-box, #myomeka-login-box {
-	width: 200px;
-    background:#ebebe4;
-	margin: 20px;
-	font: #000;
-}
 
-#myomeka-register-box input, #myomeka-login-box input {
-	width: 100px; 
-}
 
 /*
 Add item to posters model
