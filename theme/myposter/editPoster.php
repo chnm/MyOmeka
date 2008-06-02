@@ -4,7 +4,6 @@
     echo js('ibox/ibox');
     echo js('poster');
 
-	myomeka_userloggedin_status();
 	myomeka_breadcrumb();
 
 ?>

@@ -1,14 +1,15 @@
 <?php 
     head(); 
     echo js('dashboard');
-	myomeka_userloggedin_status();
 	myomeka_breadcrumb();
 ?>
 
-<h1>My Archive Dashboard</h1>
+<div id="myomeka-primary">
+
+<h2>My Archive Dashboard</h2>
 <?php echo flash(); ?>
 
-<h2>Your Favorite Items</h2>
+<h3>Your Favorite Items</h3>
 <?php if(count($favorites) > 0): ?>
     <ul id="myomeka-favorite-list">            
         <?php foreach($favorites as $favorite): ?>
@@ -19,7 +20,7 @@
     <p>You haven't favorited and items yet.</p>
 <?php endif; ?>
 
-<h2>Your Posters</h2>
+<h3>Your Posters</h3>
 <?php if(count($posters) > 0): ?>
     <ul id="myomeka-poster-list"> 
         <?php foreach($posters as $poster): ?>           
@@ -36,6 +37,8 @@
     <p>You haven't made any posters yet.</p>
 <?php endif; ?>
 
-<h3><a href="<?php echo uri('poster/new'); ?>">Create a new poster from your favorite items</a></h3>
+<h4><a href="<?php echo uri('poster/new'); ?>">Create a new poster from your favorite items</a></h4>
+
+</div><!-- end dashboard -->
 
 <?php foot(); ?>

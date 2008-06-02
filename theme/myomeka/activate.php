@@ -1,7 +1,7 @@
 <?php head(); ?>
 <div id="primary">
-	<h1>User Activation</h1>
-<h2>Hello, <?php echo h($user->first_name . ' ' . $user->last_name); ?>. Your username is: <?php echo h($user->username); ?></h2>
+	<h2>User Activation</h2>
+<p>Hello, <?php echo h($user->first_name . ' ' . $user->last_name); ?>. Your username is: <?php echo h($user->username); ?></p>
 
 <form method="post">
 	<fieldset>
