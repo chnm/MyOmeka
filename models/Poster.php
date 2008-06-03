@@ -29,10 +29,10 @@ class Poster extends Omeka_Record{
     public function getPosterItems($poster_id){
         if(is_numeric($poster_id)){
             $db = get_db();
-            return $db->getTable("Item")->fetchObjects("   SELECT p.*, i.*,f.annotation as 'favoriteAnnotation'
+            return $db->getTable("Item")->fetchObjects("   SELECT p.*, i.*,n.note as 'itemNote'
                                                             FROM {$db->prefix}posters_items p 
                                                             JOIN {$db->prefix}items i ON i.id = p.item_id
-                                                            JOIN {$db->prefix}favorites f ON f.item_id = p.item_id
+                                                            JOIN {$db->prefix}notes n ON n.item_id = p.item_id
                                                             WHERE p.poster_id = $poster_id
                                                             ORDER BY ordernum");
         }
@@ -40,7 +40,7 @@ class Poster extends Omeka_Record{
     
     public function updateItems(&$params)
     {   
-        if(is_numeric($params['itemCount'])){
+        if(is_numeric($params['itemCount']) && $params['itemCount'] > 0){
             $this->deletePosterItems();
             foreach(range(1, $params['itemCount']) as $ordernum){
                 $item = new PosterItem();

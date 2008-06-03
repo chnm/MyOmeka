@@ -4,7 +4,7 @@
 */
 
 require_once PLUGIN_DIR.DIRECTORY_SEPARATOR."MyOmeka".DIRECTORY_SEPARATOR."models".DIRECTORY_SEPARATOR."Poster.php";
-require_once PLUGIN_DIR.DIRECTORY_SEPARATOR."MyOmeka".DIRECTORY_SEPARATOR."models".DIRECTORY_SEPARATOR."Favorite.php";
+require_once PLUGIN_DIR.DIRECTORY_SEPARATOR."MyOmeka".DIRECTORY_SEPARATOR."models".DIRECTORY_SEPARATOR."Note.php";
 
 class PosterController extends Omeka_Controller_Action
 {
@@ -54,15 +54,13 @@ class PosterController extends Omeka_Controller_Action
             // Get items already part of the poster
             $posterItems = $poster->getPosterItems($poster_id);
 
-            // Get all favorited items
-            $favs = new Favorite();
-            $items = $favs->getFavoriteItemsByUser($user->id);
+            // Get all objects with notes
+            $noteObj = new Note();
+            $items = $noteObj->getNotedItemsByUser($user->id);
 
             return $this->render('myposter/editPoster.php', compact("poster","posterItems","items"));
         } else {
-            /*
-                TODO User should be forwared to login screen...
-            */
+            return $this->_redirect('myomeka/dashboard');
         }
         
     }

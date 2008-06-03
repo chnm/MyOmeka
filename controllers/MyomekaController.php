@@ -13,7 +13,7 @@
 
 require_once MODEL_DIR.DIRECTORY_SEPARATOR.'User.php';
 require_once PLUGIN_DIR.DIRECTORY_SEPARATOR."MyOmeka".DIRECTORY_SEPARATOR."models".DIRECTORY_SEPARATOR."Poster.php";
-require_once PLUGIN_DIR.DIRECTORY_SEPARATOR."MyOmeka".DIRECTORY_SEPARATOR."models".DIRECTORY_SEPARATOR."Favorite.php";
+require_once PLUGIN_DIR.DIRECTORY_SEPARATOR."MyOmeka".DIRECTORY_SEPARATOR."models".DIRECTORY_SEPARATOR."Note.php";
 require_once 'Omeka/Controller/Action.php';
 
 class MyOmekaController extends Omeka_Controller_Action
@@ -32,10 +32,13 @@ class MyOmekaController extends Omeka_Controller_Action
             $posters = $posters->getUserPosters($current->id);
             
             // Get the user's favorite items
-            $favorites = new Favorite();
-            $favorites = $favorites->getFavoriteItemsByUser($current->id);
+            $noteObj = new Note();
+            $notedItems = $noteObj->getNotedItemsByUser($current->id);
             
-			$this->render('myomeka/dashboard.php', compact("posters","favorites"));
+            // Get the user's tags
+            $tags = array();
+            
+			$this->render('myomeka/dashboard.php', compact("posters","notedItems","tags"));
 		} else {
         	$this->_forward('login');			
 		}

@@ -30,7 +30,7 @@ Object.extend(Poster, {
            $("myomeka-itemCount").setAttribute("value", index-1);
        });
        
-       // Add favorites to poster with an AJAX call
+       // Add Items to poster with an AJAX call
        $$(".myomeka-additem-form").invoke("observe", "submit", function(e){
            new Ajax.Updater('myomeka-poster-canvas', this.action, {
                parameters: { "item-id": this.down(".myomeka-additem-item-id").readAttribute("value") },

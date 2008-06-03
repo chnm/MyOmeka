@@ -1,9 +1,4 @@
 /*
-Dashboard and login stuff
-*/
-
-
-/*
 Add item to posters model
 */
 .myomeka-additem-item{
@@ -19,35 +14,3 @@ Add item to posters model
 .myomeka-additem-details{
     float:left;
 }
-
-/*
-Item Show Page
-*/
-
-/*#myomeka-favoriting input {
-	font-size: 2em;
-}
-
-#myomeka-favoriting label {
-	clear:both;
-}
-
-#myomeka-favoriting {
-    display:block;
-    clear:both;
-    background-color: #f1c8ba;
-    border: 1px dotted black;
-    margin-bottom:50px;
-    padding-left:30px;
-    padding-top: 30px;
-    padding-bottom: 20px;
-}
-
-#myomeka-favoriting textarea {
-	float: none;clear:both;
-}
-
-#myomeka-saved-annotation {
-	font-style: italic;
-	font-size: 2em;clear:both;
-}*/

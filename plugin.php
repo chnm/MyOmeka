@@ -10,7 +10,7 @@ add_plugin_hook('config_form', 'myomeka_configForm');
 add_plugin_hook('config', 'myomeka_config');
 
 add_controllers('controllers');
-require_once PLUGIN_DIR."/MyOmeka/models/Favorite.php";
+require_once PLUGIN_DIR."/MyOmeka/models/Note.php";
 
 function myomeka_initialize()
 {	
@@ -58,10 +58,10 @@ function myomeka_install()
             		`ordernum` INT NOT NULL
             	) ENGINE = MYISAM;");
 
-	// Create Favorites table
-	$db->exec(  "CREATE TABLE IF NOT EXISTS {$db->prefix}favorites ( 
+	// Create Notes table
+	$db->exec(  "CREATE TABLE IF NOT EXISTS {$db->prefix}notes ( 
                     `id` BIGINT UNSIGNED NOT NULL auto_increment PRIMARY KEY, 
-            	    `annotation` TEXT, 
+            	    `note` TEXT NOT NULL, 
             		`user_id` BIGINT UNSIGNED NOT NULL,
             		`item_id` BIGINT UNSIGNED NOT NULL,
             		`date_modified` TIMESTAMP NOT NULL default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP
@@ -106,100 +106,40 @@ function myomeka_show_only_my_items($select, $params)
 		}
 		
 		if(isset($params['tagged_by_me'])) {
-			
 			$select->innerJoin('taggings my_tg', 'my_tg.relation_id = i.id');
-			
 			$select->where('my_tg.type = "Item" AND my_tg.entity_id = ' . $entity_id);
 		}	
 	}
 }
 
-function myomeka_favorite_link($item)
+/**
+ * Call this function in your public themes to allow users to add notes to an item.
+ */
+function myomeka_add_notes($item)
+{	
+    if($user = current_user()) {
+     	// Check if the user has already added notes to the item
+    	$noteObj = new Note();
+    	$result = $noteObj->getItemNotes($user->id, $item->id);
+        if(count($result)){
+            $note = $result[0];
+        } else{
+            $note = null;
+        }
+        // Render the addNotes template
+        common("addNotes", compact("note","item"));
+    }
+}
+
+/**
+ * Call this function in your public themes to allow users to add and remove tags.
+ */
+function myomeka_add_tags($item)
 {
-	?>
-	<div id="myomeka-favoriting">
-		<?php
-
-		$user = current_user();
-		$favorite = new Favorite;
-		
-		if ($favorite->getFavoriteByItemId($user->id, $item->id) > 0){
-			include(uri('favorite/_favorite_form'));
-		} else { ?>
-			<img src="<?php echo img('add.png'); ?>" /> <a href="#" id="favorite-off">Mark as Favorite</a>
-		<?php } ?>
-	</div>
-	
-	<script type="text/javascript" charset="utf-8">
-	    var container = $('myomeka-favoriting');
-	    
-		var makeFavorite = function() {
-			var url = "<?php echo uri('favorite/_favorite_form'); ?>";
-			new Ajax.Updater(container, url, {
-				onSuccess: function(t) {
-					Effect.Appear(container);					
-				},
-				onComplete: function(t) {
-					Event.observe('save-annotation', 'click', saveFavorite);
-				}
-			});
-			
-			return false;
-		}
-		
-		var saveFavorite = function() {
-			var annotation = $('annotation').value;
-			var tags = $('tags').value;
-			var item_id = <?php echo $item->id; ?>;
-			
-			//Make a spot on the page for the saved annotation
-			
-			new Ajax.Updater(container, "<?php echo uri('favorite/add/'.$item->id); ?>", {
-			    parameters: {
-			        annotation: annotation,
-			        tags: tags,
-					item_id: item_id
-			    },
-			    method: 'get',
-			    onComplete: function(t) {
-			        Event.observe('edit-annotation', 'click', editFavorite);
-			    }
-			});
-						
-			return false;
-		}
-		
-		var editFavorite = function() {
-			new Ajax.Updater(container, "<?php echo uri('favorite/edit'.$item->id); ?>", {
-				onSuccess: function(t) {
-					Effect.Appear(container);					
-				}
-			});
-		}
-
-		var deleteFavorite = function() {
-			new Ajax.Updater(container, "<?php echo uri('favorite/delete'.$item->id); ?>", {
-				onSuccess: function(t) {
-					Effect.Appear(container);					
-				}
-			});
-		}
-
-		Event.observe('favorite-off', 'click', makeFavorite);
-	</script>
-	
-<?php
-}
-
-function myomeka_configForm() {
-?>
-<label for="myomeka_favname">The default name for the "favorites" feature is favorites.  This configuration page allows you to change favorites to something else if you wish:</label>
-<input type="text" name="myomeka_favname" size="90" value="<?php echo get_option('myomeka_favname'); ?>" id="map_key" />
-<?php
-}
-
-function myomeka_config() {
-	set_option('myomeka_favname', $_POST['myomeka_favname']);
+    if($user = current_user()) {
+        $tags = array();
+        common("addTags", compact("item","tags"));
+    }
 }
 
 function poster_icon_html($item) {
