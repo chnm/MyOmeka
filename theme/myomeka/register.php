@@ -7,7 +7,7 @@
 } 
 ?>
 
-<?php echo flash(); ?>
+
 <fieldset>
 	
 	<ol>

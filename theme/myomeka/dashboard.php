@@ -45,7 +45,7 @@
 	<div class="myomeka-notedItems-list-box">
     <ul id="myomeka-notedItems-list">            
 
-			<li><?php echo square_thumbnail($notedItem)?></li>
+			<li><a href="<?php print uri("items/show/".$notedItem->item_id); ?>"><?php echo square_thumbnail($notedItem)?></a></li>
             <li>
                 <a href="<?php print uri("items/show/".$notedItem->item_id); ?>">
                     <?php if ($notedItem->title):?><?php print $notedItem->title; ?>

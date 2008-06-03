@@ -2,7 +2,7 @@
 
 <div id="myomeka-login-box">
 <h2>Login</h2>
-	<?php echo flash();?>
+
 <form id="myomeka-login-form" action="<?php echo uri('myomeka/login');?>" method="post" accept-charset="utf-8">
 	<fieldset>
 	<ol>
