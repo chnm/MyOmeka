@@ -31,12 +31,14 @@ class MyOmekaController extends Omeka_Controller_Action
             $posters = new Poster();
             $posters = $posters->getUserPosters($current->id);
             
-            // Get the user's favorite items
+            // Get the user's noted items
             $noteObj = new Note();
             $notedItems = $noteObj->getNotedItemsByUser($current->id);
             
             // Get the user's tags
-            $tags = array();
+            $tagTable = new TagTable(null);
+            $options = array('entity'=>$current->entity_id);
+            $tags = $tagTable->findBy($options,"MyomekaTag");
             
 			$this->render('myomeka/dashboard.php', compact("posters","notedItems","tags"));
 		} else {

@@ -4,19 +4,12 @@
     <?php if (count($tags)): ?>
         <div id="myomeka-tags">
             <?php foreach ($tags as $tag): ?>
-            <a href="#<?php print $tag;?>"><?php print $tag;?></a> [<a href="#">X</a>] 
+            <a href="<?php print uri("myomekatag/browse/?id=".$tag->id);?>"><?php print $tag->name;?></a> 
+            [<a href="<?php print uri("myomekatag/delete/?tag=".urlencode($tag)."&item_id=".$item->id); ?>" title="Delete this tag">X</a>] 
             <?php endforeach ?>
         </div>
     <?php endif; ?>
-    <!-- START SAMPLE TAG LAYOUT -->
-    <div id="myomeka-tags">
-        <a href="#">Sample1</a> [<a href="#">X</a>] 
-        <a href="#">Sample2</a> [<a href="#">X</a>] 
-        <a href="#">Sample3</a> [<a href="#">X</a>] 
-        <a href="#">Sample4</a> [<a href="#">X</a>]
-    </div>
-    <!-- END SAMPLE TAG LAYOUT -->
-    <form action="<?php print uri("note/submitTag"); ?>" id="myomeka-tag-form" method="post" accept-charset="utf-8">    
+    <form action="<?php print uri("myomekatag/add"); ?>" id="myomeka-tag-form" method="post" accept-charset="utf-8">    
         <div>
             <div class="field">
                 <label>Add tags:</label>

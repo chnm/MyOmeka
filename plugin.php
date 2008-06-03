@@ -126,6 +126,7 @@ function myomeka_add_notes($item)
         } else{
             $note = null;
         }
+        
         // Render the addNotes template
         common("addNotes", compact("note","item"));
     }
@@ -137,7 +138,12 @@ function myomeka_add_notes($item)
 function myomeka_add_tags($item)
 {
     if($user = current_user()) {
-        $tags = array();
+        require_once "plugins/MyOmeka/models/MyomekaTag.php";
+        $myomekatag = new MyomekaTag;
+        $myomekatag->id = $item->id;
+        
+        $tags = $myomekatag->entityTags(get_db()->getTable("Entity")->find($user->entity_id));
+        
         common("addTags", compact("item","tags"));
     }
 }
