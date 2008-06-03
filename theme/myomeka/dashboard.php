@@ -45,7 +45,27 @@
     <p>You have not added notes to any items yet.</p>
 <?php endif; ?>
 
-
+<h3>Items you've tagged</h3>
+<?php if(count($tags) > 0): ?>
+    <ul id="myomeka-tags-list">
+        <?php foreach($tags as $tag): ?>
+            <li>
+                <a href="<?php ?>"><?php print $tag->name; ?></a>
+            </li>
+        <?php endforeach; ?>
+    </ul>
+<?php else: ?>
+    <!-- <p>You have not added notes to any items yet.</p> -->
+    <!-- Start Sample tag list -->
+    <ul id="myomeka-tags-list">
+        <li><a href="#">Sample1</a></li>
+        <li><a href="#">Sample2</a></li>
+        <li><a href="#">Sample3</a></li>
+        <li><a href="#">Sample4</a></li>
+        <li><a href="#">Sample5</a></li>
+    </ul>
+    <!-- End Sample tag list -->
+<?php endif; ?>
 
 </div><!-- end dashboard -->
 
