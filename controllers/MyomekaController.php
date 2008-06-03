@@ -63,7 +63,7 @@ class MyOmekaController extends Omeka_Controller_Action
 				$this->_redirect('myomeka/dashboard/');
 			} else {		
 // should throw an exception and not echo error.  I had issues with this, even when trying to flash() the exception on the public-side.  revisit before releasing plugin [DL]
-			 	echo ('There was an error logging you in.  Please try again, or register a new account.');
+			 	$this->flash('There was an error logging you in.  Please try again, or register a new account.');
 			}
 		}
 		$this->render('myomeka/index.php');
@@ -102,8 +102,7 @@ class MyOmekaController extends Omeka_Controller_Action
 			}
 		} catch (Omeka_Validator_Exception $e) {
 			$this->flashValidationErrors($e);
-			echo $e;
-			//$this->_redirect('myomeka');
+			$this->render('myomeka/index.php');
 		}
 			
 //		return $this->_forward('myomeka', 'dashboard');
