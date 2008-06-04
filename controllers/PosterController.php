@@ -5,6 +5,7 @@
 
 require_once PLUGIN_DIR.DIRECTORY_SEPARATOR."MyOmeka".DIRECTORY_SEPARATOR."models".DIRECTORY_SEPARATOR."Poster.php";
 require_once PLUGIN_DIR.DIRECTORY_SEPARATOR."MyOmeka".DIRECTORY_SEPARATOR."models".DIRECTORY_SEPARATOR."Note.php";
+require_once PLUGIN_DIR.DIRECTORY_SEPARATOR."MyOmeka".DIRECTORY_SEPARATOR."models".DIRECTORY_SEPARATOR."MyomekaTag.php";
 
 class PosterController extends Omeka_Controller_Action
 {
@@ -41,9 +42,13 @@ class PosterController extends Omeka_Controller_Action
             // Get items already part of the poster
             $posterItems = $poster->getPosterItems($poster_id);
 
-            // Get all objects with notes
+            // Get objects with notes and objects that the user has tagged
             $noteObj = new Note();
-            $items = $noteObj->getNotedItemsByUser($user->id);
+            $myomekatagObj = new MyomekaTag();
+            $items = array_merge(
+                                    $noteObj->getNotedItemsByUser($user->id),
+                                    $myomekatagObj->getItemsTaggedByUser($user->id)
+                                );
 
             return $this->render('myposter/editPoster.php', compact("poster","posterItems","items"));
         } else {

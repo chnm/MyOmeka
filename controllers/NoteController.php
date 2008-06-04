@@ -35,13 +35,6 @@ class NoteController extends Omeka_Controller_Action
     			$noteObj->item_id = $_POST['item_id'];
     			$noteObj->save();
             }
-            /*
-                TODO Redirect to exhibit page
-            */
-            // Get the item object so we can generate a url
-            // $item = get_db()->getTable("Item")->fetchObjects("  SELECT * FROM {$db->prefix}items
-            //                                                     WHERE id = ".$_POST['item_id']);
-            $item = get_db()->getTable("Item")->find($_POST['item_id']);
     		return $this->_redirect('items/show/'.$_POST['item_id']);
     	} else{
     		echo "Error in params";
