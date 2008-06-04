@@ -23,7 +23,7 @@ Object.extend(Poster, {
            index = 1;
            $$(".myomeka-annotation textarea").each(function(n){
                n.setAttribute("name","annotation-"+index);
-               n.up(".myomeka-poster-spot").down(".myomeka-hidden-item-id").setAttribute("name","id-"+index);
+               n.up(".myomeka-poster-spot").down(".myomeka-hidden-item-id").setAttribute("name","itemID-"+index);
                index++;
            });
            // Update the item count

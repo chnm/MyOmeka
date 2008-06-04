@@ -29,26 +29,29 @@ class Poster extends Omeka_Record{
     public function getPosterItems($poster_id){
         if(is_numeric($poster_id)){
             $db = get_db();
-            return $db->getTable("Item")->fetchObjects("   SELECT p.*, i.*,n.note as 'itemNote'
-                                                            FROM {$db->prefix}posters_items p 
-                                                            JOIN {$db->prefix}items i ON i.id = p.item_id
-                                                            JOIN {$db->prefix}notes n ON n.item_id = p.item_id
-                                                            WHERE p.poster_id = $poster_id
+            return $db->getTable("Item")->fetchObjects("   SELECT pi.*,p.user_id, i.*,n.note as 'itemNote'
+                                                            FROM {$db->prefix}posters_items pi 
+                                                            JOIN {$db->prefix}items i ON i.id = pi.item_id
+                                                            JOIN {$db->prefix}notes n ON n.item_id = pi.item_id
+                                                            JOIN {$db->prefix}posters p ON pi.poster_id = p.id
+                                                            WHERE pi.poster_id = $poster_id AND n.user_id = p.user_id
                                                             ORDER BY ordernum");
         }
     }
     
     public function updateItems(&$params)
     {   
-        if(is_numeric($params['itemCount']) && $params['itemCount'] > 0){
+        if(is_numeric($params['itemCount'])){
             $this->deletePosterItems();
-            foreach(range(1, $params['itemCount']) as $ordernum){
-                $item = new PosterItem();
-                $item->annotation = $params['annotation-' . $ordernum];
-                $item->poster_id = $this->id;
-                $item->item_id = $params['id-' . $ordernum];
-                $item->ordernum = $ordernum;
-                $item->save();
+            if ($params['itemCount'] > 0) {
+                foreach(range(1, $params['itemCount']) as $ordernum){
+                    $item = new PosterItem();
+                    $item->annotation = $params['annotation-' . $ordernum];
+                    $item->poster_id = $this->id;
+                    $item->item_id = $params['itemID-' . $ordernum];
+                    $item->ordernum = $ordernum;
+                    $item->save();
+                }
             }
         }        
     }

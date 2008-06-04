@@ -29,19 +29,6 @@ class PosterController extends Omeka_Controller_Action
         return $this->render('myposter/adminPoster.php',compact("posters"));
     }
     
-    /**
-     * Filter the items down to whatever items were annotated by the current user
-     * 
-     * @return void
-     **/
-    public function chooseItemAction()
-    {
-        /* $items = get_db()->getTable('Item')->findBy();
-        return $this->render('myposter/_choose_item.php', compact('items')); */
-        
-        $this->_forward('browse', 'items', null, array('renderPage'=>'myposter/_choose_item.php'));
-    }
-    
     public function editAction()
     {   
         $poster_id = $this->_getParam('id');
@@ -121,7 +108,7 @@ class PosterController extends Omeka_Controller_Action
         $poster->description = $params['description'];
         $poster->updateItems($params);
         $poster->save();
-    
+        // var_dump($params);
         $this->_redirect("myomeka/dashboard");
     }
 
