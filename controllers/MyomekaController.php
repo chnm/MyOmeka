@@ -7,7 +7,7 @@
 *  (as of 0.9.1.1 release) there's no way around this.  A more agile Omeka core will
 *  make this much simpler [DL]
 *
-*  PS: doing registration through an external controller is currently stinks
+*  PS: doing registration through an external controller currently stinks
 *
 */
 
@@ -161,8 +161,7 @@ class MyOmekaController extends Omeka_Controller_Action
 			$email = $_POST['email'];
 			$ua = new UsersActivations;
 			
-			$user = $user->_table->findByEmail($email);
-			
+			$user = $this->getTable('User')->findByEmail($email);
 			
 			if($user) {
 				//Create the activation url

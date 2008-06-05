@@ -12,10 +12,10 @@
 	<li><label for="password">Password</label> </li>
 	<li><input type="password" name="password" class="textinput" id="password" /></li>
 	</ol>
-	</fieldset>
 	<input type="submit" class="login" value="Login" />
+	</fieldset>
 </form>
 
 <p id="myomeka-forgotpassword"><a href="<?php echo uri('myomeka/forgot'); ?>">Lost your password?</a></p>
-</ul>
+
 </div>

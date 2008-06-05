@@ -9,7 +9,7 @@
             <?php endforeach ?>
         </div>
     <?php endif; ?>
-    <form action="<?php print uri("myomekatag/add"); ?>" id="myomeka-tag-form" method="post" accept-charset="utf-8">    
+    <form action="<?php print uri("MyomekaTag/add"); ?>" id="myomeka-tag-form" method="post" accept-charset="utf-8">    
         <div>
             <div class="field">
                 <label>Add tags:</label>

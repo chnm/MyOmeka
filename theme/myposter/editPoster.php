@@ -28,9 +28,9 @@
         </div>
     
         <h2>Poster Items</h2>
-        <div>
-            <a href="#myomeka-additem-modal" rel="ibox&amp;width=450" title="Chose an item to add">
-                Add an item</a>
+        <div id="myomeka-poster-additem">
+            <a href="#myomeka-additem-modal" rel="ibox&amp;width=450" title="Choose an item to add">
+                Add an item &rarr;</a>
         </div>
         <div id="myomeka-poster-canvas">
         <?php

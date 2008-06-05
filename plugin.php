@@ -24,12 +24,12 @@ function myomeka_initialize()
 	$acl = Zend_registry::get( 'acl' );
 
 	//Come up with some terminology for this
-	$acl->addRole(new Zend_Acl_Role('myomeka'));
+	$acl->addRole(new Zend_Acl_Role('MyOmeka'));
 
 	$acl->registerRule(new Zend_Acl_Resource('MyOmeka'), array('favorite'));
 
 	//The new role and all the existing roles, should be able to list certain items as 'favorites'
-	$acl->allow('myomeka',	'MyOmeka',array('favorite'));	
+	$acl->allow('MyOmeka',	'MyOmeka',array('favorite'));	
 	$acl->allow('researcher',	'MyOmeka',array('favorite'));
 	$acl->allow('admin',		'MyOmeka',array('favorite'));
 	$acl->allow('contributor',	'MyOmeka',array('favorite'));		
@@ -163,7 +163,11 @@ function myomeka_breadcrumb() {
 
 function myomeka_userloggedin_status() {
 	$user = current_user();
-	echo "<p>logged in as $user->username | <a href=\"" . uri('myomeka/logout/') . "\">Logout</a></p>";
+	if ($user) {
+		echo "<p>logged in as $user->username | <a href=\"" . uri('myomeka/logout/') . "\">Logout</a></p>";
+	} else {
+		echo "<p><a href=\"" . uri('myomeka/login/') . "\">Login</a>";
+	}
 }
 
 ?>
