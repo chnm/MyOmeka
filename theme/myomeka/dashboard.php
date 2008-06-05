@@ -64,7 +64,7 @@
 	</div >
 
 	<div id="myomeka-tags">
-	<h3>Items you've tagged</h3>
+	<h3>Your Tags</h3>
 	<?php if(count($tags) > 0): ?>
 	    <ul class="hTagcloud" id="myomeka-tags-list">
 	        <?php foreach($tags as $tag): ?>
