@@ -45,12 +45,13 @@ class MyomekaTagController extends Omeka_Controller_Action
 	        $user = current_user();
 	        $db = get_db();
             $items = $db->getTable("Item")->fetchObjects("SELECT i.*
-                                                                FROM {$db->prefix}taggings t 
-                                                                JOIN {$db->prefix}items i ON t.relation_id = i.id
-                                                                WHERE t.entity_id = $user->entity_id
-                                                                    AND t.tag_id = ".$this->_getParam('id')."
-                                                                    AND t.type = 'MyomekaTag'");
-            $this->render('items/browse.php', compact("items"));
+                                                            FROM {$db->prefix}taggings t 
+                                                            JOIN {$db->prefix}items i ON t.relation_id = i.id
+                                                            WHERE t.entity_id = $user->entity_id
+                                                                AND t.tag_id = ".$this->_getParam('id')."
+                                                                AND t.type = 'MyomekaTag'");
+            $tag = $db->getTable("Tag")->find($this->_getParam('id'));
+            $this->render('items/browse.php', compact("items", "tag"));
         } else {
             print "Error in params";
         }
