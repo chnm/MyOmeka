@@ -1,7 +1,7 @@
 <div class="myomeka-poster-spot">
 	
 	<div class="myomeka-itemTitle">
-		        <h2><?php echo $posterItem->title; ?></h2>
+		        <h3><?php echo $posterItem->title; ?></h3>
 	</div>
     <div class="myomeka-controls">
         <a href="#" class="myomeka-move-top myomeka-poster-control">

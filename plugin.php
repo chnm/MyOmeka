@@ -6,8 +6,6 @@ define('MYOMEKA_PLUGIN_VERSION', '0.2dev');
 add_plugin_hook('initialize', 'myomeka_initialize');
 add_plugin_hook('install', 'myomeka_install');
 add_plugin_hook('theme_header', 'myomeka_css');
-add_plugin_hook('config_form', 'myomeka_configForm');
-add_plugin_hook('config', 'myomeka_config');
 
 add_controllers('controllers');
 require_once PLUGIN_DIR."/MyOmeka/models/Note.php";

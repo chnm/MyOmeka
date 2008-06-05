@@ -17,7 +17,7 @@
 	    <ul id="myomeka-poster-list"> 
 	        <?php foreach($posters as $poster): ?>           
 
-			<li class="poster-title"><?php echo $poster->title; ?>
+			<li class="poster-title"><h4><?php echo $poster->title; ?></h4>
 				<ul class="myomeka-poster-nav">
 	               <li><a href="<?php echo uri('poster/view/'.$poster->id); ?>" class="myomeka-view-poster-link">view</a> </li>
 	               <li><a href="<?php echo uri('poster/edit/'.$poster->id); ?>" class="myomeka-edit-poster-link">edit</a> </li>

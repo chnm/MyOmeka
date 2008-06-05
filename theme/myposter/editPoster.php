@@ -14,6 +14,8 @@
     Poster.itemCount = <?php echo count($posterItems); ?>;
 </script>
 <div id="myomeka-primary">
+	<div id="myomeka-poster-info">
+	<h2>About this Poster</h2>
     <form action="<?php echo uri('poster/save/'.$poster->id); ?>" method="post" accept-charset="utf-8" id="myomeka-poster-form">
         <div class="myomeka-field">
             <label for="myomeka-title">Title of Poster:</label>
@@ -26,6 +28,7 @@
                 <?php echo $poster->description;?>
             </textarea>
         </div>
+	</div>
     
         <h2>Poster Items</h2>
         <div id="myomeka-poster-additem">
