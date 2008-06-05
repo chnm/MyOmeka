@@ -16,8 +16,12 @@
 		<?php if(count($posters) > 0): ?>
 	    <ul id="myomeka-poster-list"> 
 	        <?php foreach($posters as $poster): ?>           
-
-			<li class="poster-title"><h4><?php echo $poster->title; ?></h4>
+				<?php //print_r($poster);?>
+			<li class="poster"><h4 class="poster-title"><?php echo $poster->title; ?></h4>
+				<ul class="myomeka-poster-meta">
+					<li class="poster-date"><?php echo $poster->date_created; ?></li>	
+					<li class="post-description"><?php echo snippet($poster->description,0,250); ?></li>
+				</ul>
 				<ul class="myomeka-poster-nav">
 	               <li><a href="<?php echo uri('poster/view/'.$poster->id); ?>" class="myomeka-view-poster-link">view</a> </li>
 	               <li><a href="<?php echo uri('poster/edit/'.$poster->id); ?>" class="myomeka-edit-poster-link">edit</a> </li>
@@ -49,6 +53,7 @@
                     <?php if ($notedItem->title):?><?php print $notedItem->title; ?>
                     <?php else: ?>[untitled]
                     <?php endif; ?></a></li>
+					<li><?php echo snippet($notedItem->description,0,200);?>
 			</ul>
 		</div>
 		<?php endforeach; ?>
