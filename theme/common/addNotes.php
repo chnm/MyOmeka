@@ -12,7 +12,7 @@
             <div>
                 <div class="field">
                     <label>Enter your notes:</label>
-                    <textarea name="note" rows="5" cols="15"><?php echo $note->note; ?></textarea>
+                    <textarea name="note" rows="5" cols="60"><?php echo $note->note; ?></textarea>
                 </div>
                 <input type="submit" id="myomeka-submit-note" value="Save Notes"/> 
                 or <a href="#" id="myomeka-cancel-edit">Cancel</a>
