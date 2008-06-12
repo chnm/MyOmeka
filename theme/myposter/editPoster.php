@@ -28,7 +28,6 @@
                 <?php echo $poster->description;?>
             </textarea>
         </div>
-	</div>
     
         <h2>Poster Items</h2>
         <div id="myomeka-poster-additem">

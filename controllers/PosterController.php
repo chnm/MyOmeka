@@ -45,10 +45,16 @@ class PosterController extends Omeka_Controller_Action
             // Get objects with notes and objects that the user has tagged
             $noteObj = new Note();
             $myomekatagObj = new MyomekaTag();
-            $items = array_merge(
+            $mixedItems = array_merge(
                                     $noteObj->getNotedItemsByUser($user->id),
                                     $myomekatagObj->getItemsTaggedByUser($user->id)
                                 );
+            
+            // Loop through the items to make sure we only have one of each item
+            $items = array();
+            foreach($mixedItems as $item){
+                $items[$item->id] = $item;
+            }
 
             return $this->render('myposter/editPoster.php', compact("poster","posterItems","items"));
         } else {
@@ -113,7 +119,7 @@ class PosterController extends Omeka_Controller_Action
         $poster->description = $params['description'];
         $poster->updateItems($params);
         $poster->save();
-        // var_dump($params);
+        
         $this->_redirect("myomeka/dashboard");
     }
 
@@ -159,6 +165,6 @@ class PosterController extends Omeka_Controller_Action
         $params = $this->getRequest()->getParams();
         $id = $params['item-id'];
         $posterItem = get_db()->getTable('Item')->find((int) $id);
-       return $this->render('common/_spot.php', compact("posterItem"));
+        return $this->render('common/_spot.php', compact("posterItem"));
     }
 }

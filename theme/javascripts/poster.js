@@ -18,7 +18,7 @@ Object.extend(Poster, {
        
        // Code to run when the save poster form is submitted
        // Walks the items and indexes them
-       $$('form').invoke('observe', 'submit', function(e){
+       $$('#myomeka-poster-form').invoke('observe', 'submit', function(e){
            // index the form element names
            index = 1;
            $$(".myomeka-annotation textarea").each(function(n){
@@ -41,7 +41,6 @@ Object.extend(Poster, {
                    Poster.mceExecCommand("mceRemoveControl");
                },
                onComplete: function(){
-                  Poster.setOrderNums();
                   Poster.hideExtraControls();
                   Poster.mceExecCommand("mceAddControl");
                   Poster.bindControls();
@@ -61,18 +60,6 @@ Object.extend(Poster, {
            Poster.bindControls();           
        }
    },
-    
-    /**
-    Finds all of the poster items and sequentially indexes their textarea name.
-    */
-    setOrderNums: function() {
-        index = 1;
-        $$("#myomeka-poster-canvas textarea").each(function(n){
-            n.setAttribute("name","annotation-"+index);
-            n.setAttribute("id","myomeka-annotation-"+index);
-            index++;
-        });
-    },
   
     /**
     Wraps tinyMCE.execCommand
