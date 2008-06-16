@@ -3,7 +3,7 @@
     <h2>Your Notes</h2>
     <div id="myomeka-display-note">
         <?php if($note): ?>
-        <div id="myomeka-note"><?php echo nl2br($note->note);?></div>
+        <div id="myomeka-note"><?php echo nls2p($note->note);?></div>
         <?php endif; ?>
         <div><a id="myomeka-edit-link" href="#">Edit your notes</a></div>
     </div>

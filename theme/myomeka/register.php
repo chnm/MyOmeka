@@ -29,9 +29,11 @@
 		<li><?php text(array('name'=>'email', 'class'=>'textinput', 'id'=>'email'), not_empty_or($user->email, $_POST['email'])); ?></li>
 		<li><?php echo form_error('email'); ?></li>
 	</ol>
+	
+	<input type="submit" class="register" value="Register" />
 
 	</fieldset>
-	<input type="submit" class="register" value="Register" />
+
 </form>
 
 <?php /*

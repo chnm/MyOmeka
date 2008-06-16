@@ -7,6 +7,7 @@
 <div id="myomeka-primary">
 
 	<h2>My Omeka Dashboard</h2>
+	
 	<?php echo flash(); ?>
 
 
