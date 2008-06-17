@@ -19,7 +19,7 @@ class MyomekaTagController extends Omeka_Controller_Action
             $myomekatag->id = $_POST['item_id'];
             $myomekatag->addTags($_POST['tag'], get_db()->getTable("Entity")->find($user->entity_id));
             
-            return $this->_redirect('items/show/'.$_POST['item_id']);
+            return parent::_redirect('/items/show/'.$_POST['item_id']);
         } else {
             print "Error in params";
         }
@@ -33,7 +33,7 @@ class MyomekaTagController extends Omeka_Controller_Action
             $myomekatag->id = $_GET['item_id'];
             $myomekatag->deleteTags($_GET['tag'], get_db()->getTable("Entity")->find($user->entity_id));
             
-            return $this->_redirect('items/show/'.$_GET['item_id']);
+            return $this->_redirect('/items/show/'.$_GET['item_id']);
         } else {
             print "Error in params";
         }

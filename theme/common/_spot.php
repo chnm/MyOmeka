@@ -22,7 +22,7 @@
     <div class="myomeka-annotation">
 
         <textarea   name="annotation-<?php echo $posterItem->ordernum; ?>" 
-                    id="myomeka-annotation-<?php echo $posterItem->ordernum; ?>"
+                    id="myomeka-annotation-<?php echo mt_rand(0, 999999999); ?>"
                     rows="6" 
                     cols="10">
             <?php echo $posterItem->annotation; ?>

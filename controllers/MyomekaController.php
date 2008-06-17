@@ -62,7 +62,7 @@ class MyOmekaController extends Omeka_Controller_Action
 			$token = $auth->authenticate($adapter);
 
 			if ($token->isValid()) {
-				$this->_redirect('myomeka/dashboard/');
+				$this->_redirect('/myomeka/dashboard/');
 			} else {		
 // should throw an exception and not echo error.  I had issues with this, even when trying to flash() the exception on the public-side.  revisit before releasing plugin [DL]
 			 	$this->flash('There was an error logging you in.  Please try again, or register a new account.');
@@ -76,7 +76,7 @@ class MyOmekaController extends Omeka_Controller_Action
 		$auth = $this->_auth;
 		//http://framework.zend.com/manual/en/zend.auth.html
 		$auth->clearIdentity();
-		$this->_redirect('myomeka');
+		$this->_redirect('/myomeka');
 	}
 	
 	/**
@@ -100,7 +100,7 @@ class MyOmekaController extends Omeka_Controller_Action
 				$this->flashSuccess('User was added successfully!');
 
 				//Redirect to the main user browse page
-				$this->_redirect('myomeka/dashboard');
+				$this->_redirect('/myomeka/dashboard');
 			}
 		} catch (Omeka_Validator_Exception $e) {
 			$this->flashValidationErrors($e);
@@ -145,7 +145,7 @@ class MyOmekaController extends Omeka_Controller_Action
 				$ua->User->active = 1;
 				$ua->User->save();
 				$ua->delete();
-				$this->_redirect('myomeka');				
+				$this->_redirect('/myomeka');				
 			}
 		}
 		$user = $ua->User;

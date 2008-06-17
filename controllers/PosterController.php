@@ -58,7 +58,7 @@ class PosterController extends Omeka_Controller_Action
 
             return $this->render('myposter/editPoster.php', compact("poster","posterItems","items"));
         } else {
-            return $this->_redirect('myomeka/dashboard');
+            return $this->_redirect('/myomeka/dashboard');
         }
         
     }
@@ -120,7 +120,7 @@ class PosterController extends Omeka_Controller_Action
         $poster->updateItems($params);
         $poster->save();
         
-        $this->_redirect("myomeka/dashboard");
+        $this->_redirect("/myomeka/dashboard");
     }
 
 
@@ -135,7 +135,7 @@ class PosterController extends Omeka_Controller_Action
         $poster->date_created = date( 'Y-m-d H:i:s', time() );
         $poster->save();
         
-        return $this->_redirect('poster/edit/' . $poster->id);
+        return $this->_redirect('/poster/edit/' . $poster->id);
         
     }
     
@@ -154,9 +154,9 @@ class PosterController extends Omeka_Controller_Action
             $this->flash("\"$poster->title\" was successfully deleted");
         }
         if ($returnDestination) {
-            return $this->_redirect('poster/adminPosters');
+            return $this->_redirect('/poster/adminPosters');
         } else {
-            return $this->_redirect('myomeka/dashboard');
+            return $this->_redirect('/myomeka/dashboard');
         }
     }
 

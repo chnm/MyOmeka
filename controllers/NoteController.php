@@ -35,7 +35,7 @@ class NoteController extends Omeka_Controller_Action
     			$noteObj->item_id = $_POST['item_id'];
     			$noteObj->save();
             }
-    		return $this->_redirect('items/show/'.$_POST['item_id']);
+    		return $this->_redirect('/items/show/'.$_POST['item_id']);
     	} else{
     		echo "Error in params";
     	}
