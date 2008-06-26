@@ -1,6 +1,7 @@
 <?php echo js('addNotes'); ?>
 <div id="myomeka-add-notes">
-    <h2>Your Notes</h2>
+	<a class="dashboard-link" href="<?php echo uri('myomeka'); ?>">Go to My Dashboard</a>
+   <h2>Your Notes</h2>
     <div id="myomeka-display-note">
         <?php if($note): ?>
         <div id="myomeka-note"><?php echo nls2p($note->note);?></div>

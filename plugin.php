@@ -164,7 +164,7 @@ function myomeka_userloggedin_status() {
 	if ($user) {
 		echo "<p>logged in as <a href=\"" . uri('myomeka/') . "\">$user->username</a> | <a href=\"" . uri('myomeka/logout/') . "\">Logout</a></p>";
 	} else {
-		echo "<p><a href=\"" . uri('myomeka/login/') . "\">Login</a>";
+		echo "<a href=\"" . uri('myomeka/login/') . "\">Login</a>";
 	}
 }
 
