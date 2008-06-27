@@ -31,8 +31,12 @@
     
         <h2>Poster Items</h2>
         <div id="myomeka-poster-additem">
-            <a href="#myomeka-additem-modal" rel="ibox&amp;width=450" title="Choose an item to add">
-                Add an item &rarr;</a>
+            <?php if(count($posterItems)): ?>
+                <button type="button">Add an item &rarr;</button>
+            <?php else: ?>
+                <button type="button" disabled="disabled">Add an item &rarr;</button>
+                <p>You have to add notes or tags to an item before adding them to a poster</p>
+            <?php endif; ?>
         </div>
         <div id="myomeka-poster-canvas">
         <?php

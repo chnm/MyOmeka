@@ -30,27 +30,33 @@ Object.extend(Poster, {
            $("myomeka-itemCount").setAttribute("value", index-1);
        });
        
-       // Add Items to poster with an AJAX call
-       $$(".myomeka-additem-form").invoke("observe", "submit", function(e){
-           new Ajax.Updater('myomeka-poster-canvas', this.action, {
-               parameters: { "item-id": this.down(".myomeka-additem-item-id").readAttribute("value") },
-               insertion: Insertion.Bottom,
-               onCreate: function(){
-                   // Disable submit buttons
-                   $$(".myomeka-additem-submit").each(function(n){n.disable();});
-                   Poster.mceExecCommand("mceRemoveControl");
-               },
-               onComplete: function(){
-                  Poster.hideExtraControls();
-                  Poster.mceExecCommand("mceAddControl");
-                  Poster.bindControls();
-                  // Enable submit buttons for next time
-                  $$(".myomeka-additem-submit").each(function(n){n.enable();});
-                  iBox.hide();
-               }
+       $$("#myomeka-poster-additem button").invoke("observe", "click", function(e){
+           // Show the modal box with tagged and noted items
+           iBox.show(document.getElementById("myomeka-additem-modal").innerHTML,"Choose an item to add",{});
+
+           // Bind an action that adds items to poster with an AJAX call
+           $$(".myomeka-additem-form").invoke("observe", "submit", function(e){
+               new Ajax.Updater('myomeka-poster-canvas', this.action, {
+                   parameters: { "item-id": this.down(".myomeka-additem-item-id").readAttribute("value") },
+                   insertion: Insertion.Bottom,
+                   onCreate: function(){
+                       // Disable submit buttons
+                       $$(".myomeka-additem-submit").each(function(n){n.disable();});
+                       Poster.mceExecCommand("mceRemoveControl");
+                   },
+                   onComplete: function(){
+                      Poster.hideExtraControls();
+                      Poster.mceExecCommand("mceAddControl");
+                      Poster.bindControls();
+                      // Enable submit buttons for next time
+                      $$(".myomeka-additem-submit").each(function(n){n.enable();});
+                      iBox.hide();
+                   }
+               });
+               Event.stop(e);
            });
-           Event.stop(e);
        });
+       
        if(Poster.itemCount > 0){
             // When the form loads, hide up and down controls that can't be used
             // Should maybe grey them out instead
