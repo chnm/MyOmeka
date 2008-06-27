@@ -98,9 +98,10 @@ class MyOmekaController extends Omeka_Controller_Action
 				$this->sendActivationEmail($user);
 				
 				$this->flashSuccess('User was added successfully!');
+				$this->_redirect('/myomeka/checkemail');
 
-				//Redirect to the main user browse page
-				$this->_redirect('/myomeka/dashboard');
+				//Redirect to the check email page
+				//$this->_redirect('/myomeka/dashboard');
 			}
 		} catch (Omeka_Validator_Exception $e) {
 			$this->flashValidationErrors($e);
@@ -110,7 +111,16 @@ class MyOmekaController extends Omeka_Controller_Action
 //		return $this->_forward('myomeka', 'dashboard');
 	
 	}
-
+	
+	/**
+	 * Tell user that an email has been sent them.
+	 *
+	 * @return void
+	 **/
+	public function checkEmailAction() {
+		$this->render('myomeka/checkemail.php');
+	}
+	
 	public function sendActivationEmail($user)
 	{
 		$ua = new UsersActivations;
