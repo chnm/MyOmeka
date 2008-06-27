@@ -1,6 +1,6 @@
 <?php head(); ?>
 <div id="myomeka-primary">
 	<h2>Register</h2>
-	<p>Your account has been successfully created.  An email has been sent to you to complete your registration.</p>
+	<p>To complete your registration, please check your email.</p>
 </div>
 <?php foot(); ?>
