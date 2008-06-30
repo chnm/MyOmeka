@@ -15,6 +15,10 @@
     <?php echo $posterItem->annotation; ?>
 	</div>
 <?php endforeach; ?>
+
+<div id="myomeka-disclaimer">
+    <p>This page contains user generated content and does not necessarily reflect the opinions of this website. For more information please refer to our Terms and Conditions. If you would like to report the content of this page as objectionable, please contact us.</p>
+</div>
 </div>
 
 <?php foot(); ?>
