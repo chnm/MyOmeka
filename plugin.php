@@ -12,9 +12,9 @@ require_once PLUGIN_DIR."/MyOmeka/models/Note.php";
 
 function myomeka_initialize()
 {	
-    add_theme_pages('theme', 'public');
-    add_theme_pages('theme', 'admin');
-	add_theme_pages('shared', 'both');
+    add_theme_pages('views/public', 'public');
+    add_theme_pages('views/admin', 'admin');
+	add_theme_pages('views/shared', 'both');
 	add_navigation('Posters', 'poster/adminPosters');
 	
 	//Define some special ACL rules for this plugin
