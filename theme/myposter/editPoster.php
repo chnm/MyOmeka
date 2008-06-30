@@ -31,7 +31,7 @@
     
         <h2>Poster Items</h2>
         <div id="myomeka-poster-additem">
-            <?php if(count($posterItems)): ?>
+            <?php if(count($items)): ?>
                 <button type="button">Add an item &rarr;</button>
             <?php else: ?>
                 <button type="button" disabled="disabled">Add an item &rarr;</button>

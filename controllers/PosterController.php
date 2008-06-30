@@ -3,9 +3,9 @@
 * MyPoster controller
 */
 
-require_once PLUGIN_DIR.DIRECTORY_SEPARATOR."MyOmeka".DIRECTORY_SEPARATOR."models".DIRECTORY_SEPARATOR."Poster.php";
-require_once PLUGIN_DIR.DIRECTORY_SEPARATOR."MyOmeka".DIRECTORY_SEPARATOR."models".DIRECTORY_SEPARATOR."Note.php";
-require_once PLUGIN_DIR.DIRECTORY_SEPARATOR."MyOmeka".DIRECTORY_SEPARATOR."models".DIRECTORY_SEPARATOR."MyomekaTag.php";
+require_once PLUGIN_DIR."/MyOmeka/models/Poster.php";
+require_once PLUGIN_DIR."/MyOmeka/models/Note.php";
+require_once PLUGIN_DIR."/MyOmeka/models/MyomekaTag.php";
 
 class PosterController extends Omeka_Controller_Action
 {

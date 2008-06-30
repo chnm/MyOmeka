@@ -43,7 +43,7 @@
 	</div>
 
 	<div id="myomeka-notedItems">
-	<h3>Items with your notes</h3>
+	<h3>Items with your notes and tags</h3>
 	<?php if(count($notedItems) > 0): ?>
 
 		<?php foreach($notedItems as $notedItem): ?>

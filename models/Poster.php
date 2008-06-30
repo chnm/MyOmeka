@@ -1,6 +1,7 @@
 <?php
 get_db()->addTable('Poster', 'posters');
 require_once "PosterItem.php";
+require_once "Note.php";
 class Poster extends Omeka_Record{
     public $title;
     public $description = '';
@@ -26,13 +27,21 @@ class Poster extends Omeka_Record{
     public function getPosterItems($poster_id){
         if(is_numeric($poster_id)){
             $db = get_db();
-            return $db->getTable("Item")->fetchObjects("   SELECT pi.*,p.user_id, i.*,n.note as 'itemNote'
+            $items = $db->getTable("Item")->fetchObjects("  SELECT i.*, pi.annotation, p.user_id
                                                             FROM {$db->prefix}posters_items pi 
                                                             JOIN {$db->prefix}items i ON i.id = pi.item_id
-                                                            JOIN {$db->prefix}notes n ON n.item_id = pi.item_id
                                                             JOIN {$db->prefix}posters p ON pi.poster_id = p.id
-                                                            WHERE pi.poster_id = $poster_id AND n.user_id = p.user_id
+                                                            WHERE pi.poster_id = $poster_id 
                                                             ORDER BY ordernum");
+           
+           // Go through the items and add in the notes (This could probably be done above in a single query)
+           $noteObj = new Note();
+           foreach($items as $item){
+               $note = $noteObj->getItemNotes($item->user_id, $item->id);
+               $item->itemNote = $note[0]->note;
+           }
+           
+           return $items;
         }
     }
     
