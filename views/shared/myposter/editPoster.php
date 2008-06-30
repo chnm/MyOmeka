@@ -9,7 +9,7 @@
 ?>
 <script type="text/javascript" charset="utf-8">
     // Make the items-widget div a modal pop-up
-    iBox.setPath('<?php echo WEB_ROOT; ?>/plugins/MyOmeka/theme/javascripts/ibox/');
+    iBox.setPath('<?php echo WEB_ROOT; ?>/plugins/MyOmeka/views/shared/javascripts/ibox/');
     // Set the initial Item Count
     Poster.itemCount = <?php echo count($posterItems); ?>;
 </script>
