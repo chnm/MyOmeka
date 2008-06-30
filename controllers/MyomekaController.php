@@ -132,7 +132,7 @@ class MyOmekaController extends Omeka_Controller_Action
 		$site_title = get_option('site_title');
 		$from = get_option('administrator_email');
 		
-		$body = "Welcome!\n\nYour account for the ".$site_title." archive has been created. Please click the following link to activate your account:\n\n"
+		$body = "Welcome!\n\nYour account for the ".$site_title." archive has been created. Your username is ".$user->username.". Please click the following link to activate your account:\n\n"
 		.WEB_ROOT."/myomeka/activate?u={$ua->url}\n\n (or use any other page on the site).\n\nBe aware that we log you out after 15 minutes of inactivity to help protect people using shared computers (at libraries, for instance).\n\n".$site_title." Administrator";
 		$title = "Activate your account with the ".$site_title." Archive";
 		$header = 'From: '.$from. "\n" . 'X-Mailer: PHP/' . phpversion();
@@ -184,7 +184,8 @@ class MyOmekaController extends Omeka_Controller_Action
 				
 				//Send the email with the activation url
 				$url = WEB_ROOT.'/myomeka/activate?u='.$ua->url;
-				$body 	= "Please follow this link to reset your password:\n\n";
+				$body   = "You have requested to chage you password for ".$site_title.". Your username is ".$user->username.". ";
+				$body  .= "Please follow this link to reset your password:\n\n";
 				$body  .= $url."\n\n";
 				$body  .= "$site_title Administrator";		
 				
