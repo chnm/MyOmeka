@@ -102,7 +102,8 @@ class MyOmekaController extends Omeka_Controller_Action
 		$user = new User();
 		$user->role = "MyOmeka";
 		try {
-			if (strtoupper($_POST['agrees_to_tos_and_pp']) == 'CHECKED') {
+			 
+			if (strtoupper($_POST['agrees_to_tos_and_pp']) == 'ON') {
 				if($user->saveForm($_POST)) {
 
 					$user->email = $_POST['email'];
