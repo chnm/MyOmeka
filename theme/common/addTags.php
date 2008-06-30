@@ -1,6 +1,6 @@
 <?php echo js('addTags'); ?>
 <div id="myomeka-add-tags">
-    <h2>Your Tags</h2>
+    <h2>My Tags</h2>
     <?php if (count($tags)): ?>
         <div id="myomeka-tags">
             <?php foreach ($tags as $tag): ?>
@@ -13,6 +13,7 @@
         <div>
             <div class="field">
                 <label>Add tags:</label>
+                <div>Enter keywords below to tag this item.</div>
                 <input type="text" name="tag" value=""/>
                 <input type="submit" id="myomeka-submit-tag" value="Add"/> 
             </div>
