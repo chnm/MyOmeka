@@ -123,15 +123,15 @@ class MyOmekaController extends Omeka_Controller_Action
 	}
 	
 	public function termsOfServiceAction() {
-	    $this->render('shared/termsOfService.php');
+	    $this->render('termsOfService.php');
 	}
 
 	public function privacyPolicyAction() {
-	    $this->render('shared/privacyPolicy.php');
+	    $this->render('privacyPolicy.php');
 	}	
 	
 	public function helpPageAction() {
-	    $this->render('shared/helpPage.php');
+	    $this->render('helpPage.php');
 	}
 
 	public function sendActivationEmail($user)
