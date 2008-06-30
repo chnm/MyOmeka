@@ -52,14 +52,14 @@ class MyOmekaController extends Omeka_Controller_Action
             $tags = $tagTable->findBy($options,"MyomekaTag");
             
 			$this->render('myomeka/dashboard.php', compact("posters","notedItems","tags"));
-		} else {
+		} else {			
         	$this->_forward('login');			
 		}
 	}
 
 	public function loginAction()
-	{
-				
+	{	
+		$emailSent = false;			
 		if (!empty($_POST)) {
 			
 			require_once 'Zend/Session.php';
@@ -79,7 +79,7 @@ class MyOmekaController extends Omeka_Controller_Action
 			 	$this->flash('There was an error logging you in.  Please try again, or register a new account.');
 			}
 		}
-		$this->render('myomeka/index.php');
+		$this->render('myomeka/index.php', compact('emailSent'));
 	}
 	
 	public function logoutAction()
@@ -97,39 +97,29 @@ class MyOmekaController extends Omeka_Controller_Action
 	 **/
 	public function registerAction()
 	{
-	$user = new User();
-
-	$user->role = "MyOmeka";
-	
+		$emailSent = false; //true only if an registration email has been sent 
+		
+		$user = new User();
+		$user->role = "MyOmeka";
 		try {
-			if($user->saveForm($_POST)) {
+			if (strtoupper($_POST['agrees_to_tos_and_pp']) == 'CHECKED') {
+				if($user->saveForm($_POST)) {
 
-				$user->email = $_POST['email'];
+					$user->email = $_POST['email'];
 				
-				$this->sendActivationEmail($user);
+					$this->sendActivationEmail($user);
 				
-				$this->flashSuccess('User was added successfully!');
-				$this->_redirect('/myomeka/checkemail');
-
-				//Redirect to the check email page
-				//$this->_redirect('/myomeka/dashboard');
+					$this->flashSuccess('User was added successfully!');
+					$emailSent = true;
+				}
+			} else {
+				$this->flash('You cannot register unless you understand and agree to the Terms Of Service and Privacy Policy.');
 			}
 		} catch (Omeka_Validator_Exception $e) {
 			$this->flashValidationErrors($e);
-			$this->render('myomeka/index.php');
 		}
-			
-//		return $this->_forward('myomeka', 'dashboard');
-	
-	}
-	
-	/**
-	 * Tell user that an email has been sent them.
-	 *
-	 * @return void
-	 **/
-	public function checkEmailAction() {
-		$this->render('myomeka/checkemail.php');
+		
+		$this->render('myomeka/index.php', compact('emailSent'));
 	}
 	
 	public function sendActivationEmail($user)
@@ -161,12 +151,18 @@ class MyOmekaController extends Omeka_Controller_Action
 		}
 		
 		if(!empty($_POST)) {
-			if($_POST['new_password1'] == $_POST['new_password2']) {
-				$ua->User->password = $_POST['new_password1'];
-				$ua->User->active = 1;
-				$ua->User->save();
-				$ua->delete();
-				$this->_redirect('/myomeka');				
+			if (strlen($_POST['new_password1']) >= 6) {	
+				if($_POST['new_password1'] == $_POST['new_password2']) {
+					$ua->User->password = $_POST['new_password1'];
+					$ua->User->active = 1;
+					$ua->User->save();
+					$ua->delete();
+					$this->_redirect('/myomeka');				
+				} else {
+					$this->flash('Please enter the same passwords twice.');
+				}
+			} else {
+				$this->flash('Please enter a password that has at least 6 characters.');
 			}
 		}
 		$user = $ua->User;
@@ -175,6 +171,8 @@ class MyOmekaController extends Omeka_Controller_Action
 
 	public function forgotAction()
 	{
+		//whether the forgot password email was sent or not
+		$emailSent = false;
 		
 		//If the user's email address has been submitted, then make a new temp activation url and email it
 		if(!empty($_POST)) {
@@ -205,20 +203,19 @@ class MyOmekaController extends Omeka_Controller_Action
 				$header = 'From: '.$admin_email. "\n" . 'X-Mailer: PHP/' . phpversion();
 				
 				mail($email,$title, $body, $header);
-				$this->flash('Your password has been emailed');	
+				$this->flashSuccess('Your password has been emailed.');
+				$emailSent = true;	
 			} catch (Exception $e) {
-				  $this->flash('your password has already been sent to your email address');
+				$this->flash('Your password has already been sent to your email address');
 			}
 			
 			}else {
 				//If that email address doesn't exist
-				
 				$this->flash('The email address you provided is invalid.');
 			}			
-
 		}
 		
-		return $this->render('myomeka/forgotPassword.php');
+		return $this->render('myomeka/forgotPassword.php', compact('emailSent'));
 	}
 
 }
