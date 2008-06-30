@@ -75,7 +75,6 @@ class MyOmekaController extends Omeka_Controller_Action
 			if ($token->isValid()) {
 				$this->_redirect('/myomeka/dashboard/');
 			} else {		
-// should throw an exception and not echo error.  I had issues with this, even when trying to flash() the exception on the public-side.  revisit before releasing plugin [DL]
 			 	$this->flash('There was an error logging you in.  Please try again, or register a new account.');
 			}
 		}
@@ -110,7 +109,7 @@ class MyOmekaController extends Omeka_Controller_Action
 				
 					$this->sendActivationEmail($user);
 				
-					$this->flashSuccess('User was added successfully!');
+					$this->flashSuccess('Thank for registering for a user account.  To complete your registration, please check your email and click the provided link to activate your account.');
 					$emailSent = true;
 				}
 			} else {
@@ -123,6 +122,18 @@ class MyOmekaController extends Omeka_Controller_Action
 		$this->render('myomeka/index.php', compact('emailSent'));
 	}
 	
+	public function termsOfServiceAction() {
+	    $this->render('shared/termsOfService.php');
+	}
+
+	public function privacyPolicyAction() {
+	    $this->render('shared/privacyPolicy.php');
+	}	
+	
+	public function helpPageAction() {
+	    $this->render('shared/helpPage.php');
+	}
+
 	public function sendActivationEmail($user)
 	{
 		$ua = new UsersActivations;
