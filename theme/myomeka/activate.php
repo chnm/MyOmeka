@@ -6,7 +6,7 @@
 <form method="post">
 	<fieldset>
 	<div class="field">
-	<label for="new_password1">Create a Password:</label>
+	<label for="new_password1">Create a Password: Must be at least six characters</label>
 	<input type="password" name="new_password1" id="new_password1" />
 	</div>
 	<div class="field">
