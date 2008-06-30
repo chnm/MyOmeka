@@ -1,5 +1,5 @@
 <?php
-require_once "plugins/MyOmeka/models/Note.php";
+require_once PLUGIN_DIR."/MyOmeka/models/Note.php";
 require_once "Item.php";
 require_once "Omeka/Controller/Action.php";
 

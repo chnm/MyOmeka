@@ -136,7 +136,7 @@ function myomeka_add_notes($item)
 function myomeka_add_tags($item)
 {
     if($user = current_user()) {
-        require_once "plugins/MyOmeka/models/MyomekaTag.php";
+        require_once PLUGIN_DIR."/MyOmeka/models/MyomekaTag.php";
         $myomekatag = new MyomekaTag;
         $myomekatag->id = $item->id;
         

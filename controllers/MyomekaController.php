@@ -11,9 +11,10 @@
 *
 */
 
-require_once MODEL_DIR.DIRECTORY_SEPARATOR.'User.php';
-require_once PLUGIN_DIR.DIRECTORY_SEPARATOR."MyOmeka".DIRECTORY_SEPARATOR."models".DIRECTORY_SEPARATOR."Poster.php";
-require_once PLUGIN_DIR.DIRECTORY_SEPARATOR."MyOmeka".DIRECTORY_SEPARATOR."models".DIRECTORY_SEPARATOR."Note.php";
+require_once MODEL_DIR.'/User.php';
+require_once PLUGIN_DIR."/MyOmeka/models/Poster.php";
+require_once PLUGIN_DIR."/MyOmeka/models/Note.php";
+require_once PLUGIN_DIR."/MyOmeka/models/MyomekaTag.php";
 require_once 'Omeka/Controller/Action.php';
 
 class MyOmekaController extends Omeka_Controller_Action
@@ -31,9 +32,19 @@ class MyOmekaController extends Omeka_Controller_Action
             $posters = new Poster();
             $posters = $posters->getUserPosters($current->id);
             
-            // Get the user's noted items
+            // Get tagged and noted items
             $noteObj = new Note();
-            $notedItems = $noteObj->getNotedItemsByUser($current->id);
+            $myomekatagObj = new MyomekaTag();
+            $mixedItems = array_merge(
+                                    $noteObj->getNotedItemsByUser($current->id),
+                                    $myomekatagObj->getItemsTaggedByUser($current->id)
+                                );
+            
+            // Loop through the items to make sure we only have one of each item
+            $notedItems = array();
+            foreach($mixedItems as $item){
+                $notedItems[$item->id] = $item;
+            }
             
             // Get the user's tags
             $tagTable = new TagTable(null);
