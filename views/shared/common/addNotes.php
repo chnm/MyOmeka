@@ -5,9 +5,9 @@
 
 <div id="myomeka-add-notes">
     <h2>My Notes</h2>
-	<a class="dashboard-link" href="<?php echo uri('myomeka'); ?>">Go to My Dashboard</a>
+	<a class="dashboard-link" href="<?php echo myomeka_get_path(); ?>">Go to My Dashboard</a>
     <div id="myomeka-edit-note">
-        <form action="<?php print uri("note/submit"); ?>" id="myomeka-note-form" method="post" accept-charset="utf-8">    
+        <form action="<?php echo myomeka_get_path("notes/edit"); ?>" id="myomeka-note-form" method="post" accept-charset="utf-8">    
             <div>
                 <div class="field">
                     <label for="note">Your Notes:</label>

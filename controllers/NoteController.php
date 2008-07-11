@@ -12,7 +12,7 @@ class NoteController extends Omeka_Controller_Action
 		echo "Index Action";
 	}
 	
-	public function submitAction()
+	public function editAction()
 	{
     	if (is_numeric($_POST['item_id']) && $user = Omeka::loggedIn()) {
 			$noteObj = new Note();

@@ -26,8 +26,9 @@ class MyOmekaController extends Omeka_Controller_Action
 	}
 	
 	public function dashboardAction()
-	{
+	{		
 		if($current = Omeka::loggedIn()) {
+
 		    // Get the user's existing posters
             $posters = new Poster();
             $posters = $posters->getUserPosters($current->id);
@@ -73,7 +74,7 @@ class MyOmekaController extends Omeka_Controller_Action
 			$token = $auth->authenticate($adapter);
 
 			if ($token->isValid()) {
-				$this->_redirect('/myomeka/dashboard/');
+				$this->_redirect(myomeka_get_path('dashboard/'));
 			} else {		
 			 	$this->flash('There was an error logging you in.  Please try again, or register a new account.');
 			}
@@ -86,7 +87,7 @@ class MyOmekaController extends Omeka_Controller_Action
 		$auth = $this->_auth;
 		//http://framework.zend.com/manual/en/zend.auth.html
 		$auth->clearIdentity();
-		$this->_redirect('/myomeka');
+		$this->_redirect(myomeka_get_path());
 	}
 	
 	/**
@@ -102,7 +103,7 @@ class MyOmekaController extends Omeka_Controller_Action
 		$user->role = "MyOmeka";
 		try {
 			 
-			if (strtoupper($_POST['agrees_to_tos_and_pp']) == 'ON') {
+			// if (strtoupper($_POST['agrees_to_tos_and_pp']) == 'ON') {
 				if($user->saveForm($_POST)) {
 
 					$user->email = $_POST['email'];
@@ -112,22 +113,14 @@ class MyOmekaController extends Omeka_Controller_Action
 					$this->flashSuccess('Thank for registering for a user account.  To complete your registration, please check your email and click the provided link to activate your account.');
 					$emailSent = true;
 				}
-			} else {
-				$this->flash('You cannot register unless you understand and agree to the Terms Of Service and Privacy Policy.');
-			}
+			// } else {
+			// 				$this->flash('You cannot register unless you understand and agree to the Terms Of Service and Privacy Policy.');
+			// 			}
 		} catch (Omeka_Validator_Exception $e) {
 			$this->flashValidationErrors($e);
 		}
 		
 		$this->render('myomeka/index.php', compact('emailSent'));
-	}
-	
-	public function termsOfServiceAction() {
-	    $this->render('termsOfService.php');
-	}
-
-	public function privacyPolicyAction() {
-	    $this->render('privacyPolicy.php');
 	}	
 	
 	public function helpPageAction() {
@@ -146,7 +139,7 @@ class MyOmekaController extends Omeka_Controller_Action
 		$from = get_option('administrator_email');
 		
 		$body = "Welcome!\n\nYour account for the ".$site_title." archive has been created. Your username is ".$user->username.". Please click the following link to activate your account:\n\n"
-		.WEB_ROOT."/myomeka/activate?u={$ua->url}\n\n (or use any other page on the site).\n\nBe aware that we log you out after 15 minutes of inactivity to help protect people using shared computers (at libraries, for instance).\n\n".$site_title." Administrator";
+		. uri( get_option('myomeka_page_path') . "activate?u={$ua->url}") . "\n\n (or use any other page on the site).\n\nBe aware that we log you out after 15 minutes of inactivity to help protect people using shared computers (at libraries, for instance).\n\n".$site_title." Administrator";
 		$title = "Activate your account with the ".$site_title." Archive";
 		$header = 'From: '.$from. "\n" . 'X-Mailer: PHP/' . phpversion();
 		return mail($user->email, $title, $body, $header);
@@ -169,7 +162,7 @@ class MyOmekaController extends Omeka_Controller_Action
 					$ua->User->active = 1;
 					$ua->User->save();
 					$ua->delete();
-					$this->_redirect('/myomeka');				
+					$this->_redirect(myomeka_get_path());				
 				} else {
 					$this->flash('Please enter the same passwords twice.');
 				}
@@ -204,7 +197,7 @@ class MyOmekaController extends Omeka_Controller_Action
 				$site_title = get_option('site_title');
 				
 				//Send the email with the activation url
-				$url = WEB_ROOT.'/myomeka/activate?u='.$ua->url;
+				$url = uri(get_option('myomeka_page_path') . 'activate?u='.$ua->url);
 				$body   = "You have requested to chage you password for ".$site_title.". Your username is ".$user->username.". ";
 				$body  .= "Please follow this link to reset your password:\n\n";
 				$body  .= $url."\n\n";

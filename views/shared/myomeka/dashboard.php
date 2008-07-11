@@ -15,27 +15,28 @@
 
 		<h3>Your Posters</h3>
 		<?php if(count($posters) > 0): ?>
-	    <ul id="myomeka-poster-list"> 
+	    	<div id="myomeka-posters"> 
 	        <?php foreach($posters as $poster): ?>           
-				<?php //print_r($poster);?>
-			<li class="poster"><h4 class="poster-title"><?php echo $poster->title; ?></h4>
-				<ul class="myomeka-poster-meta">
-					<li class="poster-date"><?php echo $poster->date_created; ?></li>	
-					<li class="post-description"><?php echo snippet($poster->description,0,250); ?></li>
-				</ul>
-				<ul class="myomeka-poster-nav">
-	               <li><a href="<?php echo uri('poster/view/'.$poster->id); ?>" class="myomeka-view-poster-link">view</a> </li>
-	               <li><a href="<?php echo uri('poster/edit/'.$poster->id); ?>" class="myomeka-edit-poster-link">edit</a> </li>
-	               <li><a href="<?php echo uri('poster/share/'.$poster->id); ?>" class="myomeka-share-poster-link">share</a></li>
-	               <li><a href="<?php echo uri('poster/delete/'.$poster->id); ?>" class="myomeka-delete-poster-link">delete</a></li>
-				</ul>
-			</li>
-	        <?php endforeach; ?>
-	    </ul>
-			<?php else: ?>
-			    <p>You haven't made any posters yet.</p>
-			<?php endif; ?>
-
+				<div>
+					<h4 class="poster-title"><?php echo $poster->title; ?></h4>
+					<ul class="myomeka-poster-meta">
+						<li class="poster-date"><?php echo $poster->date_created; ?></li>	
+						<li class="post-description"><?php echo snippet($poster->description,0,250); ?></li>
+					</ul>
+					<ul class="myomeka-poster-nav">
+					
+	               		<li><a href="<?php echo myomeka_get_path('poster/view/'.$poster->id); ?>" class="myomeka-view-poster-link">view</a> </li>
+	               		<li><a href="<?php echo myomeka_get_path('poster/edit/'.$poster->id); ?>" class="myomeka-edit-poster-link">edit</a> </li>
+	               		<li><a href="<?php echo myomeka_get_path('poster/share/'.$poster->id); ?>" class="myomeka-share-poster-link">share</a></li>
+	               		<li><a href="<?php echo myomeka_get_path('poster/delete/'.$poster->id); ?>" class="myomeka-delete-poster-link">delete</a></li>
+					</ul>
+				</div>
+	      	<?php endforeach; ?>
+	  		</div>
+	
+		<?php else: ?>
+			<p>You haven't made any posters yet.</p>
+		<?php endif; ?>
 	</div>
 
 	<div id="create-poster">

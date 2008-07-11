@@ -27,13 +27,18 @@ class MyomekaTagController extends Omeka_Controller_Action
 	
 	public function deleteAction()
 	{
-	    if($user = Omeka::loggedIn() && is_numeric($_GET['item_id']) && isset($_GET['tag'])){
+		$tag = $this->_getParam('tag');
+		$itemId = $this->_getParam('item_id');
+		
+	    if($user = Omeka::loggedIn() && is_numeric($itemId) && !empty($tag)){
             $user = current_user();
             $myomekatag = new MyomekaTag;
-            $myomekatag->id = $_GET['item_id'];
-            $myomekatag->deleteTags($_GET['tag'], get_db()->getTable("Entity")->find($user->entity_id));
+    
+        	$myomekatag->id = $itemId;
+	
+            $myomekatag->deleteTags($tag, get_db()->getTable("Entity")->find($user->entity_id));
             
-            return $this->_redirect('/items/show/'.$_GET['item_id']);
+            return $this->_redirect('/items/show/'.$itemId);
         } else {
             print "Error in params";
         }

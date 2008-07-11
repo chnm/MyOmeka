@@ -58,7 +58,7 @@ class PosterController extends Omeka_Controller_Action
 
             return $this->render('myposter/editPoster.php', compact("poster","posterItems","items"));
         } else {
-            return $this->_redirect('/myomeka/dashboard');
+            return $this->_redirect(myomeka_get_path('dashboard/'));
         }
         
     }
@@ -94,7 +94,7 @@ class PosterController extends Omeka_Controller_Action
                 
                 $body = $user->username . " shared a poster with you on $site_title. \n\n";
                 $body .= "Click here to view the poster:\n";
-                $body .= WEB_ROOT . "/poster/view/" . $poster_id;
+                $body .= uri( get_option('myomeka_page_path') . "poster/view/" . $poster_id);
                 
                 $header = "From: $from\n";
                 $header .= "X-Mailer: PHP/" . phpversion();
@@ -120,7 +120,7 @@ class PosterController extends Omeka_Controller_Action
         $poster->updateItems($params);
         $poster->save();
         
-        $this->_redirect("/myomeka/dashboard");
+        $this->_redirect(myomeka_get_path('dashboard/'));
     }
 
 
@@ -135,7 +135,7 @@ class PosterController extends Omeka_Controller_Action
         $poster->date_created = date( 'Y-m-d H:i:s', time() );
         $poster->save();
         
-        return $this->_redirect('/poster/edit/' . $poster->id);
+        return $this->_redirect( myomeka_get_path('poster/edit/' . $poster->id) );
         
     }
     
@@ -154,9 +154,9 @@ class PosterController extends Omeka_Controller_Action
             $this->flash("\"$poster->title\" was successfully deleted");
         }
         if ($returnDestination) {
-            return $this->_redirect('/poster/adminPosters');
+            return $this->_redirect(myomeka_get_path('poster/adminPosters'));
         } else {
-            return $this->_redirect('/myomeka/dashboard');
+            return $this->_redirect(myomeka_get_path('dashboard/'));
         }
     }
 

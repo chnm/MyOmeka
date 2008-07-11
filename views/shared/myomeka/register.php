@@ -6,7 +6,7 @@
 	if (!$emailSent) { 
 ?>
 	
-<form id="myomeka-register-form" action="<?php echo uri('myomeka/register');?>" method="post" accept-charset="utf-8">
+<form id="myomeka-register-form" action="<?php echo myomeka_get_path('register/');?>" method="post" accept-charset="utf-8">
 <?php if(!isset($user)) {
 	$user = new User;
 	$user->setArray($_POST);
@@ -35,9 +35,6 @@
 		<li><?php text(array('name'=>'email', 'class'=>'textinput', 'id'=>'email'), not_empty_or($user->email, $_POST['email'])); ?></li>
 		<li><?php echo form_error('email'); ?></li>
 		
-		<li>By clicking the checkbox below, I understand and agree to the <a href="<?php echo WEB_ROOT . '/myomeka/terms_of_service'; ?>">Terms of Service</a> and <a href="<?php echo WEB_ROOT . '/myomeka/privacy_policy'; ?>">Privacy Policy</a></li>
-		<li><?php checkbox(array('name'=>'agrees_to_tos_and_pp', 'class'=>'checkboxinput', 'id'=>'agrees_to_tos_and_pp'), FALSE, null, null); ?><label style="display:inline;" for="agrees_to_tos_and_pp">I agree. </label></li>
-		
 	</ul>
 	
 	<input type="submit" class="register" value="Register" />
@@ -60,4 +57,3 @@
 	</fieldset>
 */ ?>
 </div>
-
