@@ -1,5 +1,6 @@
 <?php 
 /* MyOmeka Plugin */
+// requires the TermsOfService plugin
 
 define('MYOMEKA_PLUGIN_VERSION', '0.2dev');
 define('MYOMEKA_PAGE_PATH', 'myomeka/');
@@ -77,7 +78,8 @@ function myomeka_install()
             	) ENGINE = MYISAM;");
 }
 
-function myomeka_routes($router) {
+function myomeka_routes($router) 
+{
 	
 	// get the base path
 	$bp = get_option('myomeka_page_path');
@@ -135,7 +137,8 @@ function myomeka_routes($router) {
 
 }
 
-function myomeka_add_route($routeName, $controllerName, $actionName, $router) {
+function myomeka_add_route($routeName, $controllerName, $actionName, $router) 
+{
 	$router->addRoute($routeName, new Zend_Controller_Router_Route($routeName, array('controller'=> $controllerName, 'action'=> $actionName)));
 }
 
@@ -206,7 +209,8 @@ function myomeka_add_notes($item)
 /**
  * Echo this function in your items/show.php of your public themes to allow users to add and remove notes and tags
  */
-function myomeka_embed_notes_and_tags($item) {
+function myomeka_embed_notes_and_tags($item) 
+{
 	 
 	$user = current_user(); 
 	$html = '';
@@ -235,7 +239,8 @@ function myomeka_add_tags($item)
     }
 }
 
-function poster_icon_html($item) {
+function poster_icon_html($item) 
+{
     //If we can get a square thumbnail out of it, use that
     if($thumbnail = square_thumbnail($item)) {
         return $thumbnail;
@@ -244,15 +249,18 @@ function poster_icon_html($item) {
     }
 }
 
-function myomeka_breadcrumb() {
+function myomeka_breadcrumb() 
+{
 	
 }
 
-function myomeka_get_path($p='') {
+function myomeka_get_path($p='') 
+{
 	return uri(settings('myomeka_page_path') . $p);
 }
 
-function myomeka_userloggedin_status() {
+function myomeka_userloggedin_status() 
+{
 	$user = current_user();
 	if ($user) {
 		echo "<p>logged in as <a href=\"" . myomeka_get_path() . "\">$user->username</a> | <a href=\"" . myomeka_get_path('logout/') . "\">Logout</a></p>";
@@ -262,8 +270,8 @@ function myomeka_userloggedin_status() {
 }
 
 
-
-function myomeka_config() {
+function myomeka_config() 
+{
 	
 	set_option('myomeka_page_path', rtrim(trim($_POST['myomeka_page_path']), '/') . '/' );
 	
@@ -271,25 +279,34 @@ function myomeka_config() {
 	if (trim(get_option('myomeka_page_path')) == '') {
 		set_option('myomeka_page_path', rtrim(trim(MYOMEKA_PAGE_PATH), '/') . '/');
 	}
-	
+
+	$requireTOS = (strtolower($_POST['myomeka_require_terms_of_service']) == 'checked') ? 1 : 0;
+	set_option('myomeka_require_terms_of_service', $requireTOS);
 }
 
-function myomeka_config_form() {
+function myomeka_config_form() 
+{
         	myomeka_settings_css(); //this styling needs to be associated with appropriate hook
 			$textInputSize = 30;
 			$textAreaRows = 10;
 			$textAreaCols = 50;
+			$requireTOS = settings('myomeka_require_terms_of_service');
+		
 		?>
 		<div id="myomeka_settings">
 			<label for="myomeka_page_path">Relative Page Path From Project Root:</label>
 			<p class="instructionText">Please enter the relative page path from the project root where you want the MyOmeka page to be located. Use forward slashes to indicate subdirectories, but do not begin with a forward slash.</p>
-			<input type="text" name="myomeka_page_path" value="<?php echo settings('myomeka_page_path'); ?>" size="<?php echo $textInputSize; ?>" />
+			<input type="text" name="myomeka_page_path" value="<?php echo settings('myomeka_page_path') ?>" />
+			<label for="myomeka_require_terms_of_service">Require Terms of Service And Privacy Policy:</label>
+			<p class="instructionText">Check box if you require registrants to agree to the Terms of Service and Privacy Policy.</p>
+			<input type="checkbox" name="myomeka_require_terms_of_service" value="CHECKED" <?php if (!empty($requireTOS)) { echo 'CHECKED'; } ?> />
 		</div>
 	<?php
 }
 
 // the css style for the configure settings
-function myomeka_settings_css() {
+function myomeka_settings_css() 
+{
 	$html = '';
 	$html .= '<style type="text/css" media="screen">';
 		

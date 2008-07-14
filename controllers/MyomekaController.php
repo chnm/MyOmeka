@@ -60,7 +60,9 @@ class MyOmekaController extends Omeka_Controller_Action
 
 	public function loginAction()
 	{	
-		$emailSent = false;			
+		$emailSent = false;
+		$requireTermsOfService = get_option('myomeka_require_terms_of_service');
+					
 		if (!empty($_POST)) {
 			
 			require_once 'Zend/Session.php';
@@ -79,7 +81,7 @@ class MyOmekaController extends Omeka_Controller_Action
 			 	$this->flash('There was an error logging you in.  Please try again, or register a new account.');
 			}
 		}
-		$this->render('myomeka/index.php', compact('emailSent'));
+		$this->render('myomeka/index.php', compact('emailSent', 'requireTermsOfService'));
 	}
 	
 	public function logoutAction()
@@ -101,9 +103,12 @@ class MyOmekaController extends Omeka_Controller_Action
 		
 		$user = new User();
 		$user->role = "MyOmeka";
+		$requireTermsOfService = get_option('myomeka_require_terms_of_service');
+
 		try {
+			 $agreedToTermsOfService = terms_of_service_checked_form_input();
 			 
-			// if (strtoupper($_POST['agrees_to_tos_and_pp']) == 'ON') {
+			if ($agreedToTermsOfService || !$requireTermsOfService) {
 				if($user->saveForm($_POST)) {
 
 					$user->email = $_POST['email'];
@@ -113,14 +118,14 @@ class MyOmekaController extends Omeka_Controller_Action
 					$this->flashSuccess('Thank for registering for a user account.  To complete your registration, please check your email and click the provided link to activate your account.');
 					$emailSent = true;
 				}
-			// } else {
-			// 				$this->flash('You cannot register unless you understand and agree to the Terms Of Service and Privacy Policy.');
-			// 			}
+			} else {
+			 	$this->flash('You cannot register unless you understand and agree to the Terms Of Service and Privacy Policy.');
+			}
 		} catch (Omeka_Validator_Exception $e) {
 			$this->flashValidationErrors($e);
 		}
 		
-		$this->render('myomeka/index.php', compact('emailSent'));
+		$this->render('myomeka/index.php', compact('emailSent', 'requireTermsOfService'));
 	}	
 	
 	public function helpPageAction() {

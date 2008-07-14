@@ -35,6 +35,11 @@
 		<li><?php text(array('name'=>'email', 'class'=>'textinput', 'id'=>'email'), not_empty_or($user->email, $_POST['email'])); ?></li>
 		<li><?php echo form_error('email'); ?></li>
 		
+		<?php if ($requireTermsOfService): ?>
+			<li>Please review the <a href="<?php echo uri(settings('terms_of_service_tos_page_path')); ?>">Terms of Service</a> and <a href="<?php echo uri(settings('terms_of_service_privacy_policy_page_path')); ?>">Privacy Policy</a></li>
+			<li><?php echo terms_of_service_form_input('agreed_to_tos_and_privacy_policy', ''); ?> <label for="agreed_to_tos_and_privacy_policy">I understand and agree to the Terms of Service and Privacy Policy</label></li>
+			<li><?php echo form_error('agreed_to_tos_and_privacy_policy'); ?></li>
+		<?php endif; ?>
 	</ul>
 	
 	<input type="submit" class="register" value="Register" />
