@@ -98,6 +98,9 @@ function myomeka_routes($router)
 
 	//add the activate page route
 	myomeka_add_route($bp . 'activate', 'myomeka', 'activate', $router);
+
+	//add the reset password page route
+	myomeka_add_route($bp . 'resetPassword', 'myomeka', 'resetPassword', $router);
 	
 	//add the forget page route
 	myomeka_add_route($bp . 'forgot', 'myomeka', 'forgot', $router);
@@ -196,12 +199,13 @@ function myomeka_show_only_my_items($select, $params)
 function myomeka_add_notes($item)
 {	
     if($user = current_user()) {
-     	// Check if the user has already added notes to the item
+     	
+		// Check if the user has already added notes to the item
     	$noteObj = new Note();
     	$result = $noteObj->getItemNotes($user->id, $item->id);
         if(count($result)){
             $note = $result[0];
-        } else{
+        } else {
             $note = null;
         }
         
