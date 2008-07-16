@@ -100,8 +100,8 @@ function myomeka_routes($router)
 	myomeka_add_route($bp . 'activate', 'myomeka', 'activate', $router);
 	
 	//add the forget page route
-	myomeka_add_route($bp . 'forget', 'myomeka', 'forget', $router);
-	
+	myomeka_add_route($bp . 'forgot', 'myomeka', 'forgot', $router);
+		
 	//add the dashboard page route
 	myomeka_add_route($bp . 'dashboard', 'myomeka', 'dashboard', $router);
 
@@ -114,10 +114,13 @@ function myomeka_routes($router)
 	//add the poster edit page route
 	myomeka_add_route($bp . 'poster/edit/:id', 'poster', 'edit', $router);
 
+	//add the poster addPosterItem page route
+	myomeka_add_route($bp . 'poster/addPosterItem', 'poster', 'addPosterItem', $router);
+	
 	//add the poster save page route
 	myomeka_add_route($bp . 'poster/save/:id', 'poster', 'save', $router);
 
-	//add the poster save page route
+	//add the poster delete page route
 	myomeka_add_route($bp . 'poster/delete/:id', 'poster', 'delete', $router);
 
 	//add the poster admin page route
@@ -139,6 +142,7 @@ function myomeka_routes($router)
 
 function myomeka_add_route($routeName, $controllerName, $actionName, $router) 
 {
+	//echo $routeName . '<br>';
 	$router->addRoute($routeName, new Zend_Controller_Router_Route($routeName, array('controller'=> $controllerName, 'action'=> $actionName)));
 }
 
