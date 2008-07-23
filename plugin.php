@@ -47,7 +47,7 @@ function myomeka_initialize()
 function myomeka_install()
 {	
 	set_option('myomeka_plugin_version', MYOMEKA_PLUGIN_VERSION);
-	set_option('myomeka_page_path', MYOMEKA_PAGE_PATH);
+	set_option('myomeka_page_path', myomeka_clean_path(MYOMEKA_PAGE_PATH));
 	
 	// Create new tables to support poster building
 	$db = get_db();
@@ -277,18 +277,22 @@ function myomeka_userloggedin_status()
 	}
 }
 
+function myomeka_clean_path($path)
+{
+	return trim(trim($path), '/') . '/';
+}
 
-function myomeka_config() 
+function myomeka_config($post) 
 {
 	
-	set_option('myomeka_page_path', rtrim(trim($_POST['myomeka_page_path']), '/') . '/' );
+	set_option('myomeka_page_path', myomeka_clean_path($post['myomeka_page_path']));
 	
 	//if the page path is empty then make it the default page path
 	if (trim(get_option('myomeka_page_path')) == '') {
-		set_option('myomeka_page_path', rtrim(trim(MYOMEKA_PAGE_PATH), '/') . '/');
+		set_option('myomeka_page_path', myomeka_clean_path(MYOMEKA_PAGE_PATH));
 	}
 
-	$requireTOS = (strtolower($_POST['myomeka_require_terms_of_service']) == 'checked') ? 1 : 0;
+	$requireTOS = (strtolower($post['myomeka_require_terms_of_service']) == 'checked') ? 1 : 0;
 	set_option('myomeka_require_terms_of_service', $requireTOS);
 }
 
