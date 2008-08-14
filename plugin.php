@@ -2,7 +2,7 @@
 /* MyOmeka Plugin */
 // requires the TermsOfService plugin
 
-define('MYOMEKA_PLUGIN_VERSION', '0.2dev');
+define('MYOMEKA_PLUGIN_VERSION', '0.3alpha');
 define('MYOMEKA_PAGE_PATH', 'myomeka/');
 
 add_plugin_hook('initialize', 'myomeka_initialize');
