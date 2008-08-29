@@ -5,7 +5,7 @@ Object.extend(Poster, {
     
     //Everything that takes place when the form loads
    init: function() {
-	// WYSIWYG Editor
+        // WYSIWYG Editor
 		tinyMCE.init({
 		mode : "textareas",
 		theme: "advanced",
@@ -36,8 +36,10 @@ Object.extend(Poster, {
        
            // Bind an action that adds items to poster with an AJAX call
            $$(".myomeka-additem-form").invoke("observe", "submit", function(e){
-               new Ajax.Updater('myomeka-poster-canvas', this.action, {
-                   parameters: { "item-id": this.down(".myomeka-additem-item-id").readAttribute("value") },
+               
+               var element = Event.element(e);
+               new Ajax.Updater('myomeka-poster-canvas', element.action, {
+                   parameters: { "item-id": element.down(".myomeka-additem-item-id").readAttribute("value") },
                    insertion: Insertion.Bottom,
                    onCreate: function(){
                        // Disable submit buttons
@@ -99,27 +101,32 @@ Object.extend(Poster, {
     
         // Bind move up buttons
         $$('.myomeka-move-up').invoke('observe', 'click', function(e){
-            $('myomeka-poster-canvas').insertBefore(this.up('.myomeka-poster-spot'), this.up('.myomeka-poster-spot').previous());
+            var element = Event.element(e);
+            $('myomeka-poster-canvas').insertBefore(element.up('.myomeka-poster-spot'), element.up('.myomeka-poster-spot').previous());
         });
     
         // Bind move down buttons
         $$('.myomeka-move-down').invoke('observe', 'click', function(e){
-            $('myomeka-poster-canvas').insertBefore(this.up('.myomeka-poster-spot').next(), this.up('.myomeka-poster-spot'));
+            var element = Event.element(e);
+            $('myomeka-poster-canvas').insertBefore(element.up('.myomeka-poster-spot').next(), element.up('.myomeka-poster-spot'));
         });
     
         // Bind move top buttons
         $$('.myomeka-move-top').invoke('observe', 'click', function(e){
-            $('myomeka-poster-canvas').insertBefore(this.up('.myomeka-poster-spot'), this.up('.myomeka-poster-spot').siblings().first());
+            var element = Event.element(e);
+            $('myomeka-poster-canvas').insertBefore(element.up('.myomeka-poster-spot'), element.up('.myomeka-poster-spot').siblings().first());
         });
     
         // Bind move bottom buttons
         $$('.myomeka-move-bottom').invoke('observe', 'click', function(e){
-            $('myomeka-poster-canvas').appendChild(this.up('.myomeka-poster-spot'));
+            var element = Event.element(e);
+            $('myomeka-poster-canvas').appendChild(element.up('.myomeka-poster-spot'));
         });
     
         // Bind delete buttons
         $$('.myomeka-delete').invoke('observe', 'click', function(e){
-            this.up('.myomeka-poster-spot').remove();
+            var element = Event.element(e);
+            element.up('.myomeka-poster-spot').remove();
         });
     
         // Code to run after we add, move or delete an item
@@ -130,5 +137,4 @@ Object.extend(Poster, {
         });  
     }
 });
-
 Event.observe(window, 'load', Poster.init );
