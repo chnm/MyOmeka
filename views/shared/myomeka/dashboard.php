@@ -48,10 +48,11 @@
 	<?php if(count($notedItems) > 0): ?>
 
 		<?php foreach($notedItems as $notedItem): ?>
+		    <?php// print_r($notedItem); exit;?>
 		<div class="myomeka-notedItems-list-box">
 	    	<ul id="myomeka-notedItems-list">            
 				<li><?php echo link_to_square_thumbnail($notedItem)?></li>	            
-                <li><a href="<?php echo uri("items/show/".$notedItem->item_id); ?>">
+                <li><a href="<?php echo uri('items/show/'.$notedItem->id); ?>">
                     <?php if ($notedItem->title):?><?php print $notedItem->title; ?>
                     <?php else: ?>[untitled]
                     <?php endif; ?></a></li>
