@@ -15,7 +15,7 @@
 
 		<h3>Your Posters</h3>
 		<?php if(count($posters) > 0): ?>
-	    	<div id="myomeka-posters"> 
+
 	        <?php foreach($posters as $poster): ?>           
 				<div>
 					<h4 class="poster-title"><?php echo $poster->title; ?></h4>
@@ -32,7 +32,7 @@
 					</ul>
 				</div>
 	      	<?php endforeach; ?>
-	  		</div>
+
 	
 		<?php else: ?>
 			<p>You haven't made any posters yet.</p>

@@ -107,6 +107,9 @@ function myomeka_routes($router)
 		
 	//add the dashboard page route
 	myomeka_add_route($bp . 'dashboard', 'myomeka', 'dashboard', $router);
+	
+	//add the help page route
+	myomeka_add_route($bp . 'help','myomeka', 'helpPage',$router);
 
 	//add the poster share page route
 	myomeka_add_route($bp . 'poster/share/:id', 'poster', 'share', $router);
@@ -273,7 +276,7 @@ function myomeka_userloggedin_status()
 	if ($user) {
 		echo "<p>logged in as <a href=\"" . myomeka_get_path() . "\">$user->username</a> | <a href=\"" . myomeka_get_path('logout/') . "\">Logout</a></p>";
 	} else {
-		echo "<a href=\"" . myomeka_get_path('login/') . "\">Login</a>";
+		echo "<p><a href=\"" . myomeka_get_path('login/') . "\">Login</a></p>";
 	}
 }
 

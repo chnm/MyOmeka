@@ -16,6 +16,7 @@
 <div id="myomeka-primary">
 	<div id="myomeka-poster-info">
 	<h2>Edit Your Poster</h2>
+	<a href="<?php echo myomeka_get_path('help'); ?>" class="myomeka-help-link">Help</a>
     <form action="<?php echo myomeka_get_path('poster/save/'.$poster->id); ?>" method="post" accept-charset="utf-8" id="myomeka-poster-form">
         <div class="myomeka-field">
             <label for="myomeka-title">Title of Poster:</label>
