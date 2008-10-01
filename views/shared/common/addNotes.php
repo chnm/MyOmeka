@@ -1,6 +1,7 @@
 <?php
-    echo js('tiny_mce/tiny_mce'); 
-    echo js('addNotes'); 
+    // Commented out by Jeremy, 2008-09-11, because textarea using TinyMCE too wide for design.
+    //echo js('tiny_mce/tiny_mce'); 
+    //echo js('addNotes'); 
 ?>
 
 <div id="myomeka-add-notes">

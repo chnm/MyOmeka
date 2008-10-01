@@ -5,12 +5,18 @@ Add item to posters model
     margin:15px;
     padding:15px;
     border-top:1px solid #000;
-    overflow: auto;
-    height: 100%
+    height: 100%;
+	overflow:hidden;
 }
+
+.myomeka-additem-details p {font-size:1em;}
+.myomeka-additem-details dt {font-weight:bold;}
+
 .myomeka-additem-image{
     float:left;
 }
 .myomeka-additem-details{
     float:left;
 }
+
+#myomeka-primary input, button {margin:3px 0;}
