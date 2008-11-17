@@ -1,5 +1,4 @@
 <?php
-get_db()->addTable('Poster', 'posters');
 require_once "PosterItem.php";
 require_once "Note.php";
 class Poster extends Omeka_Record{

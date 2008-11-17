@@ -7,7 +7,7 @@ require_once PLUGIN_DIR."/MyOmeka/models/Poster.php";
 require_once PLUGIN_DIR."/MyOmeka/models/Note.php";
 require_once PLUGIN_DIR."/MyOmeka/models/MyomekaTag.php";
 
-class PosterController extends Omeka_Controller_Action
+class MyOmeka_PosterController extends Omeka_Controller_Action
 {
     protected $_modelClass = "Poster";
     

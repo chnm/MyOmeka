@@ -17,7 +17,7 @@ require_once PLUGIN_DIR."/MyOmeka/models/Note.php";
 require_once PLUGIN_DIR."/MyOmeka/models/MyomekaTag.php";
 require_once 'Omeka/Controller/Action.php';
 
-class MyOmekaController extends Omeka_Controller_Action
+class MyOmeka_MyOmekaController extends Omeka_Controller_Action
 {
 		
 	public function indexAction()

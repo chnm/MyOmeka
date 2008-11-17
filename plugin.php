@@ -1,48 +1,34 @@
 <?php 
-/* MyOmeka Plugin */
-// requires the TermsOfService plugin
+/**
+ * @version $Id$
+ * @copyright Center for History and New Media, 2008
+ * @license http://www.gnu.org/licenses/gpl-3.0.txt
+ * @package Omeka
+ * @subpackage MyOmeka
+ **/
+ 
+// MyOmeka currently requires the TermsOfService plugin
 
 define('MYOMEKA_PLUGIN_VERSION', '0.3alpha');
 define('MYOMEKA_PAGE_PATH', 'myomeka/');
 
-add_plugin_hook('initialize', 'myomeka_initialize');
 add_plugin_hook('install', 'myomeka_install');
-add_plugin_hook('theme_header', 'myomeka_css');
 add_plugin_hook('config', 'myomeka_config');
 add_plugin_hook('config_form', 'myomeka_config_form');
-add_plugin_hook('add_routes', 'myomeka_routes');
+add_plugin_hook('define_acl', 'myomeka_setup_acl');
+add_plugin_hook('define_routes', 'myomeka_routes');
+add_plugin_hook('public_theme_header', 'myomeka_css');
+add_plugin_hook('item_browse_sql', 'myomeka_show_only_my_items');
 
+add_filter('admin_navigation_main', 'myomeka_admin_nav');
 
-add_controllers('controllers');
 require_once PLUGIN_DIR."/MyOmeka/models/Note.php";
 
 // when I call a function defined in a controller, such as myomeka_get_path, which uses uri or settings, the following helper functions have not 
-// yet been loaded, hence i need to add these here.  I wish these could be loaded somewhere else before the controller is loaded
-require_once HELPER_DIR.'/Functions.php';
-require_once HELPER_DIR.'/UnicodeFunctions.php';
-
-function myomeka_initialize()
-{	
-    add_theme_pages('views/public', 'public');
-    add_theme_pages('views/admin', 'admin');
-	add_theme_pages('views/shared', 'both');
-	add_navigation('Posters', 'poster/adminPosters');
-	
-	//Define some special ACL rules for this plugin
-		
-	$acl = Zend_registry::get( 'acl' );
-
-	//Come up with some terminology for this
-	$acl->addRole(new Zend_Acl_Role('MyOmeka'));
-
-	$acl->registerRule(new Zend_Acl_Resource('MyOmeka'), array('favorite'));
-
-	//The new role and all the existing roles, should be able to list certain items as 'favorites'
-	$acl->allow('MyOmeka', 'MyOmeka',array('favorite'));	
-	$acl->allow('researcher', 'MyOmeka',array('favorite'));
-	$acl->allow('admin', 'MyOmeka',array('favorite'));
-	$acl->allow('contributor', 'MyOmeka',array('favorite'));		
-}
+// yet been loaded, hence i need to add these here.  I wish these could be loaded somewhere else before the controller is loaded [JL]
+// I'm unsure if this applies to the 0.10 API, so I'm commenting it out for now.. [DL]
+// require_once HELPER_DIR.'/Functions.php';
+// require_once HELPER_DIR.'/UnicodeFunctions.php';
 
 function myomeka_install()
 {	
@@ -146,18 +132,20 @@ function myomeka_routes($router)
 
 }
 
+function myomeka_admin_nav($navArray)
+{
+    return $navArray += array('Posters'=> uri('poster/adminPosters'));
+}
+
 function myomeka_add_route($routeName, $controllerName, $actionName, $router) 
 {
-	//echo $routeName . '<br>';
-	$router->addRoute($routeName, new Zend_Controller_Router_Route($routeName, array('controller'=> $controllerName, 'action'=> $actionName)));
+//	$router->addRoute($routeName, new Zend_Controller_Router_Route($routeName, array('controller'=> $controllerName, 'action'=> $actionName)));
 }
 
 function myomeka_css()
 {
 	echo "<link rel=\"stylesheet\" media=\"screen\" href=\"".css('myomeka')."\" />";
 }
-
-add_plugin_hook('item_browse_sql', 'myomeka_show_only_my_items');
 
 /**
  * This allows the MyOmeka controller to pass arbitrary parameters when 
@@ -337,6 +325,28 @@ function myomeka_settings_css()
 	$html .= '</style>';
 	
 	echo $html;
+}
+
+function myomeka_setup_acl($acl)
+{
+    // This ACL code was copied directly from the 0.9.x exhibit builder
+    // previously the ACL had to be defined upon initializing the plugin
+    // the new 0.10 plugin API no longer requires this, and should be cleaned up
+    
+    //Defined some special ACL rules for this plugin
+    // $acl = Zend_Registry::get( 'acl' );
+    // 
+    // //Come up with some terminology for this
+    // $acl->addRole(new Zend_Acl_Role('MyOmeka'));
+    // 
+    // $acl->registerRule(new Zend_Acl_Resource('MyOmeka'), array('favorite'));
+    // 
+    // //The new role and all the existing roles, should be able to list certain items as 'favorites'
+    // $acl->allow('MyOmeka', 'MyOmeka',array('favorite')); 
+    // $acl->allow('researcher', 'MyOmeka',array('favorite'));
+    // $acl->allow('admin', 'MyOmeka',array('favorite'));
+    // $acl->allow('contributor', 'MyOmeka',array('favorite'));
+      
 }
 
 ?>

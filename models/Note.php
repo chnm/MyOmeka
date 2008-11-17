@@ -1,5 +1,4 @@
 <?php
-get_db()->addTable('Note', 'notes');
 
 class Note extends Omeka_Record{
     public $id;
