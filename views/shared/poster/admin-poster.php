@@ -2,8 +2,10 @@
 head(); 
 echo js('adminPosters');
 ?>
+
+<h1>Poster Administration</h1>
+
 <div id="primary">
-    <h1>Poster Administration</h1>
     <p>Posters created by users are listed below.</p>
     <?php if(count($posters)): ?>
         <table>
