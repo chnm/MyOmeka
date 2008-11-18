@@ -1,7 +1,8 @@
 <?php
-require_once "PosterItem.php";
-require_once "Note.php";
-class Poster extends Omeka_Record{
+require_once "MyOmekaPosterItem.php";
+require_once "MyOmekaNote.php";
+
+class MyOmekaPoster extends Omeka_Record{
     public $title;
     public $description = '';
     public $user_id;

@@ -11,11 +11,10 @@
 *
 */
 
-require_once MODEL_DIR.'/User.php';
-require_once PLUGIN_DIR."/MyOmeka/models/Poster.php";
-require_once PLUGIN_DIR."/MyOmeka/models/Note.php";
-require_once PLUGIN_DIR."/MyOmeka/models/MyomekaTag.php";
-require_once 'Omeka/Controller/Action.php';
+require_once 'User.php';
+require_once 'MyOmekaPoster.php';
+require_once 'MyOmekaNote.php';
+require_once 'MyOmekaTag.php';
 
 class MyOmeka_MyOmekaController extends Omeka_Controller_Action
 {

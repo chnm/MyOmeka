@@ -1,6 +1,6 @@
 <?php
 
-require_once 'Taggable.php';
+require_once 'MyOmekaTaggable.php';
 
 class MyomekaTag extends Omeka_Record{
     public $id;

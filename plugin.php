@@ -6,29 +6,35 @@
  * @package Omeka
  * @subpackage MyOmeka
  **/
- 
-// MyOmeka currently requires the TermsOfService plugin
+ // note: MyOmeka currently requires the TermsOfService plugin
 
+// Define the plugin version and page path.
 define('MYOMEKA_PLUGIN_VERSION', '0.3alpha');
 define('MYOMEKA_PAGE_PATH', 'myomeka/');
 
+require_once 'Note.php';
+
+// Add plugin hooks.
 add_plugin_hook('install', 'myomeka_install');
 add_plugin_hook('config', 'myomeka_config');
 add_plugin_hook('config_form', 'myomeka_config_form');
 add_plugin_hook('define_acl', 'myomeka_setup_acl');
-add_plugin_hook('define_routes', 'myomeka_routes');
+add_plugin_hook('define_routes', 'myomeka_define_routes');
 add_plugin_hook('public_theme_header', 'myomeka_css');
 add_plugin_hook('item_browse_sql', 'myomeka_show_only_my_items');
 
+// Add filters.
 add_filter('admin_navigation_main', 'myomeka_admin_nav');
-
-require_once PLUGIN_DIR."/MyOmeka/models/Note.php";
 
 // when I call a function defined in a controller, such as myomeka_get_path, which uses uri or settings, the following helper functions have not 
 // yet been loaded, hence i need to add these here.  I wish these could be loaded somewhere else before the controller is loaded [JL]
 // I'm unsure if this applies to the 0.10 API, so I'm commenting it out for now.. [DL]
 // require_once HELPER_DIR.'/Functions.php';
 // require_once HELPER_DIR.'/UnicodeFunctions.php';
+
+/**
+ * Install the plugin.
+ */
 
 function myomeka_install()
 {	
@@ -64,9 +70,12 @@ function myomeka_install()
             	) ENGINE = MYISAM;");
 }
 
-function myomeka_routes($router) 
+/**
+ * Define the routes, wrapping them in myomeka_add_route()
+ */
+
+function myomeka_define_routes($router) 
 {
-	
 	// get the base path
 	$bp = get_option('myomeka_page_path');
 	
@@ -86,7 +95,7 @@ function myomeka_routes($router)
 	myomeka_add_route($bp . 'activate', 'myomeka', 'activate', $router);
 
 	//add the reset password page route
-	myomeka_add_route($bp . 'resetPassword', 'myomeka', 'resetPassword', $router);
+	myomeka_add_route($bp . 'resetPassword', 'myomeka', 'reset-password', $router);
 	
 	//add the forget page route
 	myomeka_add_route($bp . 'forgot', 'myomeka', 'forgot', $router);
@@ -95,7 +104,7 @@ function myomeka_routes($router)
 	myomeka_add_route($bp . 'dashboard', 'myomeka', 'dashboard', $router);
 	
 	//add the help page route
-	myomeka_add_route($bp . 'help','myomeka', 'helpPage',$router);
+	myomeka_add_route($bp . 'help', 'myomeka', 'help-page',$router);
 
 	//add the poster share page route
 	myomeka_add_route($bp . 'poster/share/:id', 'poster', 'share', $router);
@@ -107,7 +116,7 @@ function myomeka_routes($router)
 	myomeka_add_route($bp . 'poster/edit/:id', 'poster', 'edit', $router);
 
 	//add the poster addPosterItem page route
-	myomeka_add_route($bp . 'poster/addPosterItem', 'poster', 'addPosterItem', $router);
+	myomeka_add_route($bp . 'poster/addPosterItem', 'poster', 'add-poster-item', $router);
 	
 	//add the poster save page route
 	myomeka_add_route($bp . 'poster/save/:id', 'poster', 'save', $router);
@@ -116,7 +125,7 @@ function myomeka_routes($router)
 	myomeka_add_route($bp . 'poster/delete/:id', 'poster', 'delete', $router);
 
 	//add the poster admin page route
-	myomeka_add_route($bp . 'poster/adminPosters', 'poster', 'adminPosters', $router);
+	myomeka_add_route($bp . 'poster/admin-posters', 'poster', 'admin-posters', $router);
 	
 	//add the tag add page route
 	myomeka_add_route($bp . 'tags/add', 'myomekatag', 'add', $router);
@@ -129,17 +138,39 @@ function myomeka_routes($router)
 
 	//add the notes edit page route
 	myomeka_add_route($bp . 'notes/edit', 'note', 'edit', $router);
-
 }
 
-function myomeka_admin_nav($navArray)
-{
-    return $navArray += array('Posters'=> uri('poster/adminPosters'));
-}
+/**
+ * Add the defined routes.
+ * 
+ * @param Zend_Controller_Router_Rewrite
+ */
 
 function myomeka_add_route($routeName, $controllerName, $actionName, $router) 
 {
-//	$router->addRoute($routeName, new Zend_Controller_Router_Route($routeName, array('controller'=> $controllerName, 'action'=> $actionName)));
+	$router->addRoute(
+	    '$routeName', 
+	    new Zend_Controller_Router_Route(
+	        $routeName, 
+	        array(
+	            'module'        =>  'my-omeka', 
+	            'controller'    =>  $controllerName, 
+	            'action'        =>  $actionName
+	        )
+	    )
+	);
+}
+
+/**
+ * Add the Poster Administration link to the admin main navigation.
+ * 
+ * @param array Navigation array.
+ * @return array Filtered navigation array.
+ */
+
+function myomeka_admin_nav($navArray)
+{
+    return $navArray += array('Posters'=> uri('poster/admin-posters'));
 }
 
 function myomeka_css()
@@ -326,6 +357,12 @@ function myomeka_settings_css()
 	
 	echo $html;
 }
+
+/**
+ * Define the ACL.
+ * 
+ * @param Omeka_Acl
+ */
 
 function myomeka_setup_acl($acl)
 {

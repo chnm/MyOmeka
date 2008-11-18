@@ -1,6 +1,6 @@
 <?php
 
-class Note extends Omeka_Record{
+class MyOmekaNote extends Omeka_Record{
     public $id;
     public $note ='';
     public $user_id;

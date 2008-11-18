@@ -3,13 +3,16 @@
 * MyPoster controller
 */
 
-require_once PLUGIN_DIR."/MyOmeka/models/Poster.php";
-require_once PLUGIN_DIR."/MyOmeka/models/Note.php";
-require_once PLUGIN_DIR."/MyOmeka/models/MyomekaTag.php";
+require_once 'Poster.php';
+require_once 'Note.php';
+require_once 'MyomekaTag.php';
 
 class MyOmeka_PosterController extends Omeka_Controller_Action
 {
-    protected $_modelClass = "Poster";
+ 	public function init()
+	{
+        protected $_modelClass = "Poster";	    
+    }
     
     public function indexAction()
     {
@@ -26,7 +29,7 @@ class MyOmeka_PosterController extends Omeka_Controller_Action
         // Get all of the posters on the site
         $posters = new Poster();
         $posters = $posters->getPosters();
-        
+
         return $this->render('myposter/adminPoster.php',compact("posters"));
     }
     
