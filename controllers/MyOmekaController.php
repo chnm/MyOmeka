@@ -17,6 +17,18 @@ require_once 'MyOmekaPoster.php';
 require_once 'MyOmekaNote.php';
 require_once 'MyOmekaTag.php';
 
+/**
+ * @todo Try to use built-in users controller to manage access to MyOmeka.
+ * If you add a view script for users/login on the public interface it will load 
+ * just like the admin side.  After login it will forward to whatever action was
+ * blocked, i.e. the MyOmeka dashboard.  
+ * 
+ * This means get rid of all the extra code for logins that was duplicated from
+ * the old Omeka.
+ * 
+ * @param string
+ * @return void
+ **/
 class MyOmeka_MyOmekaController extends Omeka_Controller_Action
 {
 		
@@ -25,32 +37,34 @@ class MyOmeka_MyOmekaController extends Omeka_Controller_Action
         $this->_forward('dashboard');
 	}
 	
+	/**
+	 * @todo Block access via the ACL (instead of forwarding to login within the action).
+	 * 
+	 * @param string
+	 * @return void
+	 **/
 	public function dashboardAction()
 	{		
 		if($current = Omeka_Context::getInstance()->getCurrentUser()) {
 
 		    // Get the user's existing posters
-            $posters = new MyOmekaPoster();
-            $posters = $posters->getUserPosters($current->id);
-            
+            $posters = $this->getTable('MyOmekaPoster')->findByUserId($current->id);
+
             // Get tagged and noted items
-            $noteObj = new MyOmekaNote();
-            $myomekatagObj = new MyOmekaTag();
-            $mixedItems = array_merge(
-                                    $noteObj->getNotedItemsByUser($current->id),
-                                    $myomekatagObj->getItemsTaggedByUser($current->id)
-                                );
+            
+            // Should combine these 2 queries into a single query to obviate the
+            // need for extra processing.
+            $notedItems = $this->getTable('MyOmekaNote')->findItemsByUserId($current->id);
+            $taggedItems = MyOmekaTag::getItemsTaggedByUser($current->id);
             
             // Loop through the items to make sure we only have one of each item
             $notedItems = array();
+            $mixedItems = $notedItems + $taggedItems;
             foreach($mixedItems as $item){
                 $notedItems[$item->id] = $item;
             }
             
-            // Get the user's tags
-            $tagTable = new TagTable(null, null);
-            $options = array('entity'=>$current->entity_id);
-            $tags = $tagTable->findBy($options,"MyOmekaTag");
+            $tags = $this->getTable('Tag')->findBy(array('user'=>$current->id),"MyOmekaTag");
             
 			$this->render('dashboard', compact("posters","notedItems","tags"));
 		} else {

@@ -1,20 +1,16 @@
 <?php
 require_once "MyOmekaPosterItem.php";
 require_once "MyOmekaNote.php";
-
+require_once 'MyOmekaPosterTable.php';
 class MyOmekaPoster extends Omeka_Record{
     public $title;
     public $description = '';
     public $user_id;
     public $date_created;
     
-    public function getUserPosters($user_id){
-        if(is_numeric($user_id)){
-            $db = get_db();
-            return $db->getTable("Poster")->fetchObjects(" SELECT * 
-                                                            FROM {$db->prefix}posters 
-                                                            WHERE user_id = $user_id");            
-        }
+    public function getUserPosters($userId) 
+    {
+        return $this->getTable()->findByUserId($userId);
     }
     
     public function getPosters(){
