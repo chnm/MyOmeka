@@ -1,7 +1,7 @@
 <?php 
     head(); 
     echo js('dashboard');
-	myomeka_breadcrumb();
+	my_omeka_breadcrumb();
 ?>
 
 <div id="myomeka-primary">
@@ -25,10 +25,10 @@
 					</ul>
 					<ul class="myomeka-poster-nav">
 					
-	               		<li><a href="<?php echo myomeka_get_path('poster/view/'.$poster->id); ?>" class="myomeka-view-poster-link">view</a> </li>
-	               		<li><a href="<?php echo myomeka_get_path('poster/edit/'.$poster->id); ?>" class="myomeka-edit-poster-link">edit</a> </li>
-	               		<li><a href="<?php echo myomeka_get_path('poster/share/'.$poster->id); ?>" class="myomeka-share-poster-link">share</a></li>
-	               		<li><a href="<?php echo myomeka_get_path('poster/delete/'.$poster->id); ?>" class="myomeka-delete-poster-link">delete</a></li>
+	               		<li><a href="<?php echo my_omeka_get_path('poster/view/'.$poster->id); ?>" class="myomeka-view-poster-link">view</a> </li>
+	               		<li><a href="<?php echo my_omeka_get_path('poster/edit/'.$poster->id); ?>" class="myomeka-edit-poster-link">edit</a> </li>
+	               		<li><a href="<?php echo my_omeka_get_path('poster/share/'.$poster->id); ?>" class="myomeka-share-poster-link">share</a></li>
+	               		<li><a href="<?php echo my_omeka_get_path('poster/delete/'.$poster->id); ?>" class="myomeka-delete-poster-link">delete</a></li>
 					</ul>
 				</div>
 	      	<?php endforeach; ?>

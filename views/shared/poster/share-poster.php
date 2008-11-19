@@ -1,6 +1,6 @@
 <?php head(); 
-	myomeka_userloggedin_status();
-	myomeka_breadcrumb();
+	my_omeka_userloggedin_status();
+	my_omeka_breadcrumb();
 ?>
 <?php echo flash(); ?>
 <h1>Sharing "<?php echo $poster->title; ?>"</h1>

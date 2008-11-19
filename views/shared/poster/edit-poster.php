@@ -4,7 +4,7 @@
     echo js('ibox/ibox');
     echo js('poster');
 
-	myomeka_breadcrumb();
+	my_omeka_breadcrumb();
 
 ?>
 <script type="text/javascript" charset="utf-8">
@@ -16,8 +16,8 @@
 <div id="myomeka-primary">
 	<div id="myomeka-poster-info">
 	<h2>Edit Your Poster</h2>
-	<a href="<?php echo myomeka_get_path('help'); ?>" class="myomeka-help-link">Help</a>
-    <form action="<?php echo myomeka_get_path('poster/save/'.$poster->id); ?>" method="post" accept-charset="utf-8" id="myomeka-poster-form">
+	<a href="<?php echo my_omeka_get_path('help'); ?>" class="myomeka-help-link">Help</a>
+    <form action="<?php echo my_omeka_get_path('poster/save/'.$poster->id); ?>" method="post" accept-charset="utf-8" id="myomeka-poster-form">
         <div class="myomeka-field">
             <label for="myomeka-title">Title of Poster:</label>
             <input type="text" name="title" value="<?php echo $poster->title;?>" id="myomeka-title" />
@@ -51,9 +51,9 @@
         <div id="myomeka-submit-poster">
             <input type="submit" name="save_poster" value="Save Poster" /> or 
             <?php if (isset($_GET['return']) && $_GET['return'] == "admin"): ?>
-                <a href="<?php echo myomeka_get_path('poster/adminPosters'); ?>">Discard changes and return to poster administration</a>
+                <a href="<?php echo my_omeka_get_path('poster/adminPosters'); ?>">Discard changes and return to poster administration</a>
             <?php else: ?>
-                <a href="<?php echo myomeka_get_path('dashboard'); ?>">Discard changes and return to the dashboard</a>
+                <a href="<?php echo my_omeka_get_path('dashboard'); ?>">Discard changes and return to the dashboard</a>
             <?php endif ?>
             <input type="hidden" name="itemCount" value="<?php echo count($posterItems);?>" id="myomeka-itemCount"/>
         </div>
@@ -67,7 +67,7 @@
                 <div class="myomeka-additem-item">
                     <div class="myomeka-additem-image">
                         <?php echo poster_icon_html($item); ?>
-                        <form action="<?php echo myomeka_get_path('poster/addPosterItem'); ?>" method="post" accept-charset="utf-8" class="myomeka-additem-form">
+                        <form action="<?php echo my_omeka_get_path('poster/addPosterItem'); ?>" method="post" accept-charset="utf-8" class="myomeka-additem-form">
                         	<input type="submit" name="submit" value="Add this item" class="myomeka-additem-submit"/>
                         	<input type="hidden" name="item-id" value="<?php echo $item->id; ?>" class="myomeka-additem-item-id"/>
                     	</form>

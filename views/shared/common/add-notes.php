@@ -6,10 +6,10 @@
 
 <div id="myomeka-add-notes">
     <h2>My Notes</h2>
-<a href="<?php echo myomeka_get_path('help'); ?>" class="myomeka-help-link">Help</a>
-	<a class="dashboard-link" href="<?php echo myomeka_get_path(); ?>">Go to My Dashboard</a>
+<a href="<?php echo my_omeka_get_path('help'); ?>" class="myomeka-help-link">Help</a>
+	<a class="dashboard-link" href="<?php echo my_omeka_get_path(); ?>">Go to My Dashboard</a>
     <div id="myomeka-edit-note">
-        <form action="<?php echo myomeka_get_path("notes/edit"); ?>" id="myomeka-note-form" method="post" accept-charset="utf-8">    
+        <form action="<?php echo my_omeka_get_path("notes/edit"); ?>" id="myomeka-note-form" method="post" accept-charset="utf-8">    
             <div>
                 <div class="field">
                     <label for="note">Your Notes:</label>
