@@ -78,87 +78,29 @@ function myomeka_define_routes($router)
 {
 	// get the base path
 	$bp = get_option('myomeka_page_path');
-	
-	//add the myomeka page route
-	myomeka_add_route($bp, 'my-omeka', 'index', $router);
-	
-	//add the login page route
-	myomeka_add_route($bp . 'login', 'my-omeka', 'login', $router);
-	
-	//add the logout page route
-	myomeka_add_route($bp . 'logout', 'my-omeka', 'logout', $router);
-
-	//add the register page route
-	myomeka_add_route($bp . 'register', 'my-omeka', 'register', $router);
-
-	//add the activate page route
-	myomeka_add_route($bp . 'activate', 'my-omeka', 'activate', $router);
-
-	//add the reset password page route
-	myomeka_add_route($bp . 'resetPassword', 'my-omeka', 'reset-password', $router);
-	
-	//add the forget page route
-	myomeka_add_route($bp . 'forgot', 'my-omeka', 'forgot', $router);
-		
-	//add the dashboard page route
-	myomeka_add_route($bp . 'dashboard', 'my-omeka', 'dashboard', $router);
-	
-	//add the help page route
-	myomeka_add_route($bp . 'help', 'myomeka', 'help-page',$router);
-
-	//add the poster share page route
-	myomeka_add_route($bp . 'poster/share/:id', 'poster', 'share', $router);
-
-	//add the poster view page route
-	myomeka_add_route($bp . 'poster/view/:id', 'poster', 'view', $router);
-	
-	//add the poster edit page route
-	myomeka_add_route($bp . 'poster/edit/:id', 'poster', 'edit', $router);
-
-	//add the poster addPosterItem page route
-	myomeka_add_route($bp . 'poster/addPosterItem', 'poster', 'add-poster-item', $router);
-	
-	//add the poster save page route
-	myomeka_add_route($bp . 'poster/save/:id', 'poster', 'save', $router);
-
-	//add the poster delete page route
-	myomeka_add_route($bp . 'poster/delete/:id', 'poster', 'delete', $router);
-
-	//add the poster admin page route
-	myomeka_add_route($bp . 'poster/admin-posters', 'poster', 'admin-posters', $router);
-	
-	//add the tag add page route
-	myomeka_add_route($bp . 'tags/add', 'my-omeka-tag', 'add', $router);
-
-	//add the tag browse page route
-	myomeka_add_route($bp . 'tags/browse/:id', 'my-omeka-tag', 'browse', $router);
-	
-	//add the tag delete page route
-	myomeka_add_route($bp . 'tags/delete/:tag/:item_id', 'my-omeka-tag', 'delete', $router);
-
-	//add the notes edit page route
-	myomeka_add_route($bp . 'notes/edit', 'note', 'edit', $router);
-}
-
-/**
- * Add the defined routes.
- * 
- * @param Zend_Controller_Router_Rewrite
- */
-
-function myomeka_add_route($routeName, $controllerName, $actionName, $router) 
-{
-	$router->addRoute(
-	    $routeName, 
-	    new Zend_Controller_Router_Route(
-	        $routeName, 
-	        array(
-	            'module'        =>  'my-omeka', 
-	            'controller'    =>  $controllerName, 
-	            'action'        =>  $actionName
-	        )
-	    )
-	);
+	    
+    $routes = array();
+    
+    // We may be able to condense this list even more.
+    $routes['myOmekaDashboard'] = array('', array('controller'=>'my-omeka'));
+    $routes['myOmekaAction'] = array(':action', array('controller'=>'my-omeka'));
+    $routes['myOmekaPosterAction'] = array('poster/:action/:id', array('controller'=>'poster'));
+    $routes['myOmekaAddTag'] = array('tags/add', array('controller'=>'my-omeka-tag', 'action'=>'add'));
+    $routes['myOmekaTagBrowse'] = array('tags/browse/:id', array('controller'=>'my-omeka-tag', 'action'=>'browse'));
+    $routes['myOmekaTagDelete'] = array('tags/delete/:tag/:item_id', array('controller'=>'my-omeka-tag', 'action'=>'delete'));
+    $routes['myOmekaNote'] = array('note/:action', array('controller'=>'note'));
+    
+    foreach ($routes as $routeName => $routeValues) {
+        list($routePath, $routeVars) = $routeValues;
+        // All of these routes are for the 'my-omeka' module.
+        $routeVars = array_merge(array('module'=>'my-omeka'), $routeVars);
+        $router->addRoute(
+            $routeName, 
+            new Zend_Controller_Router_Route(
+                // Attach the base path to every defined route.
+                $bp . $routePath, 
+                $routeVars));
+    }    
 }
 
 /**
