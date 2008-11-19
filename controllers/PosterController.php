@@ -3,17 +3,13 @@
 * MyPoster controller
 */
 
-require_once 'Poster.php';
-require_once 'Note.php';
-require_once 'MyomekaTag.php';
+require_once 'MyOmekaPoster.php';
+require_once 'MyOmekaNote.php';
+require_once 'MyOmekaTag.php';
 
 class MyOmeka_PosterController extends Omeka_Controller_Action
 {
- 	public function init()
-	{
-        protected $_modelClass = "Poster";	    
-    }
-    
+
     public function indexAction()
     {
         $this->_forward('browse');
@@ -27,10 +23,10 @@ class MyOmeka_PosterController extends Omeka_Controller_Action
     public function adminPostersAction()
     {   
         // Get all of the posters on the site
-        $posters = new Poster();
+        $posters = new MyOmekaPoster();
         $posters = $posters->getPosters();
 
-        return $this->render('myposter/adminPoster.php',compact("posters"));
+        return $this->render('admin-poster',compact("posters"));
     }
     
     public function editAction()
@@ -38,7 +34,7 @@ class MyOmeka_PosterController extends Omeka_Controller_Action
         $poster_id = $this->_getParam('id');
         
         // Get the current user
-        if($user = Omeka::loggedIn()){            
+        if($user = Omeka_Context::getInstance()->getCurrentUser()){            
             // Get the poster object
             $poster = $this->findById();
 

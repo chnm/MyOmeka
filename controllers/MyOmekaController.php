@@ -12,6 +12,7 @@
 */
 
 require_once 'User.php';
+require_once 'TagTable.php';
 require_once 'MyOmekaPoster.php';
 require_once 'MyOmekaNote.php';
 require_once 'MyOmekaTag.php';
@@ -26,15 +27,15 @@ class MyOmeka_MyOmekaController extends Omeka_Controller_Action
 	
 	public function dashboardAction()
 	{		
-		if($current = Omeka::loggedIn()) {
+		if($current = Omeka_Context::getInstance()->getCurrentUser()) {
 
 		    // Get the user's existing posters
-            $posters = new Poster();
+            $posters = new MyOmekaPoster();
             $posters = $posters->getUserPosters($current->id);
             
             // Get tagged and noted items
-            $noteObj = new Note();
-            $myomekatagObj = new MyomekaTag();
+            $noteObj = new MyOmekaNote();
+            $myomekatagObj = new MyOmekaTag();
             $mixedItems = array_merge(
                                     $noteObj->getNotedItemsByUser($current->id),
                                     $myomekatagObj->getItemsTaggedByUser($current->id)
@@ -47,13 +48,13 @@ class MyOmeka_MyOmekaController extends Omeka_Controller_Action
             }
             
             // Get the user's tags
-            $tagTable = new TagTable(null);
+            $tagTable = new TagTable(null, null);
             $options = array('entity'=>$current->entity_id);
-            $tags = $tagTable->findBy($options,"MyomekaTag");
+            $tags = $tagTable->findBy($options,"MyOmekaTag");
             
-			$this->render('myomeka/dashboard.php', compact("posters","notedItems","tags"));
-		} else {			
-        	$this->_forward('login');			
+			$this->render('dashboard', compact("posters","notedItems","tags"));
+		} else {
+        	$this->_forward('login');
 		}
 	}
 
@@ -63,24 +64,19 @@ class MyOmeka_MyOmekaController extends Omeka_Controller_Action
 		$requireTermsOfService = get_option('myomeka_require_terms_of_service');
 					
 		if (!empty($_POST)) {
-			
-			require_once 'Zend/Session.php';
+        
+            require_once 'Zend/Session.php';
+            $user = new User;
+            $session = new Zend_Session_Namespace;
+            $result = $user->authenticate();
 
-			$session = new Zend_Session_Namespace;
-	
-			$auth = $this->_auth;
-
-			$adapter = new Omeka_Auth_Adapter($_POST['username'], $_POST['password']);
-	
-			$token = $auth->authenticate($adapter);
-
-			if ($token->isValid()) {
+			if ($result->isValid()) {
 				$this->_redirect(myomeka_get_path('dashboard/'));
 			} else {		
 			 	$this->flash('There was an error logging you in.  Please try again, or register a new account.');
 			}
 		}
-		$this->render('myomeka/index.php', compact('emailSent', 'requireTermsOfService'));
+		$this->render('index', compact('emailSent', 'requireTermsOfService'));
 	}
 	
 	public function logoutAction()
@@ -124,11 +120,11 @@ class MyOmeka_MyOmekaController extends Omeka_Controller_Action
 			$this->flashValidationErrors($e);
 		}
 		
-		$this->render('myomeka/index.php', compact('emailSent', 'requireTermsOfService'));
+		$this->render('index', compact('emailSent', 'requireTermsOfService'));
 	}	
 	
 	public function helpPageAction() {
-	    $this->render('helpPage.php');
+	    $this->render('help-page');
 	}
 
 	public function sendActivationEmail($user)
@@ -175,7 +171,7 @@ class MyOmeka_MyOmekaController extends Omeka_Controller_Action
 			}
 		}
 		$user = $ua->User;
-		$this->render('myomeka/activate.php', compact('user'));
+		$this->render('activate', compact('user'));
 	}
 
 	public function resetPasswordAction()
@@ -204,7 +200,7 @@ class MyOmeka_MyOmekaController extends Omeka_Controller_Action
 			}
 		}
 		$user = $ua->User;
-		$this->render('myomeka/resetPassword.php', compact('user'));
+		$this->render('reset-password', compact('user'));
 	}
 
 	public function forgotAction()
@@ -253,7 +249,7 @@ class MyOmeka_MyOmekaController extends Omeka_Controller_Action
 			}			
 		}
 		
-		return $this->render('myomeka/forgotPassword.php', compact('emailSent'));
+		return $this->render('forgot-password', compact('emailSent'));
 	}
 
 }

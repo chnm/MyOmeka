@@ -6,19 +6,19 @@
  * @package Omeka
  * @subpackage MyOmeka
  **/
- // note: MyOmeka currently requires the TermsOfService plugin
+// note: MyOmeka currently requires the TermsOfService plugin
 
 // Define the plugin version and page path.
 define('MYOMEKA_PLUGIN_VERSION', '0.3alpha');
 define('MYOMEKA_PAGE_PATH', 'myomeka/');
 
-require_once 'Note.php';
+require_once 'MyOmekaNote.php';
 
 // Add plugin hooks.
 add_plugin_hook('install', 'myomeka_install');
 add_plugin_hook('config', 'myomeka_config');
 add_plugin_hook('config_form', 'myomeka_config_form');
-add_plugin_hook('define_acl', 'myomeka_setup_acl');
+//add_plugin_hook('define_acl', 'myomeka_setup_acl');
 add_plugin_hook('define_routes', 'myomeka_define_routes');
 add_plugin_hook('public_theme_header', 'myomeka_css');
 add_plugin_hook('item_browse_sql', 'myomeka_show_only_my_items');
@@ -80,28 +80,28 @@ function myomeka_define_routes($router)
 	$bp = get_option('myomeka_page_path');
 	
 	//add the myomeka page route
-	myomeka_add_route($bp, 'myomeka', 'index', $router);
+	myomeka_add_route($bp, 'my-omeka', 'index', $router);
 	
 	//add the login page route
-	myomeka_add_route($bp . 'login', 'myomeka', 'login', $router);
+	myomeka_add_route($bp . 'login', 'my-omeka', 'login', $router);
 	
 	//add the logout page route
-	myomeka_add_route($bp . 'logout', 'myomeka', 'logout', $router);
+	myomeka_add_route($bp . 'logout', 'my-omeka', 'logout', $router);
 
 	//add the register page route
-	myomeka_add_route($bp . 'register', 'myomeka', 'register', $router);
+	myomeka_add_route($bp . 'register', 'my-omeka', 'register', $router);
 
 	//add the activate page route
-	myomeka_add_route($bp . 'activate', 'myomeka', 'activate', $router);
+	myomeka_add_route($bp . 'activate', 'my-omeka', 'activate', $router);
 
 	//add the reset password page route
-	myomeka_add_route($bp . 'resetPassword', 'myomeka', 'reset-password', $router);
+	myomeka_add_route($bp . 'resetPassword', 'my-omeka', 'reset-password', $router);
 	
 	//add the forget page route
-	myomeka_add_route($bp . 'forgot', 'myomeka', 'forgot', $router);
+	myomeka_add_route($bp . 'forgot', 'my-omeka', 'forgot', $router);
 		
 	//add the dashboard page route
-	myomeka_add_route($bp . 'dashboard', 'myomeka', 'dashboard', $router);
+	myomeka_add_route($bp . 'dashboard', 'my-omeka', 'dashboard', $router);
 	
 	//add the help page route
 	myomeka_add_route($bp . 'help', 'myomeka', 'help-page',$router);
@@ -128,13 +128,13 @@ function myomeka_define_routes($router)
 	myomeka_add_route($bp . 'poster/admin-posters', 'poster', 'admin-posters', $router);
 	
 	//add the tag add page route
-	myomeka_add_route($bp . 'tags/add', 'myomekatag', 'add', $router);
+	myomeka_add_route($bp . 'tags/add', 'my-omeka-tag', 'add', $router);
 
 	//add the tag browse page route
-	myomeka_add_route($bp . 'tags/browse/:id', 'myomekatag', 'browse', $router);
+	myomeka_add_route($bp . 'tags/browse/:id', 'my-omeka-tag', 'browse', $router);
 	
 	//add the tag delete page route
-	myomeka_add_route($bp . 'tags/delete/:tag/:item_id', 'myomekatag', 'delete', $router);
+	myomeka_add_route($bp . 'tags/delete/:tag/:item_id', 'my-omeka-tag', 'delete', $router);
 
 	//add the notes edit page route
 	myomeka_add_route($bp . 'notes/edit', 'note', 'edit', $router);
@@ -149,7 +149,7 @@ function myomeka_define_routes($router)
 function myomeka_add_route($routeName, $controllerName, $actionName, $router) 
 {
 	$router->addRoute(
-	    '$routeName', 
+	    $routeName, 
 	    new Zend_Controller_Router_Route(
 	        $routeName, 
 	        array(
@@ -306,7 +306,6 @@ function myomeka_clean_path($path)
 
 function myomeka_config($post) 
 {
-	
 	set_option('myomeka_page_path', myomeka_clean_path($post['myomeka_page_path']));
 	
 	//if the page path is empty then make it the default page path

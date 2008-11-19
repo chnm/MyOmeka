@@ -1,8 +1,9 @@
 <?php
 
-require_once 'MyOmekaTaggable.php';
+require_once 'Taggable.php';
 
-class MyomekaTag extends Omeka_Record{
+class MyOmekaTag extends Omeka_Record
+{
     public $id;
     
 	protected function construct()
