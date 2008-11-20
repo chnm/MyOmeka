@@ -229,11 +229,11 @@ function my_omeka_breadcrumb()
 	
 }
 
-function my_omeka_userloggedin_status() 
+function my_omeka_user_status() 
 {
 	$user = current_user();
 	if ($user) {
-		echo "<p>logged in as <a href=\"" . uri(array(), 'myOmekaDashboard') . "\">$user->username</a> | <a href=\"" . uri(array('action'=>'logout', 'controller'=>'users')) . "\">Logout</a></p>";
+		echo "<p>logged in as <a href=\"" . uri(array(), 'myOmekaDashboard') . "\">$user->username</a> | <a href=\"" . uri(array('action'=>'logout', 'controller'=>'users'), 'default') . "\">Logout</a></p>";
 	} else {
 		echo "<p><a href=\"" . uri(array('action'=>'login', 'controller'=>'users')) . "\">Login</a></p>";
 	}
