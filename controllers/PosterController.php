@@ -64,16 +64,10 @@ class MyOmeka_PosterController extends Omeka_Controller_Action
     }
     
     public function viewAction()
-    {
-        $poster_id = $this->_getParam('id');
-        
+    {        
         // Get the poster object
-        $poster = $this->findById();
-    
-        // Get items already part of the poster
-        $posterItems = $poster->getPosterItems($poster_id);
-        
-        return $this->render('myposter/viewPoster.php', compact("poster","posterItems"));
+        $poster = $this->findById(null, 'MyOmekaPoster');
+        $this->view->poster = $poster;
     }
     
     public function shareAction()
@@ -81,20 +75,24 @@ class MyOmeka_PosterController extends Omeka_Controller_Action
         $poster_id = $this->_getParam('id');
         
         // Get the poster object
-        $poster = $this->findById();
-                    
-        // If form is being submitted, handle it
-        if($emailTo = $this->_getParam('emailTo')){
+        $poster = $this->findById(null, 'MyOmekaPoster');
+        
+        if ($this->getRequest()->isPost()) {
             $validator = new Zend_Validate_EmailAddress();
-            $user = Omeka::loggedIn();
-            if($validator->isValid($emailTo)){
+            $emailTo = $this->getRequest()->getPost('email_to');
+            if(Zend_Validate::is($emailTo, 'EmailAddress')){
                 $site_title = get_option('site_title');
         		$from = get_option('administrator_email');
+        		
+                $user = Omeka::loggedIn();
                 $subject = $user->username . " shared a poster with you";
                 
                 $body = $user->username . " shared a poster with you on $site_title. \n\n";
                 $body .= "Click here to view the poster:\n";
-                $body .= uri( get_option('my_omeka_page_path') . "poster/view/" . $poster_id);
+                
+                // Hack to get access to the abs_uri() function in the view helpers.
+                require_once HELPER_DIR . DIRECTORY_SEPARATOR . 'all.php';
+                $body .= abs_uri(array('action'=>'view', 'id'=>$poster->id), 'myOmekaPosterActionId');
                 
                 $header = "From: $from\n";
                 $header .= "X-Mailer: PHP/" . phpversion();
@@ -106,7 +104,7 @@ class MyOmeka_PosterController extends Omeka_Controller_Action
             }
         }
         
-        return $this->render('myposter/sharePoster.php', compact("poster", "emailSent","emailTo"));   
+        $this->view->assign(compact("poster", "emailSent","emailTo"));
     }
     
     public function saveAction()

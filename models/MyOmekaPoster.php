@@ -2,11 +2,19 @@
 require_once "MyOmekaPosterItem.php";
 require_once "MyOmekaNote.php";
 require_once 'MyOmekaPosterTable.php';
-class MyOmekaPoster extends Omeka_Record{
+class MyOmekaPoster extends Omeka_Record
+{
     public $title;
     public $description = '';
     public $user_id;
     public $date_created;
+    
+    protected $_related = array('Items'=>'getItems');
+    
+    public function getItems()
+    {
+        return $this->getPosterItems($this->id);
+    }
     
     public function getUserPosters($userId) 
     {
@@ -31,7 +39,7 @@ class MyOmekaPoster extends Omeka_Record{
                                                             ORDER BY ordernum");
            
            // Go through the items and add in the notes (This could probably be done above in a single query)
-           $noteObj = new Note();
+           $noteObj = new MyOmekaNote();
            foreach($items as $item){
                $note = $noteObj->getItemNotes($item->user_id, $item->id);
                $item->itemNote = $note[0]->note;

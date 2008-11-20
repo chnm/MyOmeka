@@ -7,8 +7,7 @@
 <?php echo $poster->description;?>
 </div>
 
-
-<?php foreach($posterItems as $posterItem): ?>
+<?php foreach($poster->Items as $posterItem): ?>
 	<div id="myomeka-poster-item">
 	<?php echo link_to_thumbnail($posterItem); ?>
     <h3><?php echo link_to_item($posterItem); ?></h3>
