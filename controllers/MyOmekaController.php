@@ -71,35 +71,6 @@ class MyOmeka_MyOmekaController extends Omeka_Controller_Action
         	$this->_forward('login');
 		}
 	}
-
-	public function loginAction()
-	{	
-		$emailSent = false;
-		$requireTermsOfService = get_option('myomeka_require_terms_of_service');
-					
-		if (!empty($_POST)) {
-        
-            require_once 'Zend/Session.php';
-            $user = new User;
-            $session = new Zend_Session_Namespace;
-            $result = $user->authenticate();
-
-			if ($result->isValid()) {
-				$this->_redirect(myomeka_get_path('dashboard/'));
-			} else {		
-			 	$this->flash('There was an error logging you in.  Please try again, or register a new account.');
-			}
-		}
-		$this->render('index', compact('emailSent', 'requireTermsOfService'));
-	}
-	
-	public function logoutAction()
-	{
-		$auth = $this->_auth;
-		//http://framework.zend.com/manual/en/zend.auth.html
-		$auth->clearIdentity();
-		$this->_redirect(myomeka_get_path());
-	}
 	
 	/**
 	 * Register thyself for a user account with Omeka
@@ -159,35 +130,6 @@ class MyOmeka_MyOmekaController extends Omeka_Controller_Action
 		return mail($user->email, $title, $body, $header);
 	}
 
-	public function activateAction()
-	{
-		$hash = $this->_getParam('u');
-		$ua = $this->getTable('UsersActivations')->findBySql("url = ?", array($hash), true);
-		
-		if(!$ua) {
-			$this->errorAction();
-			return;
-		}
-		
-		if(!empty($_POST)) {
-			if (strlen($_POST['new_password1']) >= 6) {	
-				if($_POST['new_password1'] == $_POST['new_password2']) {
-					$ua->User->password = $_POST['new_password1'];
-					$ua->User->active = 1;
-					$ua->User->save();
-					$ua->delete();
-					$this->_redirect(myomeka_get_path());				
-				} else {
-					$this->flash('Please enter the same passwords twice.');
-				}
-			} else {
-				$this->flash('Please enter a password that has at least 6 characters.');
-			}
-		}
-		$user = $ua->User;
-		$this->render('activate', compact('user'));
-	}
-
 	public function resetPasswordAction()
 	{
 		$hash = $this->_getParam('u');
@@ -216,56 +158,6 @@ class MyOmeka_MyOmekaController extends Omeka_Controller_Action
 		$user = $ua->User;
 		$this->render('reset-password', compact('user'));
 	}
-
-	public function forgotAction()
-	{
-		//whether the forgot password email was sent or not
-		$emailSent = false;
-		
-		//If the user's email address has been submitted, then make a new temp activation url and email it
-		if(!empty($_POST)) {
-			
-			$email = $_POST['email'];
-			$ua = new UsersActivations;
-			
-			$user = $this->getTable('User')->findByEmail($email);
-			
-			if($user) {
-				//Create the reset password url
-				
-			try {	
-				$ua->user_id = $user->id;
-				$ua->save();
-				
-				$site_title = get_option('site_title');
-				
-				//Send the email with the reset password url
-				$url = uri(get_option('myomeka_page_path') . 'resetPassword?u='.$ua->url);
-				$body   = "You have requested to change you password for ".$site_title.". Your username is ".$user->username.". ";
-				$body  .= "Please follow this link to reset your password:\n\n";
-				$body  .= $url."\n\n";
-				$body  .= "$site_title Administrator";		
-				
-				$admin_email = get_option('administrator_email');
-				$title = "[$site_title] Reset Your Password";
-				$header = 'From: '.$admin_email. "\n" . 'X-Mailer: PHP/' . phpversion();
-				
-				mail($email,$title, $body, $header);
-				$this->flashSuccess('Your password has been emailed.');
-				$emailSent = true;	
-			} catch (Exception $e) {
-				$this->flash('Your password has already been sent to your email address');
-			}
-			
-			}else {
-				//If that email address doesn't exist
-				$this->flash('The email address you provided is invalid.');
-			}			
-		}
-		
-		return $this->render('forgot-password', compact('emailSent'));
-	}
-
 }
  
 ?>
