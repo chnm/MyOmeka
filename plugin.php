@@ -12,13 +12,15 @@
 define('MY_OMEKA_PLUGIN_VERSION', '0.3alpha');
 define('MY_OMEKA_PAGE_PATH', 'myomeka/');
 
+define('MYOMEKA_USER_ROLE', 'my-omeka');
+
 require_once 'MyOmekaNote.php';
 
 // Add plugin hooks.
 add_plugin_hook('install', 'my_omeka_install');
 add_plugin_hook('config', 'my_omeka_config');
 add_plugin_hook('config_form', 'my_omeka_config_form');
-//add_plugin_hook('define_acl', 'my_omeka_setup_acl');
+add_plugin_hook('define_acl', 'my_omeka_setup_acl');
 add_plugin_hook('define_routes', 'my_omeka_define_routes');
 add_plugin_hook('public_theme_header', 'my_omeka_css');
 add_plugin_hook('item_browse_sql', 'my_omeka_show_only_my_items');
@@ -78,6 +80,10 @@ function my_omeka_define_routes($router)
 {
 	// get the base path
 	$bp = get_option('my_omeka_page_path');
+	
+	if (empty($bp)) {
+	   $bp = MY_OMEKA_PAGE_PATH;
+	}
 	    
     $routes = array();
     
@@ -226,11 +232,6 @@ function my_omeka_breadcrumb()
 	
 }
 
-function my_omeka_get_path($p='') 
-{
-	return uri(settings('my_omeka_page_path') . $p);
-}
-
 function my_omeka_userloggedin_status() 
 {
 	$user = current_user();
@@ -307,6 +308,13 @@ function my_omeka_settings_css()
 
 function my_omeka_setup_acl($acl)
 {
+    $acl->addRole(new Zend_Acl_Role(MYOMEKA_USER_ROLE));
+    // $acl->loadResourceList(array('MyOmeka_MyOmeka'=>array('dashboard', 'index')));
+    
+    // Have to hard code all the roles that allow access rather than just saying
+    // that all logged in users have access.
+    // $acl->allow(array(MYOMEKA_USER_ROLE, 'admin', 'super', 'researcher', 'contributor'), 'MyOmeka_MyOmeka', array('index', 'dashboard'));
+    
     // This ACL code was copied directly from the 0.9.x exhibit builder
     // previously the ACL had to be defined upon initializing the plugin
     // the new 0.10 plugin API no longer requires this, and should be cleaned up
@@ -326,5 +334,3 @@ function my_omeka_setup_acl($acl)
     // $acl->allow('contributor', 'MyOmeka',array('favorite'));
       
 }
-
-?>

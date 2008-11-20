@@ -57,7 +57,7 @@ class MyOmeka_PosterController extends Omeka_Controller_Action
 
             return $this->render('myposter/editPoster.php', compact("poster","posterItems","items"));
         } else {
-            return $this->_redirect(my_omeka_get_path('dashboard/'));
+            return $this->redirect->gotoRoute(array(), 'myOmekaDashboard');
         }
         
     }

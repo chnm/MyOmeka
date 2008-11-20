@@ -45,31 +45,28 @@ class MyOmeka_MyOmekaController extends Omeka_Controller_Action
 	 **/
 	public function dashboardAction()
 	{		
-		if($current = Omeka_Context::getInstance()->getCurrentUser()) {
+		$current = Omeka_Context::getInstance()->getCurrentUser();
 
-		    // Get the user's existing posters
-            $posters = $this->getTable('MyOmekaPoster')->findByUserId($current->id);
+	    // Get the user's existing posters
+        $posters = $this->getTable('MyOmekaPoster')->findByUserId($current->id);
 
-            // Get tagged and noted items
-            
-            // Should combine these 2 queries into a single query to obviate the
-            // need for extra processing.
-            $notedItems = $this->getTable('MyOmekaNote')->findItemsByUserId($current->id);
-            $taggedItems = MyOmekaTag::getItemsTaggedByUser($current->id);
-            
-            // Loop through the items to make sure we only have one of each item
-            $notedItems = array();
-            $mixedItems = $notedItems + $taggedItems;
-            foreach($mixedItems as $item){
-                $notedItems[$item->id] = $item;
-            }
-            
-            $tags = $this->getTable('Tag')->findBy(array('user'=>$current->id),"MyOmekaTag");
-            
-			$this->render('dashboard', compact("posters","notedItems","tags"));
-		} else {
-        	$this->_forward('login');
-		}
+        // Get tagged and noted items
+        
+        // Should combine these 2 queries into a single query to obviate the
+        // need for extra processing.
+        $notedItems = $this->getTable('MyOmekaNote')->findItemsByUserId($current->id);
+        $taggedItems = MyOmekaTag::getItemsTaggedByUser($current->id);
+        
+        // Loop through the items to make sure we only have one of each item
+        $notedItems = array();
+        $mixedItems = $notedItems + $taggedItems;
+        foreach($mixedItems as $item){
+            $notedItems[$item->id] = $item;
+        }
+        
+        $tags = $this->getTable('Tag')->findBy(array('user'=>$current->id),"MyOmekaTag");
+        
+        $this->view->assign(compact("posters","notedItems","tags"));
 	}
 	
 	/**
@@ -130,6 +127,13 @@ class MyOmeka_MyOmekaController extends Omeka_Controller_Action
 		return mail($user->email, $title, $body, $header);
 	}
 
+    /**
+     * @todo This is duplicated from UsersController::activateAction(), get rid 
+     * of that.
+     * 
+     * @param string
+     * @return void
+     **/
 	public function resetPasswordAction()
 	{
 		$hash = $this->_getParam('u');
@@ -147,7 +151,7 @@ class MyOmeka_MyOmekaController extends Omeka_Controller_Action
 					$ua->User->active = 1;
 					$ua->User->save();
 					$ua->delete();
-					$this->_redirect(my_omeka_get_path());				
+					$this->redirect->gotoRoute(array(), 'myOmekaDashboard');				
 				} else {
 					$this->flash('Please enter the same passwords twice.');
 				}
