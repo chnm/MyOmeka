@@ -9,24 +9,24 @@
 // note: MyOmeka currently requires the TermsOfService plugin
 
 // Define the plugin version and page path.
-define('MYOMEKA_PLUGIN_VERSION', '0.3alpha');
-define('MYOMEKA_PAGE_PATH', 'myomeka/');
+define('MY_OMEKA_PLUGIN_VERSION', '0.3alpha');
+define('MY_OMEKA_PAGE_PATH', 'myomeka/');
 
 require_once 'MyOmekaNote.php';
 
 // Add plugin hooks.
-add_plugin_hook('install', 'myomeka_install');
-add_plugin_hook('config', 'myomeka_config');
-add_plugin_hook('config_form', 'myomeka_config_form');
-//add_plugin_hook('define_acl', 'myomeka_setup_acl');
-add_plugin_hook('define_routes', 'myomeka_define_routes');
-add_plugin_hook('public_theme_header', 'myomeka_css');
-add_plugin_hook('item_browse_sql', 'myomeka_show_only_my_items');
+add_plugin_hook('install', 'my_omeka_install');
+add_plugin_hook('config', 'my_omeka_config');
+add_plugin_hook('config_form', 'my_omeka_config_form');
+//add_plugin_hook('define_acl', 'my_omeka_setup_acl');
+add_plugin_hook('define_routes', 'my_omeka_define_routes');
+add_plugin_hook('public_theme_header', 'my_omeka_css');
+add_plugin_hook('item_browse_sql', 'my_omeka_show_only_my_items');
 
 // Add filters.
-add_filter('admin_navigation_main', 'myomeka_admin_nav');
+add_filter('admin_navigation_main', 'my_omeka_admin_nav');
 
-// when I call a function defined in a controller, such as myomeka_get_path, which uses uri or settings, the following helper functions have not 
+// when I call a function defined in a controller, such as my_omeka_get_path, which uses uri or settings, the following helper functions have not 
 // yet been loaded, hence i need to add these here.  I wish these could be loaded somewhere else before the controller is loaded [JL]
 // I'm unsure if this applies to the 0.10 API, so I'm commenting it out for now.. [DL]
 // require_once HELPER_DIR.'/Functions.php';
@@ -36,10 +36,10 @@ add_filter('admin_navigation_main', 'myomeka_admin_nav');
  * Install the plugin.
  */
 
-function myomeka_install()
+function my_omeka_install()
 {	
-	set_option('myomeka_plugin_version', MYOMEKA_PLUGIN_VERSION);
-	set_option('myomeka_page_path', myomeka_clean_path(MYOMEKA_PAGE_PATH));
+	set_option('my_omeka_plugin_version', MY_OMEKA_PLUGIN_VERSION);
+	set_option('my_omeka_page_path', my_omeka_clean_path(MY_OMEKA_PAGE_PATH));
 	
 	// Create new tables to support poster building
 	$db = get_db();
@@ -71,13 +71,13 @@ function myomeka_install()
 }
 
 /**
- * Define the routes, wrapping them in myomeka_add_route()
+ * Define the routes, wrapping them in my_omeka_add_route()
  */
 
-function myomeka_define_routes($router) 
+function my_omeka_define_routes($router) 
 {
 	// get the base path
-	$bp = get_option('myomeka_page_path');
+	$bp = get_option('my_omeka_page_path');
 	    
     $routes = array();
     
@@ -110,12 +110,12 @@ function myomeka_define_routes($router)
  * @return array Filtered navigation array.
  */
 
-function myomeka_admin_nav($navArray)
+function my_omeka_admin_nav($navArray)
 {
     return $navArray += array('Posters'=> uri('poster/admin-posters'));
 }
 
-function myomeka_css()
+function my_omeka_css()
 {
 	echo "<link rel=\"stylesheet\" media=\"screen\" href=\"".css('myomeka')."\" />";
 }
@@ -127,7 +127,7 @@ function myomeka_css()
  * @return void
  **/
 
-function myomeka_show_only_my_items($select, $params)
+function my_omeka_show_only_my_items($select, $params)
 {
 	$user = current_user();
 	
@@ -160,7 +160,7 @@ function myomeka_show_only_my_items($select, $params)
 /**
  * Call this function in your public themes to allow users to add notes to an item.
  */
-function myomeka_add_notes($item)
+function my_omeka_add_notes($item)
 {	
     if($user = current_user()) {
      	
@@ -181,15 +181,15 @@ function myomeka_add_notes($item)
 /**
  * Echo this function in your items/show.php of your public themes to allow users to add and remove notes and tags
  */
-function myomeka_embed_notes_and_tags($item) 
+function my_omeka_embed_notes_and_tags($item) 
 {
 	 
 	$user = current_user(); 
 	$html = '';
 	 if ($user) {
         $html .= '<div id="myomeka-notes-tags">';
-        $html .= myomeka_add_notes($item);
-        $html .= myomeka_add_tags($item);
+        $html .= my_omeka_add_notes($item);
+        $html .= my_omeka_add_tags($item);
         $html .= '</div>';
 	}
 	return $html;
@@ -198,7 +198,7 @@ function myomeka_embed_notes_and_tags($item)
 /**
  * Call this function in your public themes to allow users to add and remove tags.
  */
-function myomeka_add_tags($item)
+function my_omeka_add_tags($item)
 {
     if($user = current_user()) {
         require_once PLUGIN_DIR."/MyOmeka/models/MyomekaTag.php";
@@ -221,66 +221,66 @@ function poster_icon_html($item)
     }
 }
 
-function myomeka_breadcrumb() 
+function my_omeka_breadcrumb() 
 {
 	
 }
 
-function myomeka_get_path($p='') 
+function my_omeka_get_path($p='') 
 {
-	return uri(settings('myomeka_page_path') . $p);
+	return uri(settings('my_omeka_page_path') . $p);
 }
 
-function myomeka_userloggedin_status() 
+function my_omeka_userloggedin_status() 
 {
 	$user = current_user();
 	if ($user) {
-		echo "<p>logged in as <a href=\"" . myomeka_get_path() . "\">$user->username</a> | <a href=\"" . myomeka_get_path('logout/') . "\">Logout</a></p>";
+		echo "<p>logged in as <a href=\"" . my_omeka_get_path() . "\">$user->username</a> | <a href=\"" . my_omeka_get_path('logout/') . "\">Logout</a></p>";
 	} else {
-		echo "<p><a href=\"" . myomeka_get_path('login/') . "\">Login</a></p>";
+		echo "<p><a href=\"" . my_omeka_get_path('login/') . "\">Login</a></p>";
 	}
 }
 
-function myomeka_clean_path($path)
+function my_omeka_clean_path($path)
 {
 	return trim(trim($path), '/') . '/';
 }
 
-function myomeka_config($post) 
+function my_omeka_config($post) 
 {
-	set_option('myomeka_page_path', myomeka_clean_path($post['myomeka_page_path']));
+	set_option('my_omeka_page_path', my_omeka_clean_path($post['my_omeka_page_path']));
 	
 	//if the page path is empty then make it the default page path
-	if (trim(get_option('myomeka_page_path')) == '') {
-		set_option('myomeka_page_path', myomeka_clean_path(MYOMEKA_PAGE_PATH));
+	if (trim(get_option('my_omeka_page_path')) == '') {
+		set_option('my_omeka_page_path', my_omeka_clean_path(MYOMEKA_PAGE_PATH));
 	}
 
-	$requireTOS = (strtolower($post['myomeka_require_terms_of_service']) == 'checked') ? 1 : 0;
-	set_option('myomeka_require_terms_of_service', $requireTOS);
+	$requireTOS = (strtolower($post['my_omeka_require_terms_of_service']) == 'checked') ? 1 : 0;
+	set_option('my_omeka_require_terms_of_service', $requireTOS);
 }
 
-function myomeka_config_form() 
+function my_omeka_config_form() 
 {
-        	myomeka_settings_css(); //this styling needs to be associated with appropriate hook
+        	my_omeka_settings_css(); //this styling needs to be associated with appropriate hook
 			$textInputSize = 30;
 			$textAreaRows = 10;
 			$textAreaCols = 50;
-			$requireTOS = settings('myomeka_require_terms_of_service');
+			$requireTOS = settings('my_omeka_require_terms_of_service');
 		
 		?>
 		<div id="myomeka_settings">
 			<label for="myomeka_page_path">Relative Page Path From Project Root:</label>
 			<p class="instructionText">Please enter the relative page path from the project root where you want the MyOmeka page to be located. Use forward slashes to indicate subdirectories, but do not begin with a forward slash.</p>
-			<input type="text" name="myomeka_page_path" value="<?php echo settings('myomeka_page_path') ?>" />
-			<label for="myomeka_require_terms_of_service">Require Terms of Service And Privacy Policy:</label>
+			<input type="text" name="myomeka_page_path" value="<?php echo settings('my_omeka_page_path') ?>" />
+			<label for="my_omeka_require_terms_of_service">Require Terms of Service And Privacy Policy:</label>
 			<p class="instructionText">Check box if you require registrants to agree to the Terms of Service and Privacy Policy.</p>
-			<input type="checkbox" name="myomeka_require_terms_of_service" value="CHECKED" <?php if (!empty($requireTOS)) { echo 'CHECKED'; } ?> />
+			<input type="checkbox" name="my_omeka_require_terms_of_service" value="CHECKED" <?php if (!empty($requireTOS)) { echo 'CHECKED'; } ?> />
 		</div>
 	<?php
 }
 
 // the css style for the configure settings
-function myomeka_settings_css() 
+function my_omeka_settings_css() 
 {
 	$html = '';
 	$html .= '<style type="text/css" media="screen">';
@@ -305,7 +305,7 @@ function myomeka_settings_css()
  * @param Omeka_Acl
  */
 
-function myomeka_setup_acl($acl)
+function my_omeka_setup_acl($acl)
 {
     // This ACL code was copied directly from the 0.9.x exhibit builder
     // previously the ACL had to be defined upon initializing the plugin

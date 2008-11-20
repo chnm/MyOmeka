@@ -83,7 +83,7 @@ class MyOmeka_MyOmekaController extends Omeka_Controller_Action
 		
 		$user = new User();
 		$user->role = "MyOmeka";
-		$requireTermsOfService = get_option('myomeka_require_terms_of_service');
+		$requireTermsOfService = get_option('my_omeka_require_terms_of_service');
 
 		try {
 			 $agreedToTermsOfService = terms_of_service_checked_form_input();
@@ -124,7 +124,7 @@ class MyOmeka_MyOmekaController extends Omeka_Controller_Action
 		$from = get_option('administrator_email');
 		
 		$body = "Welcome!\n\nYour account for the ".$site_title." archive has been created. Your username is ".$user->username.". Please click the following link to activate your account:\n\n"
-		. uri( get_option('myomeka_page_path') . "activate?u={$ua->url}") . "\n\n (or use any other page on the site).\n\nBe aware that we log you out after 15 minutes of inactivity to help protect people using shared computers (at libraries, for instance).\n\n".$site_title." Administrator";
+		. uri( get_option('my_omeka_page_path') . "activate?u={$ua->url}") . "\n\n (or use any other page on the site).\n\nBe aware that we log you out after 15 minutes of inactivity to help protect people using shared computers (at libraries, for instance).\n\n".$site_title." Administrator";
 		$title = "Activate your account with the ".$site_title." Archive";
 		$header = 'From: '.$from. "\n" . 'X-Mailer: PHP/' . phpversion();
 		return mail($user->email, $title, $body, $header);
@@ -147,7 +147,7 @@ class MyOmeka_MyOmekaController extends Omeka_Controller_Action
 					$ua->User->active = 1;
 					$ua->User->save();
 					$ua->delete();
-					$this->_redirect(myomeka_get_path());				
+					$this->_redirect(my_omeka_get_path());				
 				} else {
 					$this->flash('Please enter the same passwords twice.');
 				}
