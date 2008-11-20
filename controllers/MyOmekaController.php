@@ -162,6 +162,11 @@ class MyOmeka_MyOmekaController extends Omeka_Controller_Action
 		$user = $ua->User;
 		$this->render('reset-password', compact('user'));
 	}
+	
+	public function helpAction()
+	{
+	    
+	}
 }
  
 ?>

@@ -4,6 +4,8 @@
 	my_omeka_breadcrumb();
 ?>
 
+<div id="primary">
+    
 <div id="myomeka-primary">
 
 	<h2>My Omeka Dashboard</h2>
@@ -80,4 +82,5 @@
 
 </div><!-- end myomeka-primary -->
 
+</div>
 <?php foot(); ?>
