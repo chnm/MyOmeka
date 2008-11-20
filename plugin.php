@@ -30,12 +30,6 @@ add_plugin_hook('initialize', 'my_omeka_add_controller_plugin');
 // Add filters.
 add_filter('admin_navigation_main', 'my_omeka_admin_nav');
 
-// when I call a function defined in a controller, such as my_omeka_get_path, which uses uri or settings, the following helper functions have not 
-// yet been loaded, hence i need to add these here.  I wish these could be loaded somewhere else before the controller is loaded [JL]
-// I'm unsure if this applies to the 0.10 API, so I'm commenting it out for now.. [DL]
-// require_once HELPER_DIR.'/Functions.php';
-// require_once HELPER_DIR.'/UnicodeFunctions.php';
-
 /**
  * Install the plugin.
  */
@@ -92,11 +86,12 @@ function my_omeka_define_routes($router)
     // We may be able to condense this list even more.
     $routes['myOmekaDashboard'] = array('', array('controller'=>'my-omeka'));
     $routes['myOmekaAction'] = array(':action', array('controller'=>'my-omeka'));
-    $routes['myOmekaPosterAction'] = array('poster/:action/:id', array('controller'=>'poster'));
+    $routes['myOmekaPosterAction'] = array('poster/:action', array('controller'=>'poster'));
+    $routes['myOmekaPosterActionId'] = array('poster/:action/:id', array('controller'=>'poster'));
     $routes['myOmekaAddTag'] = array('tags/add', array('controller'=>'my-omeka-tag', 'action'=>'add'));
     $routes['myOmekaTagBrowse'] = array('tags/browse/:id', array('controller'=>'my-omeka-tag', 'action'=>'browse'));
     $routes['myOmekaTagDelete'] = array('tags/delete/:tag/:item_id', array('controller'=>'my-omeka-tag', 'action'=>'delete'));
-    $routes['myOmekaNote'] = array('note/:action', array('controller'=>'note'));
+    $routes['myOmekaNoteAction'] = array('note/:action', array('controller'=>'note'));
     
     foreach ($routes as $routeName => $routeValues) {
         list($routePath, $routeVars) = $routeValues;
@@ -238,9 +233,9 @@ function my_omeka_userloggedin_status()
 {
 	$user = current_user();
 	if ($user) {
-		echo "<p>logged in as <a href=\"" . my_omeka_get_path() . "\">$user->username</a> | <a href=\"" . my_omeka_get_path('logout/') . "\">Logout</a></p>";
+		echo "<p>logged in as <a href=\"" . uri(array(), 'myOmekaDashboard') . "\">$user->username</a> | <a href=\"" . uri(array('action'=>'logout', 'controller'=>'users')) . "\">Logout</a></p>";
 	} else {
-		echo "<p><a href=\"" . my_omeka_get_path('login/') . "\">Login</a></p>";
+		echo "<p><a href=\"" . uri(array('action'=>'login', 'controller'=>'users')) . "\">Login</a></p>";
 	}
 }
 

@@ -64,7 +64,7 @@ class MyOmeka_MyOmekaController extends Omeka_Controller_Action
             $notedItems[$item->id] = $item;
         }
         
-        $tags = $this->getTable('Tag')->findBy(array('user'=>$current->id),"MyOmekaTag");
+        $tags = $this->getTable('Tag')->findBy(array('user'=>$current->id, 'type'=>'MyOmekaTag'));
         
         $this->view->assign(compact("posters","notedItems","tags"));
 	}

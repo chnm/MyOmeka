@@ -21,9 +21,9 @@ echo js('adminPosters');
                     <td><?php echo $poster->username; ?></td>
                     <td><?php echo $poster->date_modified; ?></td>
                     <td>
-                        <a href="<?php echo my_omeka_get_path('/poster/view/'.$poster->id); ?>">view</a> 
-                        <a href="<?php echo my_omeka_get_path('poster/edit/'.$poster->id.'?return=admin'); ?>">edit</a> 
-                        <a href="<?php echo my_omeka_get_path('poster/delete/'.$poster->id.'?return=admin'); ?>" class="myomeka-delete-poster-link">delete</a>
+                        <a href="<?php echo uri(array('action'=>'view','id'=>$poster->id), 'myOmekaPosterActionId'); ?>">view</a> 
+                        <a href="<?php echo uri(array('action'=>'edit','id'=>$poster->id), 'myOmekaPosterActionId'); ?>">edit</a> 
+                        <a href="<?php echo uri(array('action'=>'delete','id'=>$poster->id), 'myOmekaPosterActionId'); ?>" class="myomeka-delete-poster-link">delete</a>
                     </td>
                 </tr>
             <?php endforeach; ?>

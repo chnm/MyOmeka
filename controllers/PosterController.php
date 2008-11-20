@@ -8,8 +8,7 @@ require_once 'MyOmekaNote.php';
 require_once 'MyOmekaTag.php';
 
 class MyOmeka_PosterController extends Omeka_Controller_Action
-{
-
+{    
     public function indexAction()
     {
         $this->_forward('browse');
@@ -31,32 +30,34 @@ class MyOmeka_PosterController extends Omeka_Controller_Action
     
     public function editAction()
     {   
-        $poster_id = $this->_getParam('id');
+        $posterId = $this->_getParam('id');
         
         // Get the current user
         if($user = Omeka_Context::getInstance()->getCurrentUser()){            
             // Get the poster object
-            $poster = $this->findById();
+            $poster = $this->findById($posterId, 'MyOmekaPoster');
 
             // Get items already part of the poster
             $posterItems = $poster->getPosterItems($poster_id);
 
+            // Doesn't work yet (what did this do in the first place?)
             // Get objects with notes and objects that the user has tagged
-            $noteObj = new Note();
-            $myomekatagObj = new MyomekaTag();
-            $mixedItems = array_merge(
-                                    $noteObj->getNotedItemsByUser($user->id),
-                                    $myomekatagObj->getItemsTaggedByUser($user->id)
-                                );
+            // $noteObj = new Note();
+            // $myomekatagObj = new MyomekaTag();
+            // $mixedItems = array_merge(
+            //                         $noteObj->getNotedItemsByUser($user->id),
+            //                         $myomekatagObj->getItemsTaggedByUser($user->id)
+            //                     );
             
             // Loop through the items to make sure we only have one of each item
-            $items = array();
-            foreach($mixedItems as $item){
-                $items[$item->id] = $item;
-            }
-
-            return $this->render('myposter/editPoster.php', compact("poster","posterItems","items"));
+            // $items = array();
+            // foreach($mixedItems as $item){
+            //     $items[$item->id] = $item;
+            // }
+            
+            $this->view->assign(compact('poster', 'posterItems'));            
         } else {
+            var_dump('woooo');exit;
             return $this->redirect->gotoRoute(array(), 'myOmekaDashboard');
         }
         
@@ -119,23 +120,23 @@ class MyOmeka_PosterController extends Omeka_Controller_Action
         $poster->updateItems($params);
         $poster->save();
         
-        $this->_redirect(my_omeka_get_path('dashboard/'));
+        $this->redirect->gotoRoute(array(), 'myOmekaDashboard');
     }
 
 
     public function newAction(){
 
-        $user = Omeka::loggedIn();
+        $user = Omeka_Context::getInstance()->getCurrentUser();
         
-        $poster = new Poster();
+        $poster = new MyOmekaPoster();
         $poster->title = 'untitled';
         $poster->user_id = $user->id;
         $poster->description = '';
         $poster->date_created = date( 'Y-m-d H:i:s', time() );
         $poster->save();
         
-        return $this->_redirect( my_omeka_get_path('poster/edit/' . $poster->id) );
-        
+        return $this->redirect->gotoRoute( array('action'=>'edit', 'id'=>$poster->id), 
+        'myOmekaPosterActionId');
     }
     
     public function deleteAction()
@@ -153,9 +154,9 @@ class MyOmeka_PosterController extends Omeka_Controller_Action
             $this->flash("\"$poster->title\" was successfully deleted");
         }
         if ($returnDestination) {
-            return $this->_redirect(my_omeka_get_path('poster/adminPosters'));
+            return $this->redirect->gotoRoute(array('action'=>'admin-posters'), 'myOmekaPosterAction');
         } else {
-            return $this->_redirect(my_omeka_get_path('dashboard/'));
+            return $this->redirect->gotoRoute(array(), 'myOmekaDashboard');
         }
     }
 

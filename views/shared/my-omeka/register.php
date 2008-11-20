@@ -6,7 +6,7 @@
 	if (!$emailSent) { 
 ?>
 	
-<form id="myomeka-register-form" action="<?php echo my_omeka_get_path('register/');?>" method="post" accept-charset="utf-8">
+<form id="myomeka-register-form" action="<?php echo uri(array('action'=>'register'), 'myOmekaAction');?>" method="post" accept-charset="utf-8">
 <?php if(!isset($user)) {
 	$user = new User;
 	$user->setArray($_POST);
