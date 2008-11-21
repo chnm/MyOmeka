@@ -64,10 +64,10 @@
     <div id="myomeka-additem-modal" style="display:none;">
         <h2>Choose an item</h2>
         <?php if(count($items)):?>
-            <?php foreach($items as $item):?>
+            <?php while ($item = loop_items()):?>
                 <div class="myomeka-additem-item">
                     <div class="myomeka-additem-image">
-                        <?php echo poster_icon_html($item); ?>
+                        <?php echo poster_icon_html(); ?>
                         <form action="<?php echo uri(array('action'=>'add-poster-item'), 'myOmekaPosterAction'); ?>" method="post" accept-charset="utf-8" class="myomeka-additem-form">
                         	<input type="submit" name="submit" value="Add this item" class="myomeka-additem-submit"/>
                         	<input type="hidden" name="item-id" value="<?php echo $item->id; ?>" class="myomeka-additem-item-id"/>
@@ -75,18 +75,12 @@
                     </div>
                     <div class="myomeka-additem-details">
                         <dl>
-                            <?php if($item->title): ?>
                                 <dt>Title:</dt>
-                                <dd><?php echo $item->title;?></dd>
-                            <?php endif ?>
-                            <?php if($item->description): ?>
+                                <dd><?php echo item('Dublin Core', 'Title');?></dd>
                                 <dt>Description:</dt>
-                                <dd><?php echo $item->description;?></dd>
-                            <?php endif ?>
-                            <?php if($item->creator): ?>
-                                <dt>creator:</dt>
-                                <dd><?php echo $item->creator;?></dd>
-                            <?php endif ?>
+                                <dd><?php echo item('Dublin Core', 'Description');?></dd>
+                                <dt>Creator:</dt>
+                                <dd><?php echo item('Dublin Core', 'Creator');?></dd>
                             <?php if($item->annotation): ?>
                                 <dt>My Notes:</dt>
                                 <dd><?php echo $item->annotation;?></dd>
@@ -94,7 +88,7 @@
                         </dl>
                     </div>
                 </div>
-            <?php endforeach; ?>
+            <?php endwhile; ?>
         <?php else: ?>
             <p>You have you favorite items before you can add those items to a poster</p>
         <?php endif; ?>

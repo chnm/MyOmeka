@@ -5,7 +5,6 @@ Add item to posters model
     margin:15px;
     padding:15px;
     border-top:1px solid #000;
-    height: 100%;
 	overflow:hidden;
 }
 

@@ -202,24 +202,18 @@ function my_omeka_embed_notes_and_tags()
  */
 function my_omeka_add_tags($item)
 {
-    if($user = current_user()) {
-        $myomekatag = new MyOmekaTag;
-        $myomekatag->id = $item->id;
-        
-        $tags = get_db()->getTable('Tag')->findBy(array('user'=>$user->id, 'type'=>'MyomekaTag'));
-        
-        common("add-tags", compact("item","tags"));
-    }
+    $user = current_user();
+    $tags = get_db()->getTable('Tag')->findBy(array('user'=>$user->id, 'type'=>'MyomekaTag'));
+    common("add-tags", compact("item","tags"));
 }
 
-function poster_icon_html($item) 
+function poster_icon_html() 
 {
-    //If we can get a square thumbnail out of it, use that
-    if($thumbnail = square_thumbnail($item)) {
-        return $thumbnail;
-    } else {
-        return "<img alt='no image available' src='".img('noThumbnail.png')."'/>";
+    $html = item_thumbnail();
+    if (!$html) {
+        $html = "<img alt='no image available' src='".img('noThumbnail.png')."'/>";
     }
+    return $html;
 }
 
 function my_omeka_breadcrumb() 
