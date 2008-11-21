@@ -12,10 +12,15 @@ class MyOmekaControllerPlugin extends Zend_Controller_Plugin_Abstract
         if ('my-omeka' == $request->getModuleName()) {
             $user = Omeka_Context::getInstance()->getCurrentUser();
             
-            $loginRequiredActions = array('dashboard', 'index');
+            $loginRequired = array(
+                array('my-omeka', 'dashboard'), 
+                array('my-omeka', 'index'),
+                array('poster', 'edit'),
+                array('poster', 'share'),
+                array('poster', 'delete'));
             
             // If the user needs to login before accessing an action, then redirect to the login page.
-            if (!$user and in_array($request->getActionName(), $loginRequiredActions)) {
+            if (!$user and in_array(array($request->getControllerName(), $request->getActionName()), $loginRequired)) {
                 
                 // The following code piggybacks off the current (0.10) 
                 // implementation of UsersController::loginAction().  May need 

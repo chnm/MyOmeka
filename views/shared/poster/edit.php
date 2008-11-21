@@ -13,6 +13,7 @@
     // Set the initial Item Count
     Poster.itemCount = <?php echo count($posterItems); ?>;
 </script>
+<div id="primary">
 <div id="myomeka-primary">
 	<div id="myomeka-poster-info">
 	<h2>Edit Your Poster</h2>
@@ -98,5 +99,6 @@
             <p>You have you favorite items before you can add those items to a poster</p>
         <?php endif; ?>
     </div>
+</div>
 </div>
 <?php foot(); ?>

@@ -47,20 +47,17 @@
 
 	<div id="myomeka-notedItems">
 	<h3>Items with your notes and tags</h3>
-	<?php if(count($notedItems) > 0): ?>
+	<?php if (has_items_for_loop()): ?>
 
-		<?php foreach($notedItems as $notedItem): ?>
+		<?php while (loop_items()): ?>
 		<div class="myomeka-notedItems-list-box">
 	    	<ul id="myomeka-notedItems-list">            
-				<li><?php echo link_to_thumbnail($notedItem)?></li>	            
-                <li><a href="<?php echo uri('items/show/'.$notedItem->id); ?>">
-                    <?php if ($notedItem->title):?><?php print $notedItem->title; ?>
-                    <?php else: ?>[untitled]
-                    <?php endif; ?></a></li>
-					<li><?php echo snippet($notedItem->description,0,200);?>
+				<li><?php echo link_to_item(item_thumbnail()); ?></li>	            
+                <li><?php echo link_to_item(); ?></li>
+				<li><?php echo item('Dublin Core', 'Description', array('snippet'=>200));?>
 			</ul>
 		</div>
-		<?php endforeach; ?>
+		<?php endwhile; ?>
 
 		<?php else: ?>
 		   <p>You have not added notes to any items yet.</p>
@@ -69,10 +66,10 @@
 
 	<div id="myomeka-tags">
 	<h3>Your Tags</h3>
-	<?php if(count($tags) > 0): ?>
+	<?php if(count($tags)): ?>
 	    <ul class="hTagcloud" id="myomeka-tags-list">
-	        <?php foreach($tags as $tag): ?>
-	            <li><a href="<?php print uri("myomekatag/browse/?id=".$tag['id']);?>"><?php print $tag['name']; ?></a></li>
+	        <?php foreach ($tags as $tag): ?>
+	           <li><a href="<?php echo uri(array('id'=>$tag->id), 'myOmekaTagBrowse'); ?>"><?php echo htmlspecialchars($tag['name']); ?></a></li>
 	        <?php endforeach; ?>
 	    </ul>
 	<?php else: ?>

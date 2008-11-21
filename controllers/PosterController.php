@@ -31,36 +31,18 @@ class MyOmeka_PosterController extends Omeka_Controller_Action
     public function editAction()
     {   
         $posterId = $this->_getParam('id');
-        
-        // Get the current user
-        if($user = Omeka_Context::getInstance()->getCurrentUser()){            
-            // Get the poster object
-            $poster = $this->findById($posterId, 'MyOmekaPoster');
 
-            // Get items already part of the poster
-            $posterItems = $poster->getPosterItems($poster_id);
+        // Get the poster object
+        $poster = $this->findById($posterId, 'MyOmekaPoster');
 
-            // Doesn't work yet (what did this do in the first place?)
-            // Get objects with notes and objects that the user has tagged
-            // $noteObj = new Note();
-            // $myomekatagObj = new MyomekaTag();
-            // $mixedItems = array_merge(
-            //                         $noteObj->getNotedItemsByUser($user->id),
-            //                         $myomekatagObj->getItemsTaggedByUser($user->id)
-            //                     );
-            
-            // Loop through the items to make sure we only have one of each item
-            // $items = array();
-            // foreach($mixedItems as $item){
-            //     $items[$item->id] = $item;
-            // }
-            
-            $this->view->assign(compact('poster', 'posterItems'));            
-        } else {
-            var_dump('woooo');exit;
-            return $this->redirect->gotoRoute(array(), 'myOmekaDashboard');
-        }
+        // Get items already part of the poster
+        $posterItems = $poster->getPosterItems($poster_id);
         
+        // Retrieve items that were noted and tagged by users
+        $currentUser = Omeka_Context::getInstance()->getCurrentUser();
+        $items = $this->getTable('MyOmekaNote')->findTaggedAndNotedItemsByUserId($currentUser->id);
+        
+        $this->view->assign(compact('poster', 'posterItems', 'items'));            
     }
     
     public function viewAction()

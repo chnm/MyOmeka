@@ -51,22 +51,12 @@ class MyOmeka_MyOmekaController extends Omeka_Controller_Action
         $posters = $this->getTable('MyOmekaPoster')->findByUserId($current->id);
 
         // Get tagged and noted items
+        $items = $this->getTable('MyOmekaNote')->findTaggedAndNotedItemsByUserId($current->id);
         
-        // Should combine these 2 queries into a single query to obviate the
-        // need for extra processing.
-        $notedItems = $this->getTable('MyOmekaNote')->findItemsByUserId($current->id);
-        $taggedItems = MyOmekaTag::getItemsTaggedByUser($current->id);
-        
-        // Loop through the items to make sure we only have one of each item
-        $notedItems = array();
-        $mixedItems = $notedItems + $taggedItems;
-        foreach($mixedItems as $item){
-            $notedItems[$item->id] = $item;
-        }
-        
+        // Get tags made by the user viewing the dashboard.
         $tags = $this->getTable('Tag')->findBy(array('user'=>$current->id, 'type'=>'MyOmekaTag'));
         
-        $this->view->assign(compact("posters","notedItems","tags"));
+        $this->view->assign(compact("posters","items","tags"));
 	}
 	
 	/**

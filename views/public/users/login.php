@@ -19,6 +19,10 @@
 
 <p id="myomeka-forgotpassword"><a href="<?php echo uri('users/forgot-password'); ?>">Lost your password?</a></p>
 
+<?php 
+// Possible spot for a hook that other plugins could use to append data 
+// (like a link to register for an account with MyOmeka). ?>
+
 </div>
 </div>
 <?php foot(); ?>
