@@ -1,6 +1,6 @@
-<?php head(); 
-	my_omeka_breadcrumb();
-?>
+<?php head(); ?>
+
+<div id="primary">
 <?php echo flash(); ?>
 <h1>Sharing "<?php echo $poster->title; ?>"</h1>
 <?php if($emailSent): ?>
@@ -19,4 +19,5 @@
         </p>
     </form>
 <?php endif; ?>
+</div>
 <?php foot(); ?>

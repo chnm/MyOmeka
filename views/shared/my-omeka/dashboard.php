@@ -1,8 +1,6 @@
 <?php 
     head(); 
-    echo js('dashboard');
-	my_omeka_breadcrumb();
-?>
+    echo js('dashboard'); ?>
 
 <div id="primary">
     

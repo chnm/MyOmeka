@@ -3,9 +3,6 @@
     echo js('tiny_mce/tiny_mce'); 
     echo js('ibox/ibox');
     echo js('poster');
-
-	my_omeka_breadcrumb();
-
 ?>
 <script type="text/javascript" charset="utf-8">
     // Make the items-widget div a modal pop-up

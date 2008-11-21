@@ -1,4 +1,6 @@
 <?php head(); ?>
+
+<div id="primary">
 <h1>Forgot Password</h1>
 <?php echo flash(); ?>
 <form method="post" accept-charset="utf-8">
@@ -7,4 +9,6 @@
 	<input type="submit" class="submitinput" value="Submit" />
 </form>
 <p>Back to <a href="<?php echo uri('users/login'); ?>">login</a>.</p>
+</div>
+
 <?php foot(); ?>

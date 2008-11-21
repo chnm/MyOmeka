@@ -1,5 +1,6 @@
 <?php head(); ?>
 
+<div id="primary">
 <div id="myomeka-primary">
 
 <div id="myomeka-poster-info">
@@ -20,5 +21,5 @@
     <p>This page contains user generated content and does not necessarily reflect the opinions of this website. For more information please refer to our Terms and Conditions. If you would like to report the content of this page as objectionable, please contact us.</p>
 </div>
 </div>
-
+</div> <!-- end primary div -->
 <?php foot(); ?>

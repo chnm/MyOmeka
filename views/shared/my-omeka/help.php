@@ -1,5 +1,6 @@
 <?php head(); ?>
 
+<div id="primary">
 <div id="myomeka-primary">
 	<div id="help_page">
 		<h2>Help Page</h2>
@@ -20,7 +21,8 @@
 		<li>Click the tab that says "Add an item," and select the items that you wish to include in your poster. </li>
 		<li>Be sure to save your poster; you may return to edit your poster at any time by clicking the "activity" link at the top of the home page.</li>
 </ol>
+    </div>
 </div>
-</div>
+</div> <!-- end primary div -->
 
 <?php foot(); ?>

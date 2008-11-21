@@ -1,4 +1,5 @@
 <?php head(); ?>
+<div id="primary">
 <div id="myomeka-primary">
 	<h2>Reset Password</h2>
 	<p>Hello, <?php echo h($user->first_name . ' ' . $user->last_name); ?>.</p>
@@ -17,5 +18,6 @@
 		<input type="submit" name="submit" value="Activate your account"/>
 		</fieldset>
 	</form>
+</div>
 </div>
 <?php foot(); ?>
