@@ -132,9 +132,9 @@ function my_omeka_css()
  * This allows the MyOmeka controller to pass arbitrary parameters when 
  * retrieving items so that we only retrieve items that were added by a user, etc.
  *
+ * @todo What is the deal with this?  Does this get used anywhere?
  * @return void
  **/
-
 function my_omeka_show_only_my_items($select, $params)
 {
 	$user = current_user();
@@ -171,26 +171,20 @@ function my_omeka_show_only_my_items($select, $params)
 function my_omeka_add_notes($item)
 {	
     if($user = current_user()) {
-     	
 		// Check if the user has already added notes to the item
-    	$noteObj = new Note();
-    	$result = $noteObj->getItemNotes($user->id, $item->id);
-        if(count($result)){
-            $note = $result[0];
-        } else {
-            $note = null;
-        }
+    	$note = get_db()->getTable('MyOmekaNote')->findByUserIdAndItemId($user->id, $item->id);
         
         // Render the addNotes template
-        common("addNotes", compact("note","item"));
+        common("add-notes", compact("note","item"));
     }
 }
 
 /**
  * Echo this function in your items/show.php of your public themes to allow users to add and remove notes and tags
  */
-function my_omeka_embed_notes_and_tags($item) 
+function my_omeka_embed_notes_and_tags() 
 {
+	 $item = get_current_item();
 	 
 	$user = current_user(); 
 	$html = '';
@@ -209,13 +203,12 @@ function my_omeka_embed_notes_and_tags($item)
 function my_omeka_add_tags($item)
 {
     if($user = current_user()) {
-        require_once PLUGIN_DIR."/MyOmeka/models/MyomekaTag.php";
-        $myomekatag = new MyomekaTag;
+        $myomekatag = new MyOmekaTag;
         $myomekatag->id = $item->id;
         
         $tags = $myomekatag->entityTags(get_db()->getTable("Entity")->find($user->entity_id));
         
-        common("addTags", compact("item","tags"));
+        common("add-tags", compact("item","tags"));
     }
 }
 

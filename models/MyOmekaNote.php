@@ -1,4 +1,5 @@
 <?php
+require_once 'MyOmekaTag.php';
 require_once 'MyOmekaNoteTable.php';
 class MyOmekaNote extends Omeka_Record{
     public $id;

@@ -62,6 +62,13 @@ class MyOmeka_PosterController extends Omeka_Controller_Action
         $this->view->poster = $poster;
     }
     
+    /**
+     * @todo Use view scripts to render the body of emails sent with MyOmeka
+     * (which should be done within core Omeka as well).  This allows email
+     * writers to use all of the available view helpers.  The rest of the email
+     * should then be composed using Zend_Mail instead of the way we have been
+     * doing it.
+     */
     public function shareAction()
     {   
         $poster_id = $this->_getParam('id');
