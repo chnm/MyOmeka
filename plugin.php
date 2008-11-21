@@ -15,6 +15,11 @@ define('MY_OMEKA_PAGE_PATH', 'myomeka/');
 define('MYOMEKA_USER_ROLE', 'my-omeka');
 
 require_once 'MyOmekaNote.php';
+// Current hack, controllers require access to some of the view helpers
+// for generating URLs in emails.  Need to refactor helpers to allow access
+// within controllers.
+require_once HELPER_DIR . DIRECTORY_SEPARATOR . 'all.php';
+
 
 // Add plugin hooks.
 add_plugin_hook('install', 'my_omeka_install');

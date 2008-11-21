@@ -1,64 +1,67 @@
+<?php head(); ?>
+<div id="primary">
+    
 <div id="myomeka-register-box">
 <h2>Register</h2>
 
-<?php 
-	//only show the form if the registration email has not been sent
-	if (!$emailSent) { 
+<?php
+echo flash(); 
+//only show the form if the registration email has not been sent
+if (!$emailSent): 
 ?>
 	
 <form id="myomeka-register-form" action="<?php echo uri(array('action'=>'register'), 'myOmekaAction');?>" method="post" accept-charset="utf-8">
-<?php if(!isset($user)) {
-	$user = new User;
-	$user->setArray($_POST);
-} 
-?>
-
-
 <fieldset>
 	
-	<ul>
-		<li><label for="username">Username</label> </li>
-		<li><?php text(array('name'=>'username', 'class'=>'textinput', 'id'=>'username'),$user->username); ?></li>
-		<li><?php echo form_error('username'); ?></li>
+	<div class="field">
+    	<?php echo label('username','User Name'); ?>
+    	<div class="inputs">
+    	<?php echo text(array('name'=>'username', 'class'=>'textinput', 'size'=>'30','id'=>'username'),$user->username); ?>
+    	</div>
+    	<?php echo form_error('username'); ?>
+    </div>
 
+    <div class="field">
+    	<?php echo label('first_name','First Name'); ?>
 
-		<li><label for="first_name">First Name</label> </li>
-		<li><?php text(array('name'=>'first_name', 'class'=>'textinput', 'id'=>'first_name'),not_empty_or($user->first_name, $_POST['first_name'])); ?></li>
-		<li><?php echo form_error('first_name'); ?></li>
+    	<div class="inputs">	
+    		<?php echo text(array('name'=>'first_name', 'size'=>'30', 'class'=>'textinput', 'id'=>'first_name'),not_empty_or($user->first_name, $_POST['first_name'])); ?>
+    	</div>
 
+    	<?php echo form_error('first_name'); ?>
 
-		<li><label for="last-name">Last Name</label> </li>
-		<li><?php text(array('name'=>'last_name', 'class'=>'textinput', 'id'=>'last_name'),not_empty_or($user->last_name, $_POST['last_name'])); ?></li>
-		<li><?php echo form_error('last_name'); ?></li>
+    </div>
 
-		<li><label for="email">Email Address</label> </li>
-		<li><?php text(array('name'=>'email', 'class'=>'textinput', 'id'=>'email'), not_empty_or($user->email, $_POST['email'])); ?></li>
-		<li><?php echo form_error('email'); ?></li>
-		
-		<?php if ($requireTermsOfService): ?>
-			<li>Please review the <a href="<?php echo uri(settings('terms_of_service_tos_page_path')); ?>">Terms of Service</a> and <a href="<?php echo uri(settings('terms_of_service_privacy_policy_page_path')); ?>">Privacy Policy</a></li>
-			<li><?php echo terms_of_service_form_input('agreed_to_tos_and_privacy_policy', ''); ?> <label for="agreed_to_tos_and_privacy_policy">I understand and agree to the Terms of Service and Privacy Policy</label></li>
-			<li><?php echo form_error('agreed_to_tos_and_privacy_policy'); ?></li>
+    <div class="field">
+    	<?php echo label('last_name','Last Name'); ?>
+    	<div class="inputs">
+    		<?php echo text(array('name'=>'last_name', 'size'=>'30', 'class'=>'textinput', 'id'=>'last_name'),not_empty_or($user->last_name, $_POST['last_name'])); ?>
+    	</div>
+    	<?php echo form_error('last_name'); ?>
+    </div>
+
+    <div class="field">
+    	<?php echo label('email','Email'); ?>
+    	<div class="inputs">
+    	<?php echo text(array('name'=>'email', 'class'=>'textinput', 'size'=>'30', 'id'=>'email'), not_empty_or($user->email, $_POST['email'])); ?>
+    	</div>
+    	<?php echo form_error('email'); ?>
+    </div>
+	
+	<?php if ($requireTermsOfService): ?>
+	    <div class="field">	
+			Please review the <a href="<?php echo uri(settings('terms_of_service_tos_page_path')); ?>">Terms of Service</a> and <a href="<?php echo uri(settings('terms_of_service_privacy_policy_page_path')); ?>">Privacy Policy</a>
+			<?php echo terms_of_service_form_input('agreed_to_tos_and_privacy_policy', ''); ?> <label for="agreed_to_tos_and_privacy_policy">I understand and agree to the Terms of Service and Privacy Policy</label>
+			<?php echo form_error('agreed_to_tos_and_privacy_policy'); ?>
 		<?php endif; ?>
-	</ul>
 	
 	<input type="submit" class="register" value="Register" />
 
 	</fieldset>
 
 </form>
-<?php } ?>
-<?php /*
-
-	<fieldset>
-		<div class="field">
-	<label for="username">Username</label> 
-	<input type="text" name="username" class="textinput" id="username" />
-	</div>
-	<div class="field">
-	<label for="password">Email</label> 
-	<input type="password" name="email" class="textinput" id="email" />
-	</div>
-	</fieldset>
-*/ ?>
+<?php endif; ?>
 </div>
+
+</div>
+<?php foot(); ?>

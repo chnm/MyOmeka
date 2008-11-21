@@ -28,6 +28,9 @@ class MyOmeka_PosterController extends Omeka_Controller_Action
         return $this->render('admin-poster',compact("posters"));
     }
     
+    /**
+     * @todo Poster editing has not been blocked for users who did not build the poster.
+     **/
     public function editAction()
     {   
         $posterId = $this->_getParam('id');
@@ -45,6 +48,13 @@ class MyOmeka_PosterController extends Omeka_Controller_Action
         $this->view->assign(compact('poster', 'posterItems', 'items'));            
     }
     
+    /**
+     * @todo Should poster viewing be limited to users who have not been given access,
+     * or is it OK for anyone to have access if they can guess the URL?  One
+     * possible solution is to block access to people who haven't built the poster
+     * unless they are given a unique URL via the 'share' component.
+     * 
+     */
     public function viewAction()
     {        
         // Get the poster object

@@ -73,31 +73,24 @@ class MyOmeka_MyOmekaController extends Omeka_Controller_Action
 		$requireTermsOfService = get_option('my_omeka_require_terms_of_service');
 
 		try {
-			 $agreedToTermsOfService = terms_of_service_checked_form_input();
-			 
-			if ($agreedToTermsOfService || !$requireTermsOfService) {
-				if($user->saveForm($_POST)) {
-
-					$user->email = $_POST['email'];
-				
+		    if ($this->getRequest()->isPost()) {		        
+		        if (!$requireTermsOfService || terms_of_service_checked_form_input()) {
+		            // Do not allow anyone to manipulate the role on this form.
+		            unset($_POST['role']);
+    				$user->saveForm($_POST);
 					$this->sendActivationEmail($user);
-				
 					$this->flashSuccess('Thank for registering for a user account.  To complete your registration, please check your email and click the provided link to activate your account.');
 					$emailSent = true;
-				}
-			} else {
-			 	$this->flash('You cannot register unless you understand and agree to the Terms Of Service and Privacy Policy.');
-			}
+    			} else {
+    			 	$this->flash('You cannot register unless you understand and agree to the Terms Of Service and Privacy Policy.');
+    			}
+		    }			
 		} catch (Omeka_Validator_Exception $e) {
 			$this->flashValidationErrors($e);
 		}
 		
-		$this->render('index', compact('emailSent', 'requireTermsOfService'));
+		$this->view->assign(compact('emailSent', 'requireTermsOfService', 'user'));
 	}	
-	
-	public function helpPageAction() {
-	    $this->render('help-page');
-	}
 
 	public function sendActivationEmail($user)
 	{
