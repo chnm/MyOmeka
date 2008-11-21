@@ -34,9 +34,6 @@ class MyOmeka_PosterController extends Omeka_Controller_Action
 
         // Get the poster object
         $poster = $this->findById($posterId, 'MyOmekaPoster');
-
-        // Get items already part of the poster
-        $posterItems = $poster->getPosterItems($poster_id);
         
         // Retrieve items that were noted and tagged by users
         $currentUser = Omeka_Context::getInstance()->getCurrentUser();
