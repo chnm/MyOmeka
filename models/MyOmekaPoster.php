@@ -23,7 +23,7 @@ class MyOmekaPoster extends Omeka_Record
     
     public function getPosters(){
         $db = get_db();
-        return $db->getTable("Poster")->fetchObjects(" SELECT p.*, u.username
+        return $db->getTable("MyOmekaPoster")->fetchObjects(" SELECT p.*, u.username
                                                         FROM {$db->prefix}posters p
                                                         JOIN {$db->prefix}users u ON p.user_id = u.id");
     }

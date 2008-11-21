@@ -14,20 +14,17 @@ class MyOmeka_PosterController extends Omeka_Controller_Action
         $this->_forward('browse');
     }
     
+    /**
+     * @todo Pagination through posters?
+     **/
     public function browseAction()
     {
-        echo 'see all the posters done by people';
-    }
-    
-    public function adminPostersAction()
-    {   
         // Get all of the posters on the site
         $posters = new MyOmekaPoster();
         $posters = $posters->getPosters();
-
-        return $this->render('admin-poster',compact("posters"));
+        $this->view->posters = $posters;
     }
-    
+
     /**
      * @todo Poster editing has not been blocked for users who did not build the poster.
      **/
