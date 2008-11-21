@@ -42,9 +42,9 @@
         </div>
         <div id="myomeka-poster-canvas">
         <?php
-            if(count($posterItems)){
-                foreach($posterItems as $posterItem){
-                    common('_spot', array('posterItem'=>$posterItem));
+            if(count($items)){
+                foreach($items as $item){
+                    common('spot', array('posterItem'=>$item), 'poster');
                 }   
             }
         ?>
