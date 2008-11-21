@@ -1,7 +1,8 @@
+<?php set_current_item($posterItem); ?>
 <div class="myomeka-poster-spot">
 	
 	<div class="myomeka-itemTitle">
-		        <h3><?php echo $posterItem->title; ?></h3>
+		        <h3><?php echo item('Dublin Core', 'Title'); ?></h3>
 	</div>
     <div class="myomeka-controls">
         <a href="#" class="myomeka-move-top myomeka-poster-control">
@@ -16,7 +17,7 @@
     </div>
 
     <div class="myomeka-item-thumbnail">
-        <?php echo poster_icon_html($posterItem); ?>
+        <?php echo poster_icon_html(); ?>
     </div>
 
     <div class="myomeka-annotation">

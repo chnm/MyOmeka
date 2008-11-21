@@ -18,6 +18,8 @@ class MyOmekaControllerPlugin extends Zend_Controller_Plugin_Abstract
                 array('poster', 'edit'),
                 array('poster', 'share'),
                 array('poster', 'delete'),
+                array('poster', 'save'),
+                array('poster', 'new'),
                 array('note', 'edit'),
                 array('tag', 'add'),
                 array('tag', 'delete'),

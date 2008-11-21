@@ -55,7 +55,7 @@ class MyOmekaPoster extends Omeka_Record
             $this->deletePosterItems();
             if ($params['itemCount'] > 0) {
                 foreach(range(1, $params['itemCount']) as $ordernum){
-                    $item = new PosterItem();
+                    $item = new MyOmekaPosterItem();
                     $item->annotation = $params['annotation-' . $ordernum];
                     $item->poster_id = $this->id;
                     $item->item_id = $params['itemID-' . $ordernum];

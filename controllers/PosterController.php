@@ -111,7 +111,7 @@ class MyOmeka_PosterController extends Omeka_Controller_Action
         $params = $this->getRequest()->getParams();
         
         // Get the poster object
-        $poster = $this->findById();
+        $poster = $this->findById(null, 'MyOmekaPoster');
         $poster->title = $params['title'];
         $poster->description = $params['description'];
         $poster->updateItems($params);
@@ -161,7 +161,8 @@ class MyOmeka_PosterController extends Omeka_Controller_Action
     {   
         $params = $this->getRequest()->getParams();
         $id = $params['item-id'];
-        $posterItem = get_db()->getTable('Item')->find((int) $id);
-        return $this->render('common/_spot.php', compact("posterItem"));
+        $posterItem = $this->getTable('Item')->find((int) $id);
+        $this->view->posterItem = $posterItem;
+        $this->render('spot');
     }
 }
