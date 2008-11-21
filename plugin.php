@@ -93,9 +93,9 @@ function my_omeka_define_routes($router)
     $routes['myOmekaAction'] = array(':action', array('controller'=>'my-omeka'));
     $routes['myOmekaPosterAction'] = array('poster/:action', array('controller'=>'poster'));
     $routes['myOmekaPosterActionId'] = array('poster/:action/:id', array('controller'=>'poster'));
-    $routes['myOmekaAddTag'] = array('tags/add', array('controller'=>'my-omeka-tag', 'action'=>'add'));
-    $routes['myOmekaTagBrowse'] = array('tags/browse/:id', array('controller'=>'my-omeka-tag', 'action'=>'browse'));
-    $routes['myOmekaTagDelete'] = array('tags/delete/:tag/:item_id', array('controller'=>'my-omeka-tag', 'action'=>'delete'));
+    $routes['myOmekaAddTag'] = array('tags/add', array('controller'=>'tag', 'action'=>'add'));
+    $routes['myOmekaTagBrowse'] = array('tags/browse/:id', array('controller'=>'tag', 'action'=>'browse'));
+    $routes['myOmekaTagDelete'] = array('tags/delete/:tag/:item_id', array('controller'=>'tag', 'action'=>'delete'));
     $routes['myOmekaNoteAction'] = array('note/:action', array('controller'=>'note'));
     
     foreach ($routes as $routeName => $routeValues) {
@@ -206,7 +206,7 @@ function my_omeka_add_tags($item)
         $myomekatag = new MyOmekaTag;
         $myomekatag->id = $item->id;
         
-        $tags = $myomekatag->entityTags(get_db()->getTable("Entity")->find($user->entity_id));
+        $tags = get_db()->getTable('Tag')->findBy(array('user'=>$user->id, 'type'=>'MyomekaTag'));
         
         common("add-tags", compact("item","tags"));
     }

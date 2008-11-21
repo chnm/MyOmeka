@@ -2,27 +2,40 @@
 require_once 'MyomekaTag.php';
 require_once 'Omeka/Controller/Action.php';
 
-class MyOmeka_MyomekaTagController extends Omeka_Controller_Action
+class MyOmeka_TagController extends Omeka_Controller_Action
 {
-    protected $_modelClass = "MyomekaTag";
-
-	public function indexAction()
-	{
-		echo "Index Action";
-	}
-	
 	public function addAction()
 	{
-	    if($user = Omeka::loggedIn() && is_numeric($_POST['item_id'])){
-            $user = current_user();
-            $myomekatag = new MyomekaTag;
-            $myomekatag->id = $_POST['item_id'];
-            $myomekatag->addTags($_POST['tag'], get_db()->getTable("Entity")->find($user->entity_id));
-            
-            return parent::_redirect('/items/show/'.$_POST['item_id']);
-        } else {
-            print "Error in params";
-        }
+	    $user = Omeka_Context::getInstance()->getCurrentUser();
+	    
+	    // This hack depends on the current behavior of Omeka in 0.10.
+	    // It uses the Taggable mixin on its own (in a way unintended by the
+	    // existing API), which indicates that the Taggable mixin should probably
+	    // just be using some static methods so that this behavior can be 
+	    // implemented elsewhere as in this case.
+	    // 
+	    // Note that this will likely break when a new version of Omeka comes out.
+	    
+	    $itemId = (int)$this->getRequest()->getPost('item_id');
+	    if (!$itemId) {
+	       throw new Exception('Item ID must be an integer!');
+	    }
+	    
+	    $tagsToAdd = $this->getRequest()->getPost('tag');
+	    $item = $this->getTable('Item')->find($itemId);
+	    
+	    // This also seems like a hack.
+	    $taggedEntity = $this->getTable("Entity")->find($user->entity_id);	    
+	    $taggable = new Taggable($item);
+	    
+	    // And here is the money.
+	    $taggable->type = 'MyomekaTag';
+	    
+	    // This should probably be applyTagString().
+	    $taggable->addTags($tagsToAdd, $taggedEntity);
+	    
+	    // And redirect back to the item.
+	    $this->redirect->gotoRoute(array('controller'=>'items', 'action'=>'show', 'id'=>$itemId), 'id');
 	}
 	
 	public function deleteAction()
@@ -62,25 +75,3 @@ class MyOmeka_MyomekaTagController extends Omeka_Controller_Action
         }
 	}
 }
-?>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
