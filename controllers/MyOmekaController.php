@@ -1,14 +1,6 @@
 <?php 
 /**
 *  MyOmeka Controller
-*
-*  An incredible amount of this controller is a modified version of what's currently
-*  found in the UsersController.  Because the routes are currently hard-coded 
-*  (as of 0.9.1.1 release) there's no way around this.  A more agile Omeka core will
-*  make this much simpler [DL]
-*
-*  PS: doing registration through an external controller currently stinks
-*
 */
 
 require_once 'User.php';
@@ -18,9 +10,6 @@ require_once 'MyOmekaNote.php';
 require_once 'MyOmekaTag.php';
 
 /**
- * This means get rid of all the extra code for logins that was duplicated from
- * the old Omeka.
- * 
  * @param string
  * @return void
  **/
@@ -103,42 +92,6 @@ class MyOmeka_MyOmekaController extends Omeka_Controller_Action
 		$title = "Activate your account with the ".$site_title." Archive";
 		$header = 'From: '.$from. "\n" . 'X-Mailer: PHP/' . phpversion();
 		return mail($user->email, $title, $body, $header);
-	}
-
-    /**
-     * @todo This is duplicated from UsersController::activateAction(), get rid 
-     * of that.
-     * 
-     * @param string
-     * @return void
-     **/
-	public function resetPasswordAction()
-	{
-		$hash = $this->_getParam('u');
-		$ua = $this->getTable('UsersActivations')->findBySql("url = ?", array($hash), true);
-		
-		if(!$ua) {
-			$this->errorAction();
-			return;
-		}
-		
-		if(!empty($_POST)) {
-			if (strlen($_POST['new_password1']) >= 6) {	
-				if($_POST['new_password1'] == $_POST['new_password2']) {
-					$ua->User->password = $_POST['new_password1'];
-					$ua->User->active = 1;
-					$ua->User->save();
-					$ua->delete();
-					$this->redirect->gotoRoute(array(), 'myOmekaDashboard');				
-				} else {
-					$this->flash('Please enter the same passwords twice.');
-				}
-			} else {
-				$this->flash('Please enter a password that has at least 6 characters.');
-			}
-		}
-		$user = $ua->User;
-		$this->render('reset-password', compact('user'));
 	}
 	
 	public function helpAction()
