@@ -1,6 +1,6 @@
 <?php 
 head(); 
-echo js('adminPosters');
+echo js('dashboard');
 ?>
 
 <h1>Poster Administration</h1>

@@ -1,4 +1,3 @@
-<?php echo js('addTags'); ?>
 <div id="myomeka-add-tags">
     <h2>My Tags</h2>
     <?php if (count($tags)): ?>
