@@ -303,24 +303,6 @@ function my_omeka_setup_acl($acl)
     // Have to hard code all the roles that allow access rather than just saying
     // that all logged in users have access.
     // $acl->allow(array(MYOMEKA_USER_ROLE, 'admin', 'super', 'researcher', 'contributor'), 'MyOmeka_MyOmeka', array('index', 'dashboard'));
-    
-    // This ACL code was copied directly from the 0.9.x exhibit builder
-    // previously the ACL had to be defined upon initializing the plugin
-    // the new 0.10 plugin API no longer requires this, and should be cleaned up
-    
-    //Defined some special ACL rules for this plugin
-    // $acl = Zend_Registry::get( 'acl' );
-    // 
-    // //Come up with some terminology for this
-    // $acl->addRole(new Zend_Acl_Role('MyOmeka'));
-    // 
-    // $acl->registerRule(new Zend_Acl_Resource('MyOmeka'), array('favorite'));
-    // 
-    // //The new role and all the existing roles, should be able to list certain items as 'favorites'
-    // $acl->allow('MyOmeka', 'MyOmeka',array('favorite')); 
-    // $acl->allow('researcher', 'MyOmeka',array('favorite'));
-    // $acl->allow('admin', 'MyOmeka',array('favorite'));
-    // $acl->allow('contributor', 'MyOmeka',array('favorite'));
 }
 
 function my_omeka_add_controller_plugin()

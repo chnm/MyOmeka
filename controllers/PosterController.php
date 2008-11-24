@@ -25,10 +25,8 @@ class MyOmeka_PosterController extends Omeka_Controller_Action
      **/
     public function editAction()
     {   
-        $posterId = $this->_getParam('id');
-
         // Get the poster object
-        $poster = $this->findById($posterId, 'MyOmekaPoster');
+        $poster = $this->findById(null, 'MyOmekaPoster');
         
         // Retrieve items that were noted and tagged by users
         $currentUser = Omeka_Context::getInstance()->getCurrentUser();
@@ -130,20 +128,19 @@ class MyOmeka_PosterController extends Omeka_Controller_Action
     
     public function deleteAction()
     {   
-        // Get the poster object
-        $poster_id = $this->_getParam('id');
-        $returnDestination = $this->_getParam('return');
-        
-        $poster = $this->findById();
+        $poster = $this->findById(null, 'MyOmekaPoster');
         
         // Check to make sure the poster belongs to the logged in user
-        $user = Omeka::loggedIn();
+        $user = Omeka_Context::getInstance()->getCurrentUser();
         if($user->id === $poster->user_id){
             $poster->delete();
             $this->flash("\"$poster->title\" was successfully deleted");
         }
-        if ($returnDestination) {
-            return $this->redirect->gotoRoute(array('action'=>'admin-posters'), 'myOmekaPosterAction');
+        
+        // Try to redirect to the HTTP Referer, otherwise go back to the dashboard.
+        $redirectUrl = $_SERVER['HTTP_REFERER'];
+        if ($redirectUrl) {
+            return $this->redirect->gotoUrl($redirectUrl);
         } else {
             return $this->redirect->gotoRoute(array(), 'myOmekaDashboard');
         }
