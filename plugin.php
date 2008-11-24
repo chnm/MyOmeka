@@ -9,7 +9,7 @@
 // note: MyOmeka currently requires the TermsOfService plugin
 
 // Define the plugin version and page path.
-define('MY_OMEKA_PLUGIN_VERSION', '0.3alpha');
+define('MY_OMEKA_PLUGIN_VERSION', '0.3');
 define('MY_OMEKA_PAGE_PATH', 'myomeka/');
 
 define('MYOMEKA_USER_ROLE', 'my-omeka');
