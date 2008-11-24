@@ -18,11 +18,6 @@ require_once 'MyOmekaNote.php';
 require_once 'MyOmekaTag.php';
 
 /**
- * @todo Try to use built-in users controller to manage access to MyOmeka.
- * If you add a view script for users/login on the public interface it will load 
- * just like the admin side.  After login it will forward to whatever action was
- * blocked, i.e. the MyOmeka dashboard.  
- * 
  * This means get rid of all the extra code for logins that was duplicated from
  * the old Omeka.
  * 

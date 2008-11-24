@@ -233,7 +233,7 @@ function my_omeka_user_status()
 
 function my_omeka_clean_path($path)
 {
-	return trim(trim($path), '/') . '/';
+	return rtrim($path, '/ ') . '/';
 }
 
 function my_omeka_config($post) 
@@ -261,7 +261,7 @@ function my_omeka_config_form()
 		<div id="myomeka_settings">
 			<label for="myomeka_page_path">Relative Page Path From Project Root:</label>
 			<p class="instructionText">Please enter the relative page path from the project root where you want the MyOmeka page to be located. Use forward slashes to indicate subdirectories, but do not begin with a forward slash.</p>
-			<input type="text" name="myomeka_page_path" value="<?php echo settings('my_omeka_page_path') ?>" />
+			<input type="text" name="my_omeka_page_path" value="<?php echo settings('my_omeka_page_path') ?>" />
 			<label for="my_omeka_require_terms_of_service">Require Terms of Service And Privacy Policy:</label>
 			<p class="instructionText">Check box if you require registrants to agree to the Terms of Service and Privacy Policy.</p>
 			<input type="checkbox" name="my_omeka_require_terms_of_service" value="CHECKED" <?php if (!empty($requireTOS)) { echo 'CHECKED'; } ?> />
