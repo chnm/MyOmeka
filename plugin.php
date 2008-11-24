@@ -120,7 +120,7 @@ function my_omeka_define_routes($router)
 
 function my_omeka_admin_nav($navArray)
 {
-    return $navArray += array('Posters'=> uri('poster/admin-posters'));
+    return $navArray += array('Posters'=> uri(array('action'=>'browse'), 'myOmekaPosterAction'));
 }
 
 function my_omeka_css()

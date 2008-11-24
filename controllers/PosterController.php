@@ -8,12 +8,7 @@ require_once 'MyOmekaNote.php';
 require_once 'MyOmekaTag.php';
 
 class MyOmeka_PosterController extends Omeka_Controller_Action
-{    
-    public function indexAction()
-    {
-        $this->_forward('browse');
-    }
-    
+{        
     /**
      * @todo Pagination through posters?
      **/
