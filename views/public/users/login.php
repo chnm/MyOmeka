@@ -4,6 +4,8 @@
 <div id="myomeka-login-box">
 <h2>Login</h2>
 
+<a href="<?php echo uri(array('action'=>'register'), 'myOmekaAction'); ?>">Sign up for a new account</a>
+
 <form id="myomeka-login-form" method="post" accept-charset="utf-8">
 	<fieldset>
 	<ol>
