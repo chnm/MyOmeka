@@ -4,54 +4,76 @@ require_once 'Omeka/Controller/Action.php';
 
 class MyOmeka_TagController extends Omeka_Controller_Action
 {
+    const TAG_TYPE = 'MyomekaTag';
+    
 	public function addAction()
 	{
 	    $user = Omeka_Context::getInstance()->getCurrentUser();
-	    
-	    // This hack depends on the current behavior of Omeka in 0.10.
-	    // It uses the Taggable mixin on its own (in a way unintended by the
-	    // existing API), which indicates that the Taggable mixin should probably
-	    // just be using some static methods so that this behavior can be 
-	    // implemented elsewhere as in this case.
-	    // 
-	    // Note that this will likely break when a new version of Omeka comes out.
 	    
 	    $itemId = (int)$this->getRequest()->getPost('item_id');
 	    if (!$itemId) {
 	       throw new Exception('Item ID must be an integer!');
 	    }
 	    
+	    $taggable = $this->_getTaggable($itemId);
+	    
+	    $taggedEntity = $this->getTable("Entity")->find($user->entity_id);	
 	    $tagsToAdd = $this->getRequest()->getPost('tag');
-	    $item = $this->getTable('Item')->find($itemId);
 	    
-	    // This also seems like a hack.
-	    $taggedEntity = $this->getTable("Entity")->find($user->entity_id);	    
-	    $taggable = new Taggable($item);
-	    
-	    // And here is the money.
-	    $taggable->type = 'MyomekaTag';
-	    
-	    // This should probably be applyTagString().
 	    $taggable->addTags($tagsToAdd, $taggedEntity);
 	    
 	    // And redirect back to the item.
 	    $this->redirect->gotoRoute(array('controller'=>'items', 'action'=>'show', 'id'=>$itemId), 'id');
 	}
 	
+	/**
+	 * This hack depends on the current behavior of Omeka in 0.10. It uses the
+     * Taggable mixin on its own (in a way unintended by the existing API), which
+     * indicates that the Taggable mixin should probably just be using some static
+     * methods so that this behavior can be implemented elsewhere as in this case.
+     * 
+     * Note that this will likely break when a new version of Omeka comes out. 
+	 */
+	protected function _getTaggable($itemId)
+	{
+	    $item = $this->getTable('Item')->find($itemId);
+	    
+	    // This also seems like a hack.
+	    $taggable = new Taggable($item);
+	    
+	    // And here is the money.
+	    $taggable->type = self::TAG_TYPE;
+	    
+	    return $taggable;
+	}
+	
+	protected function _deleteTaggings($tagId, $itemId, $entityId)
+	{
+	    $taggings = $this->getTable('Taggings')->findBySql(
+	        'tag_id = ? AND relation_id = ? AND entity_id = ? AND `type` = ?', 
+	        array($tagId, $itemId, $entityId, self::TAG_TYPE));
+	    
+	    foreach ($taggings as $tagging) {
+	        $tagging->delete();
+	    }
+	}
+	
+	/**
+	 * @todo Need to create a custom tag-deletion mechanism instead of using 
+	 * Taggable::deleteTags() which doesn't work.
+	 * 
+	 * @param string
+	 * @return void
+	 **/
 	public function deleteAction()
 	{
-		$tag = $this->_getParam('tag');
+		$tagId = $this->_getParam('tag_id');
 		$itemId = $this->_getParam('item_id');
-		
-	    if($user = Omeka::loggedIn() && is_numeric($itemId) && !empty($tag)){
-            $user = current_user();
-            $myomekatag = new MyomekaTag;
-    
-        	$myomekatag->id = $itemId;
-	
-            $myomekatag->deleteTags($tag, get_db()->getTable("Entity")->find($user->entity_id));
-            
-            return $this->_redirect('/items/show/'.$itemId);
+	    if (($user = current_user()) && !empty($itemId) && !empty($tagId)){
+	        // $taggable = $this->_getTaggable($itemId);
+	        //             $taggable->deleteTags($tag, $user->entity_id);
+            $this->_deleteTaggings($tagId, $itemId, $user->entity_id);
+            return $this->redirect->gotoRoute(array('controller'=>'items', 'action'=>'show', 'id'=>$itemId), 'id');
         } else {
             print "Error in params";
         }

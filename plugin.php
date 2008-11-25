@@ -95,7 +95,7 @@ function my_omeka_define_routes($router)
     $routes['myOmekaPosterActionId'] = array('poster/:action/:id', array('controller'=>'poster'));
     $routes['myOmekaAddTag'] = array('tags/add', array('controller'=>'tag', 'action'=>'add'));
     $routes['myOmekaTagBrowse'] = array('tags/browse/:id', array('controller'=>'tag', 'action'=>'browse'));
-    $routes['myOmekaTagDelete'] = array('tags/delete/:tag/:item_id', array('controller'=>'tag', 'action'=>'delete'));
+    $routes['myOmekaTagDelete'] = array('tags/delete/:tag_id/:item_id', array('controller'=>'tag', 'action'=>'delete'));
     $routes['myOmekaNoteAction'] = array('note/:action', array('controller'=>'note'));
     
     foreach ($routes as $routeName => $routeValues) {
@@ -203,7 +203,14 @@ function my_omeka_embed_notes_and_tags()
 function my_omeka_add_tags($item)
 {
     $user = current_user();
-    $tags = get_db()->getTable('Tag')->findBy(array('user'=>$user->id, 'type'=>'MyomekaTag'));
+    
+    // Select MyomekaTag tags.
+    $tagSelect = get_db()->getTable('Tag')->getSelectForFindBy(array('user'=>$user->id, 'type'=>'MyomekaTag'));
+    
+    // A hackaround for retrieving MyOmeka tags.
+    $tagSelect->where('tg.relation_id = ?', $item->id);
+    
+    $tags = get_db()->getTable('Tag')->fetchObjects($tagSelect);
     common("add-tags", compact("item","tags"));
 }
 
