@@ -3,7 +3,7 @@
     <?php if (count($tags)): ?>
         <div id="myomeka-tags">
             <?php foreach ($tags as $tag): ?>
-            <a href="<?php echo uri(array('id'=>$tag->id), 'myOmekaTagBrowse');?>"><?php print $tag->name;?></a> 
+            <a href="<?php echo uri(array('myTag'=>$tag->id, 'controller'=>'items', 'action'=>'browse'), 'default');?>"><?php echo htmlspecialchars($tag->name);?></a> 
             [<a href="<?php echo uri(array('tag_id'=>$tag->id, 'item_id'=>$item->id), 'myOmekaTagDelete') ?>" title="Delete this tag">X</a>] 
             <?php endforeach; ?>
         </div>

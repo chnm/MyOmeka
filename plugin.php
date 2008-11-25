@@ -13,6 +13,7 @@ define('MY_OMEKA_PLUGIN_VERSION', '0.3');
 define('MY_OMEKA_PAGE_PATH', 'myomeka/');
 
 define('MYOMEKA_USER_ROLE', 'my-omeka');
+define('MYOMEKA_TAG_TYPE', 'MyomekaTag');
 
 require_once 'MyOmekaNote.php';
 // Current hack, controllers require access to some of the view helpers
@@ -94,7 +95,6 @@ function my_omeka_define_routes($router)
     $routes['myOmekaPosterAction'] = array('poster/:action', array('controller'=>'poster'));
     $routes['myOmekaPosterActionId'] = array('poster/:action/:id', array('controller'=>'poster'));
     $routes['myOmekaAddTag'] = array('tags/add', array('controller'=>'tag', 'action'=>'add'));
-    $routes['myOmekaTagBrowse'] = array('tags/browse/:id', array('controller'=>'tag', 'action'=>'browse'));
     $routes['myOmekaTagDelete'] = array('tags/delete/:tag_id/:item_id', array('controller'=>'tag', 'action'=>'delete'));
     $routes['myOmekaNoteAction'] = array('note/:action', array('controller'=>'note'));
     
@@ -137,31 +137,16 @@ function my_omeka_css()
  **/
 function my_omeka_show_only_my_items($select, $params)
 {
-	$user = current_user();
-	
-	if($user) {
+    $request = Zend_Controller_Front::getInstance()->getRequest();
+    
+	if( ($user = current_user()) and ($myTagId = (int)$request->getParam('myTag'))) {
 		$entity_id = (int) $user->entity_id;
-		
-		//If the controller sets this parameter, we are retrieving items that were added by this user
-		if(isset($params['added_by_me']) or isset($params['favorited_by_me'])) {
-		
-			//Join against the entities_relations table
-			$select->innerJoin('entities_relations my_e','my_e.relation_id = i.id');
-			$select->innerJoin('entity_relationships my_er', 'my_er.id = my_e.relationship_id');
-			$select->where('my_e.type = "Item" AND my_e.entity_id = ' . $entity_id);
-			
-			if( isset($params['added_by_me']) ) {
-				$select->where('my_er.name = "added"');
-			}
-			elseif( isset($params['favorited_by_me']) ) {
-				$select->where('my_er.name = "favorite"');
-			}	
-		}
-		
-		if(isset($params['tagged_by_me'])) {
-			$select->innerJoin('taggings my_tg', 'my_tg.relation_id = i.id');
-			$select->where('my_tg.type = "Item" AND my_tg.entity_id = ' . $entity_id);
-		}	
+        $db = get_db();
+        
+        // Join against the taggings table to only select items that have been
+        // tagged using the MyOmeka interface.
+        $select->joinInner(array('my_tg'=>$db->Taggings), 'my_tg.relation_id = i.id', array());
+        $select->where('my_tg.type = "' . MYOMEKA_TAG_TYPE . '" AND my_tg.tag_id = ?', $myTagId);
 	}
 }
 

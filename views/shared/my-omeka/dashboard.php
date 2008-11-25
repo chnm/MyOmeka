@@ -67,7 +67,7 @@
 	<?php if(count($tags)): ?>
 	    <ul class="hTagcloud" id="myomeka-tags-list">
 	        <?php foreach ($tags as $tag): ?>
-	           <li><a href="<?php echo uri(array('id'=>$tag->id), 'myOmekaTagBrowse'); ?>"><?php echo htmlspecialchars($tag['name']); ?></a></li>
+	           <li><a href="<?php echo uri(array('myTag'=>$tag->id, 'controller'=>'items', 'action'=>'browse'), 'default'); ?>"><?php echo htmlspecialchars($tag['name']); ?></a></li>
 	        <?php endforeach; ?>
 	    </ul>
 	<?php else: ?>

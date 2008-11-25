@@ -22,8 +22,7 @@ class MyOmekaControllerPlugin extends Zend_Controller_Plugin_Abstract
                 array('poster', 'new'),
                 array('note', 'edit'),
                 array('tag', 'add'),
-                array('tag', 'delete'),
-                array('tag', 'browse'));
+                array('tag', 'delete'));
             
             // If the user needs to login before accessing an action, then redirect to the login page.
             if (!$user and in_array(array($request->getControllerName(), $request->getActionName()), $loginRequired)) {

@@ -3,9 +3,7 @@ require_once 'MyomekaTag.php';
 require_once 'Omeka/Controller/Action.php';
 
 class MyOmeka_TagController extends Omeka_Controller_Action
-{
-    const TAG_TYPE = 'MyomekaTag';
-    
+{    
 	public function addAction()
 	{
 	    $user = Omeka_Context::getInstance()->getCurrentUser();
@@ -42,7 +40,7 @@ class MyOmeka_TagController extends Omeka_Controller_Action
 	    $taggable = new Taggable($item);
 	    
 	    // And here is the money.
-	    $taggable->type = self::TAG_TYPE;
+	    $taggable->type = MYOMEKA_TAG_TYPE;
 	    
 	    return $taggable;
 	}
@@ -51,7 +49,7 @@ class MyOmeka_TagController extends Omeka_Controller_Action
 	{
 	    $taggings = $this->getTable('Taggings')->findBySql(
 	        'tag_id = ? AND relation_id = ? AND entity_id = ? AND `type` = ?', 
-	        array($tagId, $itemId, $entityId, self::TAG_TYPE));
+	        array($tagId, $itemId, $entityId, MYOMEKA_TAG_TYPE));
 	    
 	    foreach ($taggings as $tagging) {
 	        $tagging->delete();
@@ -68,24 +66,6 @@ class MyOmeka_TagController extends Omeka_Controller_Action
 	    if (($user = current_user()) && !empty($itemId) && !empty($tagId)){
             $this->_deleteTaggings($tagId, $itemId, $user->entity_id);
             return $this->redirect->gotoRoute(array('controller'=>'items', 'action'=>'show', 'id'=>$itemId), 'id');
-        }
-	}
-	
-	public function browseAction()
-	{
-	    if($user = Omeka::loggedIn() && is_numeric($this->_getParam('id'))){
-	        $user = current_user();
-	        $db = get_db();
-            $items = $db->getTable("Item")->fetchObjects("SELECT i.*
-                                                            FROM {$db->prefix}taggings t 
-                                                            JOIN {$db->prefix}items i ON t.relation_id = i.id
-                                                            WHERE t.entity_id = $user->entity_id
-                                                                AND t.tag_id = ".$this->_getParam('id')."
-                                                                AND t.type = 'MyomekaTag'");
-            $tag = $db->getTable("Tag")->find($this->_getParam('id'));
-            $this->render('items/browse.php', compact("items", "tag"));
-        } else {
-            print "Error in params";
         }
 	}
 }
