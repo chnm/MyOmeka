@@ -25,5 +25,3 @@ class MyOmekaTag extends Omeka_Record
 		}
 	}
 }
-
-?>

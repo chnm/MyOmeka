@@ -99,5 +99,3 @@ class MyOmeka_MyOmekaController extends Omeka_Controller_Action
 	    
 	}
 }
- 
-?>

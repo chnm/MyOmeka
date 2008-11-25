@@ -13,5 +13,3 @@ class MyOmekaNote extends Omeka_Record{
         return $this->getTable()->findByUserIdAndItemId($user_id, $item_id);
     }
 }
-
-?>

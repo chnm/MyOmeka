@@ -59,23 +59,15 @@ class MyOmeka_TagController extends Omeka_Controller_Action
 	}
 	
 	/**
-	 * @todo Need to create a custom tag-deletion mechanism instead of using 
-	 * Taggable::deleteTags() which doesn't work.
-	 * 
-	 * @param string
-	 * @return void
+	 * Delete a tag associated with MyOmeka.
 	 **/
 	public function deleteAction()
 	{
 		$tagId = $this->_getParam('tag_id');
 		$itemId = $this->_getParam('item_id');
 	    if (($user = current_user()) && !empty($itemId) && !empty($tagId)){
-	        // $taggable = $this->_getTaggable($itemId);
-	        //             $taggable->deleteTags($tag, $user->entity_id);
             $this->_deleteTaggings($tagId, $itemId, $user->entity_id);
             return $this->redirect->gotoRoute(array('controller'=>'items', 'action'=>'show', 'id'=>$itemId), 'id');
-        } else {
-            print "Error in params";
         }
 	}
 	

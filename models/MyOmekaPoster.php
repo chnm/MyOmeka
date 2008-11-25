@@ -83,5 +83,3 @@ class MyOmekaPoster extends Omeka_Record
         $this->deletePosterItems();
     }
 }
-
-?>

@@ -42,4 +42,3 @@ class MyOmeka_NoteController extends Omeka_Controller_Action
     	$this->redirect->gotoRoute(array('controller'=>'items', 'action'=>'show', 'id'=>$itemId), 'id');
 	}
 }
-?>
