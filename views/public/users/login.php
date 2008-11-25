@@ -2,7 +2,7 @@
 
 <div id="primary">
 <div id="myomeka-login-box">
-<h2>Login</h2>
+<h1><?php echo get_option('my_omeka_page_title'); ?>: Login</h1>
 
 <a href="<?php echo uri(array('action'=>'register'), 'myOmekaAction'); ?>">Sign up for a new account</a>
 

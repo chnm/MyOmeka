@@ -11,6 +11,8 @@
 // Define the plugin version and page path.
 define('MY_OMEKA_PLUGIN_VERSION', '0.3');
 define('MY_OMEKA_PAGE_PATH', 'myomeka/');
+define('MY_OMEKA_PAGE_TITLE', 'MyOmeka');
+define('MY_OMEKA_DISCLAIMER', 'This page contains user generated content and does not necessarily reflect the opinions of this website. For more information please refer to our Terms and Conditions. If you would like to report the content of this page as objectionable, please contact us.');
 
 define('MYOMEKA_USER_ROLE', 'my-omeka');
 define('MYOMEKA_TAG_TYPE', 'MyomekaTag');
@@ -44,6 +46,8 @@ function my_omeka_install()
 {	
 	set_option('my_omeka_plugin_version', MY_OMEKA_PLUGIN_VERSION);
 	set_option('my_omeka_page_path', my_omeka_clean_path(MY_OMEKA_PAGE_PATH));
+	set_option('my_omeka_page_title', MY_OMEKA_PAGE_TITLE);
+	set_option('my_omeka_disclaimer', MY_OMEKA_DISCLAIMER);
 	
 	// Create new tables to support poster building
 	$db = get_db();
@@ -231,12 +235,17 @@ function my_omeka_clean_path($path)
 function my_omeka_config($post) 
 {
 	set_option('my_omeka_page_path', my_omeka_clean_path($post['my_omeka_page_path']));
+	set_option('my_omeka_page_title', $post['my_omeka_page_title']);
+	set_option('my_omeka_disclaimer', $post['my_omeka_disclaimer']);
 	
 	//if the page path is empty then make it the default page path
 	if (trim(get_option('my_omeka_page_path')) == '') {
-		set_option('my_omeka_page_path', my_omeka_clean_path(MYOMEKA_PAGE_PATH));
+		set_option('my_omeka_page_path', my_omeka_clean_path(MY_OMEKA_PAGE_PATH));
 	}
 
+	if(get_option('my_omeka_page_title') == '') {
+		set_option('my_omeka_page_title', MY_OMEKA_PAGE_TITLE);
+	}
 	$requireTOS = (strtolower($post['my_omeka_require_terms_of_service']) == 'checked') ? 1 : 0;
 	set_option('my_omeka_require_terms_of_service', $requireTOS);
 }
@@ -251,12 +260,37 @@ function my_omeka_config_form()
 		
 		?>
 		<div id="myomeka_settings">
-			<label for="myomeka_page_path">Relative Page Path From Project Root:</label>
-			<p class="instructionText">Please enter the relative page path from the project root where you want the MyOmeka page to be located. Use forward slashes to indicate subdirectories, but do not begin with a forward slash.</p>
-			<input type="text" name="my_omeka_page_path" value="<?php echo settings('my_omeka_page_path') ?>" />
+			<div class="field">
+			<label for="my_omeka_page_path">Relative Page Path From Project Root:</label>
+			<div class="inputs">
+			<input type="text" class="textinput" name="my_omeka_page_path" value="<?php echo settings('my_omeka_page_path') ?>" />
+			<p class="explanation">Please enter the relative page path from the project root where you want the MyOmeka page to be located. Use forward slashes to indicate subdirectories, but do not begin with a forward slash.</p>
+			</div>
+			</div>
+			<div class="field">
+			<label for="my_omeka_page_title">MyOmeka Title:</label>
+			<div class="inputs">
+			<input type="text" class="textinput" name="my_omeka_page_title" value="<?php echo settings('my_omeka_page_title'); ?>" />
+			<p class="explanation">Please enter the title you'd like to use for your MyOmeka installation.</p>
+			</div>
+			</div>
+			
+			<div class="field">
+			<label for="my_omeka_disclaimer">MyOmeka Disclaimer:</label>
+			<div class="inputs">
+			<textarea name="my_omeka_disclaimer" rows="10" cols="60"><?php echo settings('my_omeka_disclaimer'); ?></textarea>
+			<p class="explanation">The disclaimer text appears below every public poster created by MyOmeka users.</p>
+			</div>
+			</div>
+			
+			<div class="field">
 			<label for="my_omeka_require_terms_of_service">Require Terms of Service And Privacy Policy:</label>
-			<p class="instructionText">Check box if you require registrants to agree to the Terms of Service and Privacy Policy.</p>
-			<input type="checkbox" name="my_omeka_require_terms_of_service" value="CHECKED" <?php if (!empty($requireTOS)) { echo 'CHECKED'; } ?> />
+			<div class="inputs">
+			
+			<input type="checkbox" name="my_omeka_require_terms_of_service" value="checked" <?php if (!empty($requireTOS)) { echo 'checked="checked"'; } ?> />
+			<p class="explanation">Check box if you require registrants to agree to the Terms of Service and Privacy Policy.</p>
+			</div>
+			</div>
 		</div>
 	<?php
 }

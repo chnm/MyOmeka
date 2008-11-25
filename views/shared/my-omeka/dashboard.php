@@ -6,19 +6,19 @@
     
 <div id="myomeka-primary">
 
-	<h2>My Omeka Dashboard</h2>
+	<h1><?php echo get_option('my_omeka_page_title'); ?>: Dashboard</h1>
 	
 	<?php echo flash(); ?>
 
 
 	<div id="myomeka-posters">
 
-		<h3>Your Posters</h3>
+		<h2>Your Posters</h2>
 		<?php if(count($posters) > 0): ?>
 
 	        <?php foreach($posters as $poster): ?>           
 				<div>
-					<h4 class="poster-title"><?php echo $poster->title; ?></h4>
+					<h3 class="poster-title"><?php echo $poster->title; ?></h3>
 					<ul class="myomeka-poster-meta">
 						<li class="poster-date"><?php echo $poster->date_created; ?></li>	
 						<li class="post-description"><?php echo snippet($poster->description,0,250); ?></li>
@@ -39,8 +39,7 @@
 		<?php endif; ?>
 	</div>
 
-	<div id="create-poster">
-	<h4><a href="<?php echo uri(array('action'=>'new'), 'myOmekaPosterAction'); ?>">Create a new poster &rarr;</a></h4>
+	<div id="create-poster"><a href="<?php echo uri(array('action'=>'new'), 'myOmekaPosterAction'); ?>">Create a new poster &rarr;</a>
 	</div>
 
 	<div id="myomeka-notedItems">

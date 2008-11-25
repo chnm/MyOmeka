@@ -2,7 +2,7 @@
 <div id="primary">
     
 <div id="myomeka-register-box">
-<h2>Register</h2>
+<h2><?php echo get_option('my_omeka_page_title'); ?>: Register</h2>
 
 <?php
 echo flash(); 
