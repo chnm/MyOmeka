@@ -59,16 +59,12 @@
     
     <!-- Hidden div for modal pop-up -->
     <div id="myomeka-additem-modal" style="display:none;">
-        <h2>Choose an item</h2>
         <?php if(count($items)):?>
             <?php while ($item = loop_items()):?>
                 <div class="myomeka-additem-item">
                     <div class="myomeka-additem-image">
                         <?php echo poster_icon_html(); ?>
-                        <form action="<?php echo uri(array('action'=>'add-poster-item'), 'myOmekaPosterAction'); ?>" method="post" accept-charset="utf-8" class="myomeka-additem-form">
-                        	<input type="submit" name="submit" value="Add this item" class="myomeka-additem-submit"/>
-                        	<input type="hidden" name="item-id" value="<?php echo $item->id; ?>" class="myomeka-additem-item-id"/>
-                    	</form>
+
                     </div>
                     <div class="myomeka-additem-details">
                         <dl>
@@ -84,6 +80,11 @@
                             <?php endif ?>
                         </dl>
                     </div>
+<br />
+                    <form action="<?php echo uri(array('action'=>'add-poster-item'), 'myOmekaPosterAction'); ?>" method="post" accept-charset="utf-8" class="myomeka-additem-form">
+                    	<input type="submit" name="submit" value="Add this item" class="myomeka-additem-submit"/>
+                    	<input type="hidden" name="item-id" value="<?php echo $item->id; ?>" class="myomeka-additem-item-id"/>
+                	</form>
                 </div>
             <?php endwhile; ?>
         <?php else: ?>

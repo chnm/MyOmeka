@@ -1,21 +1,25 @@
 /*
 Add item to posters model
 */
-.myomeka-additem-item{
+.myomeka-additem-item {
     margin:15px;
     padding:15px;
-    border-top:1px solid #000;
 	overflow:hidden;
+	zoom:1;
+	background: #eee;
 }
 
 .myomeka-additem-details p {font-size:1em;}
 .myomeka-additem-details dt {font-weight:bold;}
 
-.myomeka-additem-image{
-    float:left;
+.myomeka-additem-image {
+    float:right;
 }
-.myomeka-additem-details{
+.myomeka-additem-details {
     float:left;
+width: 400px;
 }
 
 #myomeka-primary input, button {margin:3px 0;}
+
+.myomeka-additem-form {clear:both;display:block; margin-top: 12px;}

@@ -28,7 +28,7 @@ var iBox = function()
 
     // default width of the box (when displaying html only)
     // height is calculated automatically
-    default_width: 450,
+    default_width: 600,
 
     // browser checks
     is_opera: navigator.userAgent.indexOf('Opera/9') != -1,
@@ -579,10 +579,10 @@ var iBox = function()
   var drawCSS = function()
   {
     // Core CSS (positioning/etc)
-    var core_styles = "#ibox {z-index:1000000;} #ibox_overlay {position:absolute;top:0;left:0;right:0;z-index:1000000;} #ibox_loading {position:absolute;z-index:1000001;} #ibox_wrapper {position:absolute;top:0;left:0;z-index:1000001;padding:25px 10px 10px 10px;} #ibox_content {z-index:1000002;overflow:auto;height:100%;position:relative;padding:2px;text-align:left;} #ibox_content object { display:block;} #ibox_content .ibox_image {width:100%;height:100%;margin:0;padding:0;border:0;display:block;} #ibox_footer_wrapper a {float:right;display:block;outline:0;margin:0;padding:0;} #ibox_footer_wrapper {text-align:left;position:absolute;top:5px;right:10px;left:10px;white-space:nowrap;overflow:hidden;}";
+    var core_styles = "#ibox {z-index:1000000;} #ibox_overlay {position:absolute;top:0;left:0;right:0;z-index:1000000;} #ibox_loading {position:absolute;z-index:1000001;} #ibox_wrapper {position:absolute;top:0;left:0;z-index:1000001;padding:58px 0 0;} #ibox_content {z-index:1000002;overflow:auto;height:100%;position:relative;padding:2px;text-align:left;} #ibox_content object { display:block;} #ibox_content .ibox_image {width:100%;height:100%;margin:0;padding:0;border:0;display:block;} #ibox_footer_wrapper a {float:right;display:block;outline:0;margin:0;padding:0;} #ibox_footer_wrapper {text-align:left;position:absolute;top:15px;right:15px;left:15px;white-space:nowrap;overflow:hidden;}";
     
     // Default style/theme/skin/whatever
-    var default_skin = "#ibox_footer_wrapper {font-weight:bold;}#ibox_footer_wrapper a {text-decoration:underline;color:darkblue;text-transform:lowercase;font-weight:normal;font-family:Verdana, Arial, Helvetica, sans-serif;font-size:12px;}#ibox_footer_wrapper {font-size:12px;font-family:Verdana, Arial, Helvetica, sans-serif;}#ibox_wrapper {border:1px solid #ccc;}#ibox_wrapper, #ibox_footer_wrapper a {background-color:#999;}#ibox_content {background-color:#fff;border:1px solid #666;}#ibox_loading {padding:50px; background:#000;color:#fff;font-size:16px;font-weight:bold;}";
+    var default_skin = "#ibox_footer_wrapper {font-weight:normal;} #ibox_footer_wrapper a {text-decoration:none;background: #222 !important; color:#fff;padding: 6px 9px;font-weight:normal;font-family:Verdana, Arial, Helvetica, sans-serif;font-size:11px;}#ibox_footer_wrapper {font-size:18px;font-family:Verdana, Arial, Helvetica, sans-serif; color: #fff;} #ibox_wrapper {background-color:#111;}#ibox_content {background-color:#fff;border:1px solid #666; border-width: 1px 0 1px;}#ibox_loading {padding:50px; background:#000;color:#fff;font-size:16px;font-weight:bold;}";
 
     var head = document.getElementsByTagName("head")[0];
     // tricky hack for IE
