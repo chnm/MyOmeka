@@ -1,4 +1,4 @@
-<?php head(); ?>
+<?php head(array('title'=>'Register for ' . get_option('my_omeka_page_title'))); ?>
 <div id="primary">
     
 <div id="myomeka-register-box">
@@ -16,7 +16,7 @@ if (!$emailSent):
 	<div class="field">
     	<?php echo label('username','User Name'); ?>
     	<div class="inputs">
-    	<?php echo text(array('name'=>'username', 'class'=>'textinput', 'size'=>'30','id'=>'username'),$user->username); ?>
+    	<?php echo text(array('name'=>'username', 'class'=>'textinput', 'size'=>'30','id'=>'username'), $_POST['username']); ?>
     	</div>
     	<?php echo form_error('username'); ?>
     </div>
@@ -25,7 +25,7 @@ if (!$emailSent):
     	<?php echo label('first_name','First Name'); ?>
 
     	<div class="inputs">	
-    		<?php echo text(array('name'=>'first_name', 'size'=>'30', 'class'=>'textinput', 'id'=>'first_name'),not_empty_or($user->first_name, $_POST['first_name'])); ?>
+    		<?php echo text(array('name'=>'first_name', 'size'=>'30', 'class'=>'textinput', 'id'=>'first_name'), $_POST['first_name']); ?>
     	</div>
 
     	<?php echo form_error('first_name'); ?>
@@ -35,7 +35,7 @@ if (!$emailSent):
     <div class="field">
     	<?php echo label('last_name','Last Name'); ?>
     	<div class="inputs">
-    		<?php echo text(array('name'=>'last_name', 'size'=>'30', 'class'=>'textinput', 'id'=>'last_name'),not_empty_or($user->last_name, $_POST['last_name'])); ?>
+    		<?php echo text(array('name'=>'last_name', 'size'=>'30', 'class'=>'textinput', 'id'=>'last_name'), $_POST['last_name']); ?>
     	</div>
     	<?php echo form_error('last_name'); ?>
     </div>
@@ -43,15 +43,15 @@ if (!$emailSent):
     <div class="field">
     	<?php echo label('email','Email'); ?>
     	<div class="inputs">
-    	<?php echo text(array('name'=>'email', 'class'=>'textinput', 'size'=>'30', 'id'=>'email'), not_empty_or($user->email, $_POST['email'])); ?>
+    	<?php echo text(array('name'=>'email', 'class'=>'textinput', 'size'=>'30', 'id'=>'email'), $_POST['email']); ?>
     	</div>
     	<?php echo form_error('email'); ?>
     </div>
 	
-	<?php if ($requireTermsOfService): ?>
+	<?php if ($requireTermsOfService and function_exists('terms_of_service_link')): ?>
 	    <div class="field">	
-			Please review the <a href="<?php echo uri(settings('terms_of_service_tos_page_path')); ?>">Terms of Service</a> and <a href="<?php echo uri(settings('terms_of_service_privacy_policy_page_path')); ?>">Privacy Policy</a>
-			<?php echo terms_of_service_form_input('agreed_to_tos_and_privacy_policy', ''); ?> <label for="agreed_to_tos_and_privacy_policy">I understand and agree to the Terms of Service and Privacy Policy</label>
+			Please review the <?php echo terms_of_service_link() ?> and <?php echo terms_of_service_privacy_policy_link(); ?>
+			<?php echo terms_of_service_form_input('agreed_to_tos_and_privacy_policy', 'I understand and agree to the Terms of Service and Privacy Policy'); ?>
 			<?php echo form_error('agreed_to_tos_and_privacy_policy'); ?>
 		<?php endif; ?>
 	
