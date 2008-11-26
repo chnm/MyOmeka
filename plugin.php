@@ -127,9 +127,13 @@ function my_omeka_admin_nav($navArray)
     return $navArray += array('Posters'=> uri(array('action'=>'browse'), 'myOmekaPosterAction'));
 }
 
-function my_omeka_css()
+function my_omeka_css($request)
 {
-	echo "<link rel=\"stylesheet\" media=\"screen\" href=\"".css('myomeka')."\" />";
+    // Don't output the myomeka.css file on pages made by other plugins.
+    // This may be a bug that needs to be fixed in the next version of Omeka.
+    if (in_array($request->getModuleName(), array('my-omeka', 'default', ''))) {
+        echo "<link rel=\"stylesheet\" media=\"screen\" href=\"".css('myomeka')."\" />";
+    }
 }
 
 /**
@@ -324,7 +328,14 @@ function my_omeka_settings_css()
 function my_omeka_setup_acl($acl)
 {
     $acl->addRole(new Zend_Acl_Role(MYOMEKA_USER_ROLE));
-    // $acl->loadResourceList(array('MyOmeka_MyOmeka'=>array('dashboard', 'index')));
+    // All logged in users have permission to delete their own posters.
+    // As of 0.10, admin & super are automatically given new permissions, so
+    // they will be able to edit and delete other users' posters by default.
+    // 
+    // Note that privileges must be 'editAny' instead of 'edit' b/c the latter
+    // will control all access to the editAction, whereas we want to allow partial
+    // access based on criteria such as ownership.
+    $acl->loadResourceList(array('MyOmeka_Poster'=>array('editAny', 'deleteAny')));
     
     // Have to hard code all the roles that allow access rather than just saying
     // that all logged in users have access.

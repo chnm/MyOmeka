@@ -9,6 +9,11 @@ require_once 'MyOmekaTag.php';
 
 class MyOmeka_PosterController extends Omeka_Controller_Action
 {        
+    public function init()
+    {
+        $this->_currentUser = Omeka_Context::getInstance()->getCurrentUser();
+    }
+    
     /**
      * @todo Pagination through posters?
      **/
@@ -28,13 +33,23 @@ class MyOmeka_PosterController extends Omeka_Controller_Action
         // Get the poster object
         $poster = $this->findById(null, 'MyOmekaPoster');
         
+        $this->_verifyAccess($poster, 'edit');
+        
         // Retrieve items that were noted and tagged by users
-        $currentUser = Omeka_Context::getInstance()->getCurrentUser();
-        $items = $this->getTable('MyOmekaNote')->findTaggedAndNotedItemsByUserId($currentUser->id);
+        $items = $this->getTable('MyOmekaNote')->findTaggedAndNotedItemsByUserId($this->_currentUser->id);
         
         $this->view->assign(compact('poster', 'posterItems', 'items'));            
     }
     
+    protected function _verifyAccess($poster, $action)
+    {
+        // Block access for users who didn't make the poster, or people who don't
+        // have permission.
+        if ($poster->user_id != $this->_currentUser->id and !$this->isAllowed($action . 'Any')) {
+            throw new Omeka_Controller_Exception_403();
+        } 
+    }
+        
     /**
      * @todo Should poster viewing be limited to users who have not been given access,
      * or is it OK for anyone to have access if they can guess the URL?  One
@@ -97,11 +112,13 @@ class MyOmeka_PosterController extends Omeka_Controller_Action
     }
     
     public function saveAction()
-    {   
-        $params = $this->getRequest()->getParams();
-        
+    {           
         // Get the poster object
         $poster = $this->findById(null, 'MyOmekaPoster');
+        
+        $this->_verifyAccess($poster, 'edit');
+        
+        $params = $this->getRequest()->getParams();
         $poster->title = $params['title'];
         $poster->description = $params['description'];
         $poster->updateItems($params);
@@ -111,13 +128,10 @@ class MyOmeka_PosterController extends Omeka_Controller_Action
     }
 
 
-    public function newAction(){
-
-        $user = Omeka_Context::getInstance()->getCurrentUser();
-        
+    public function newAction(){        
         $poster = new MyOmekaPoster();
         $poster->title = 'untitled';
-        $poster->user_id = $user->id;
+        $poster->user_id = $this->_currentUser->id;
         $poster->description = '';
         $poster->date_created = date( 'Y-m-d H:i:s', time() );
         $poster->save();
@@ -131,11 +145,10 @@ class MyOmeka_PosterController extends Omeka_Controller_Action
         $poster = $this->findById(null, 'MyOmekaPoster');
         
         // Check to make sure the poster belongs to the logged in user
-        $user = Omeka_Context::getInstance()->getCurrentUser();
-        if($user->id === $poster->user_id){
-            $poster->delete();
-            $this->flash("\"$poster->title\" was successfully deleted");
-        }
+        $this->_verifyAccess($poster, 'delete');
+        
+        $poster->delete();
+        $this->flash("\"$poster->title\" was successfully deleted");
         
         // Try to redirect to the HTTP Referer, otherwise go back to the dashboard.
         $redirectUrl = $_SERVER['HTTP_REFERER'];

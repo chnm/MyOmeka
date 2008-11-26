@@ -53,7 +53,7 @@ class MyOmeka_MyOmekaController extends Omeka_Controller_Action
 		$emailSent = false; //true only if an registration email has been sent 
 		
 		$user = new User();
-		$user->role = "MyOmeka";
+		$user->role = MYOMEKA_USER_ROLE;
 		$requireTermsOfService = get_option('my_omeka_require_terms_of_service');
 
 		try {
