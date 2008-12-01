@@ -7,7 +7,6 @@ require_once 'User.php';
 require_once 'TagTable.php';
 require_once 'MyOmekaPoster.php';
 require_once 'MyOmekaNote.php';
-require_once 'MyOmekaTag.php';
 
 /**
  * @param string

@@ -1,5 +1,4 @@
 <?php
-require_once 'MyomekaTag.php';
 require_once 'Omeka/Controller/Action.php';
 
 class MyOmeka_TagController extends Omeka_Controller_Action
