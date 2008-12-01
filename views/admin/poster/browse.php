@@ -3,10 +3,19 @@ head();
 echo js('dashboard');
 ?>
 
-<h1>Poster Administration</h1>
+<h1>Poster Administration (<?php echo $totalPosters; ?> posters)</h1>
 
 <div id="primary">
     <p>Posters created by users are listed below.</p>
+    
+    <div class="pagination">
+    <?php echo pagination_links(array('scrolling_style' => null, 
+                                         'page_range'      => null, 
+                                         'total_results'   => $totalPosters, 
+                                         'page'            => $page, 
+                                         'per_page'        => $perPage)) ?>
+    </div>
+    
     <?php if(count($posters)): ?>
         <table>
             <tr>
@@ -18,7 +27,7 @@ echo js('dashboard');
             <?php foreach ($posters as $poster): ?>
                 <tr>
                     <td><?php echo htmlspecialchars($poster->title); ?></td>
-                    <td><?php echo $poster->username; ?></td>
+                    <td><?php echo $poster->User->username; ?></td>
                     <td><?php echo $poster->date_modified; ?></td>
                     <td>
                         <a href="<?php echo uri(array('action'=>'view','id'=>$poster->id), 'myOmekaPosterActionId'); ?>">view</a> 

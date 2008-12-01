@@ -18,10 +18,17 @@ class MyOmeka_PosterController extends Omeka_Controller_Action
      **/
     public function browseAction()
     {
-        // Get all of the posters on the site
-        $posters = new MyOmekaPoster();
-        $posters = $posters->getPosters();
+        $requestParams = $this->_request->getParams();
+        
+        // Make sure we're on the first page if 'page' isn't set.
+        $requestParams['page'] = (int)$requestParams['page'] or $requestParams['page'] = 1;
+
+        $posters = $this->getTable('MyOmekaPoster')->findBy($requestParams);
+        $posterCount = $this->getTable('MyOmekaPoster')->count($requestParams);
+        $this->view->page = $requestParams['page'];
+        $this->view->perPage = MyOmekaPosterTable::POSTERS_PER_PAGE;
         $this->view->posters = $posters;
+        $this->view->totalPosters = $posterCount;
     }
 
     /**

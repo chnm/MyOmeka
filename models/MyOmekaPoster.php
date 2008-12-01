@@ -9,23 +9,16 @@ class MyOmekaPoster extends Omeka_Record
     public $user_id;
     public $date_created;
     
-    protected $_related = array('Items'=>'getItems');
+    protected $_related = array('Items'=>'getItems', 'User'=>'getUser');
     
     public function getItems()
     {
         return $this->getPosterItems($this->id);
     }
     
-    public function getUserPosters($userId) 
+    public function getUser()
     {
-        return $this->getTable()->findByUserId($userId);
-    }
-    
-    public function getPosters(){
-        $db = get_db();
-        return $db->getTable("MyOmekaPoster")->fetchObjects(" SELECT p.*, u.username
-                                                        FROM {$db->prefix}posters p
-                                                        JOIN {$db->prefix}users u ON p.user_id = u.id");
+        return $this->getTable('User')->find($this->user_id);
     }
     
     public function getPosterItems($poster_id){
