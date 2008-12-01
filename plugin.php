@@ -160,20 +160,6 @@ function my_omeka_show_only_my_items($select, $params)
 }
 
 /**
- * Call this function in your public themes to allow users to add notes to an item.
- */
-function my_omeka_add_notes($item)
-{	
-    if($user = current_user()) {
-		// Check if the user has already added notes to the item
-    	$note = get_db()->getTable('MyOmekaNote')->findByUserIdAndItemId($user->id, $item->id);
-        
-        // Render the addNotes template
-        common("add-notes", compact("note","item"));
-    }
-}
-
-/**
  * Echo this function in your items/show.php of your public themes to allow users to add and remove notes and tags
  */
 function my_omeka_embed_notes_and_tags() 
@@ -186,9 +172,24 @@ function my_omeka_embed_notes_and_tags()
         $html .= '<div id="myomeka-notes-tags">';
         $html .= my_omeka_add_notes($item);
         $html .= my_omeka_add_tags($item);
+        $html .= my_omeka_items_show_navigation();
         $html .= '</div>';
 	}
 	return $html;
+}
+
+/**
+ * Call this function in your public themes to allow users to add notes to an item.
+ */
+function my_omeka_add_notes($item)
+{	
+    if($user = current_user()) {
+		// Check if the user has already added notes to the item
+    	$note = get_db()->getTable('MyOmekaNote')->findByUserIdAndItemId($user->id, $item->id);
+        
+        // Render the addNotes template
+        common("add-notes", compact("note","item"));
+    }
 }
 
 /**
@@ -206,6 +207,17 @@ function my_omeka_add_tags($item)
     
     $tags = get_db()->getTable('Tag')->fetchObjects($tagSelect);
     common("add-tags", compact("item","tags"));
+}
+
+function my_omeka_items_show_navigation()
+{
+    $helpUrl = uri(array('action'=>'help'), 'myOmekaAction');
+    $dashboardUrl = uri(array(), 'myOmekaDashboard');
+?>
+    <ul class="navigation"><li><a href="<?php echo $helpUrl; ?>" class="myomeka-help-link">Help</a></li>
+    <li><a class="dashboard-link" href="<?php echo $dashboardUrl; ?>">Go to My Dashboard</a></li></ul>
+
+<?php
 }
 
 function poster_icon_html() 

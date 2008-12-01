@@ -1,7 +1,5 @@
 <div id="myomeka-add-notes">
     <h2>My Notes</h2>
-<a href="<?php echo uri(array('action'=>'help'), 'myOmekaAction'); ?>" class="myomeka-help-link">Help</a>
-	<a class="dashboard-link" href="<?php echo uri(array(), 'myOmekaDashboard'); ?>">Go to My Dashboard</a>
     <div id="myomeka-edit-note">
         <form action="<?php echo uri(array('action'=>'edit'), 'myOmekaNoteAction'); ?>" id="myomeka-note-form" method="post" accept-charset="utf-8">    
             <div>
