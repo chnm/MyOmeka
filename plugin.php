@@ -35,6 +35,9 @@ add_plugin_hook('item_browse_sql', 'my_omeka_show_only_my_items');
 add_plugin_hook('public_append_to_items_show', 'my_omeka_embed_notes_and_tags');
 add_plugin_hook('initialize', 'my_omeka_add_controller_plugin');
 
+// Special hooks.
+add_plugin_hook('html_purifier_form_submission', 'my_omeka_xss_filter');
+
 // Add filters.
 add_filter('admin_navigation_main', 'my_omeka_admin_nav');
 
@@ -354,4 +357,25 @@ function my_omeka_add_controller_plugin()
 {
     require_once 'MyOmekaControllerPlugin.php';
     Zend_Controller_Front::getInstance()->registerPlugin(new MyOmekaControllerPlugin);
+}
+
+function my_omeka_xss_filter($request, $purifier)
+{
+    if ($request->getModuleName() == 'my-omeka') {
+        if ($request->getActionName() == 'save') {
+            $post = $request->getPost();
+            foreach ($post as $key => $value) {
+                // Filter the description, annotation- and itemID- fields.
+                switch (true) {
+                    case $key == 'description':
+                        $post['description'] = $purifier->purify($value);
+                        break;
+                    case strstr($key, 'annotation'):
+                        $post[$key] = $purifier->purify($value);
+                        break;
+                }
+            }
+            $request->setPost($post);
+        }
+    }
 }
