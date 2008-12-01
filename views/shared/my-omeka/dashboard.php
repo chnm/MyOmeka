@@ -18,7 +18,7 @@
 
 	        <?php foreach($posters as $poster): ?>           
 				<div>
-					<h3 class="poster-title"><?php echo $poster->title; ?></h3>
+					<h3 class="poster-title"><?php echo htmlspecialchars($poster->title); ?></h3>
 					<ul class="myomeka-poster-meta">
 						<li class="poster-date"><?php echo $poster->date_created; ?></li>	
 						<li class="post-description"><?php echo snippet($poster->description,0,250); ?></li>

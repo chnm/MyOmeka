@@ -17,7 +17,7 @@ echo js('dashboard');
             </tr>
             <?php foreach ($posters as $poster): ?>
                 <tr>
-                    <td><?php echo $poster->title; ?></td>
+                    <td><?php echo htmlspecialchars($poster->title); ?></td>
                     <td><?php echo $poster->username; ?></td>
                     <td><?php echo $poster->date_modified; ?></td>
                     <td>

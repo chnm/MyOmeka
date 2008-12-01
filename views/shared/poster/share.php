@@ -2,7 +2,7 @@
 
 <div id="primary">
 <?php echo flash(); ?>
-<h1>Sharing "<?php echo $poster->title; ?>"</h1>
+<h1>Sharing "<?php echo htmlspecialchars($poster->title); ?>"</h1>
 <?php if($emailSent): ?>
     <p>We just sent an email to <?php echo $emailTo; ?> with a link to your poster.</p>
     <a href="<?php echo uri(array(), 'myOmekaDashboard'); ?>">Go back to your dashboard</a>

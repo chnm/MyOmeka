@@ -18,14 +18,13 @@
     <form action="<?php echo uri(array('action'=>'save', 'id'=>$poster->id), 'myOmekaPosterActionId'); ?>" method="post" accept-charset="utf-8" id="myomeka-poster-form">
         <div class="myomeka-field">
             <label for="myomeka-title">Title of Poster:</label>
-            <input type="text" name="title" value="<?php echo $poster->title;?>" id="myomeka-title" />
+            <?php echo $this->formText('title', $poster->title, array('id'=>'myomeka-title')); ?>
         </div>
     
         <div class="myomeka-field">
             <label for="myomeka-description">Description:</label>
-            <textarea name="description" id="myomeka-description" rows="8" cols="20">
-                <?php echo $poster->description;?>
-            </textarea>
+            <?php echo $this->formTextarea('description', $poster->description, 
+            array('id'=>'myomeka-description', 'rows'=>'8', 'cols'=>'20')); ?>
         </div>
     
         <h2>Poster Items</h2>
@@ -48,12 +47,12 @@
         </div>
         <div id="myomeka-submit-poster">
             <input type="submit" name="save_poster" value="Save Poster" /> or 
-            <?php if (isset($_GET['return']) && $_GET['return'] == "admin"): ?>
-                <a href="<?php echo uri(array('action'=>'admin-posters'), 'myOmekaPosterAction'); ?>">Discard changes and return to poster administration</a>
+            <?php if (is_admin_theme()): ?>
+                <a href="<?php echo uri(array('action'=>'browse'), 'myOmekaPosterAction'); ?>">Discard changes and return to poster administration</a>
             <?php else: ?>
                 <a href="<?php echo uri(array(), 'myOmekaDashboard'); ?>">Discard changes and return to the dashboard</a>
             <?php endif ?>
-            <input type="hidden" name="itemCount" value="<?php echo count($posterItems);?>" id="myomeka-itemCount"/>
+            <input type="hidden" name="itemCount" value="<?php echo count($poster->Items);?>" id="myomeka-itemCount"/>
         </div>
     </form>
     

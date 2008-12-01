@@ -124,7 +124,11 @@ class MyOmeka_PosterController extends Omeka_Controller_Action
         $poster->updateItems($params);
         $poster->save();
         
-        $this->redirect->gotoRoute(array(), 'myOmekaDashboard');
+        if (is_admin_theme()) {
+            $this->redirect->gotoRoute(array('action'=>'browse'), 'myOmekaPosterAction');
+        } else {
+            $this->redirect->gotoRoute(array(), 'myOmekaDashboard');
+        }
     }
 
 

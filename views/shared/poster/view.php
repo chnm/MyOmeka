@@ -4,7 +4,7 @@
 <div id="myomeka-primary">
 
 <div id="myomeka-poster-info">
-<h2><?php echo $poster->title;?></h2>
+<h2><?php echo htmlspecialchars($poster->title);?></h2>
 <?php echo $poster->description;?>
 </div>
 
