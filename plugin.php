@@ -229,11 +229,6 @@ function poster_icon_html()
     return $html;
 }
 
-function my_omeka_breadcrumb() 
-{
-	
-}
-
 function my_omeka_user_status() 
 {
 	$user = current_user();
