@@ -21,20 +21,17 @@
     </div>
 
     <div class="myomeka-annotation">
-
-        <textarea   name="annotation-<?php echo $posterItem->ordernum; ?>" 
-                    id="myomeka-annotation-<?php echo mt_rand(0, 999999999); ?>"
-                    rows="6" 
-                    cols="10">
-            <?php echo $posterItem->annotation; ?>
-        </textarea>
+        <?php echo __v()->formTextarea('annotation-' . $posterItem->ordernum, $noteText,
+            array(  'id'=>'myomeka-annotation-' . mt_rand(0, 999999999),
+                    'rows'=>'6',
+                    'cols'=>'10')); ?>
     </div>
-    <?php if ($posterItem->favoriteAnnotation): ?>
+    <?php if ($noteText): ?>
         <div class="myomeka-notes">
             <h3>My Notes</h3>
-            <?php echo $posterItem->favoriteAnnotation; ?>
+            <?php echo nls2p(htmlspecialchars($noteText)); ?>
         </div>
-    <?php endif ?>
+    <?php endif; ?>
 
 	<div class="myomeka-controls-delete">
 		<a href="#" class="myomeka-delete myomeka-poster-control">

@@ -174,6 +174,10 @@ class MyOmeka_PosterController extends Omeka_Controller_Action
         $params = $this->getRequest()->getParams();
         $id = $params['item-id'];
         $posterItem = $this->getTable('Item')->find((int) $id);
+        $noteObj = $this->getTable('MyOmekaNote')->findByUserIdAndItemId($this->_currentUser->id, $id);
+        if ($noteObj) {
+            $this->view->noteText = $noteObj->note;
+        }
         $this->view->posterItem = $posterItem;
         $this->render('spot');
     }

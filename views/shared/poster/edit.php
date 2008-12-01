@@ -40,7 +40,7 @@
         <?php
             if(count($poster->Items)){
                 foreach($poster->Items as $posterItem){
-                    common('spot', array('posterItem'=>$posterItem), 'poster');
+                    common('spot', array('posterItem'=>$posterItem, 'noteText'=>$posterItem->annotation), 'poster');
                 }   
             }
         ?>
