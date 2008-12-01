@@ -32,7 +32,7 @@ add_plugin_hook('define_acl', 'my_omeka_setup_acl');
 add_plugin_hook('define_routes', 'my_omeka_define_routes');
 add_plugin_hook('public_theme_header', 'my_omeka_css');
 add_plugin_hook('item_browse_sql', 'my_omeka_show_only_my_items');
-
+add_plugin_hook('public_append_to_items_show', 'my_omeka_embed_notes_and_tags');
 add_plugin_hook('initialize', 'my_omeka_add_controller_plugin');
 
 // Add filters.
