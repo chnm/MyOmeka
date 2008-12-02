@@ -8,7 +8,7 @@
     // Make the items-widget div a modal pop-up
     iBox.setPath('<?php echo WEB_ROOT; ?>/plugins/MyOmeka/views/shared/javascripts/ibox/');
     // Set the initial Item Count
-    Poster.itemCount = <?php echo count($posterItems); ?>;
+    Poster.itemCount = <?php echo count($poster->Items); ?>;
 </script>
 <div id="primary">
 <div id="myomeka-primary">
