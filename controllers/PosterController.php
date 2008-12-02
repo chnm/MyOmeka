@@ -8,6 +8,9 @@ require_once 'MyOmekaNote.php';
 
 class MyOmeka_PosterController extends Omeka_Controller_Action
 {        
+    
+    const UNTITLED_POSTER_TITLE = 'untitled';
+    
     public function init()
     {
         $this->_currentUser = Omeka_Context::getInstance()->getCurrentUser();
@@ -125,7 +128,7 @@ class MyOmeka_PosterController extends Omeka_Controller_Action
         $this->_verifyAccess($poster, 'edit');
         
         $params = $this->getRequest()->getParams();
-        $poster->title = $params['title'];
+        $poster->title = !empty($params['title']) ? $params['title'] : self::UNTITLED_POSTER_TITLE;
         $poster->description = $params['description'];
         $poster->updateItems($params);
         $poster->save();
@@ -140,7 +143,7 @@ class MyOmeka_PosterController extends Omeka_Controller_Action
 
     public function newAction(){        
         $poster = new MyOmekaPoster();
-        $poster->title = 'untitled';
+        $poster->title = self::UNTITLED_POSTER_TITLE;
         $poster->user_id = $this->_currentUser->id;
         $poster->description = '';
         $poster->date_created = date( 'Y-m-d H:i:s', time() );
