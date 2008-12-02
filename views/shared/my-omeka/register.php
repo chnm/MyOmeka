@@ -48,7 +48,7 @@ if (!$emailSent):
     	<?php echo form_error('email'); ?>
     </div>
 	
-	<?php if ($requireTermsOfService and function_exists('terms_of_service_link')): ?>
+	<?php if (get_option('my_omeka_require_terms_of_service') && function_exists('terms_of_service_link')): ?>
 	    <div class="field">	
 			Please review the <?php echo terms_of_service_link() ?> and <?php echo terms_of_service_privacy_policy_link(); ?>
 			<?php echo terms_of_service_form_input('agreed_to_tos_and_privacy_policy', 'I understand and agree to the Terms of Service and Privacy Policy'); ?>
