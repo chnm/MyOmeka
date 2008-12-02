@@ -84,7 +84,6 @@ function my_omeka_install()
 /**
  * Define the routes, wrapping them in my_omeka_add_route()
  */
-
 function my_omeka_define_routes($router) 
 {
 	// get the base path
@@ -125,7 +124,6 @@ function my_omeka_define_routes($router)
  * @param array Navigation array.
  * @return array Filtered navigation array.
  */
-
 function my_omeka_admin_nav($navArray)
 {
     return $navArray += array('Posters'=> uri(array('action'=>'browse'), 'myOmekaPosterAction'));
@@ -141,10 +139,9 @@ function my_omeka_css($request)
 }
 
 /**
- * This allows the MyOmeka controller to pass arbitrary parameters when 
- * retrieving items so that we only retrieve items that were added by a user, etc.
- *
- * @todo What is the deal with this?  Does this get used anywhere?
+ * This allows the user to pass arbitrary parameters in the query string when 
+ * browsing items so that we only retrieve items that were tagged using MyOmeka.
+ * 
  * @return void
  **/
 function my_omeka_show_only_my_items($select, $params)
@@ -335,7 +332,6 @@ function my_omeka_settings_css()
  * 
  * @param Omeka_Acl
  */
-
 function my_omeka_setup_acl($acl)
 {
     $acl->addRole(new Zend_Acl_Role(MYOMEKA_USER_ROLE));
@@ -347,10 +343,6 @@ function my_omeka_setup_acl($acl)
     // will control all access to the editAction, whereas we want to allow partial
     // access based on criteria such as ownership.
     $acl->loadResourceList(array('MyOmeka_Poster'=>array('editAny', 'deleteAny')));
-    
-    // Have to hard code all the roles that allow access rather than just saying
-    // that all logged in users have access.
-    // $acl->allow(array(MYOMEKA_USER_ROLE, 'admin', 'super', 'researcher', 'contributor'), 'MyOmeka_MyOmeka', array('index', 'dashboard'));
 }
 
 function my_omeka_add_controller_plugin()

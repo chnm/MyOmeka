@@ -17,7 +17,7 @@ class MyOmeka_PosterController extends Omeka_Controller_Action
     }
     
     /**
-     * @todo Pagination through posters?
+     * This action should only be available on the admin interface.
      **/
     public function browseAction()
     {
@@ -34,9 +34,6 @@ class MyOmeka_PosterController extends Omeka_Controller_Action
         $this->view->totalPosters = $posterCount;
     }
 
-    /**
-     * @todo Poster editing has not been blocked for users who did not build the poster.
-     **/
     public function editAction()
     {   
         // Get the poster object
@@ -64,10 +61,6 @@ class MyOmeka_PosterController extends Omeka_Controller_Action
      * or is it OK for anyone to have access if they can guess the URL?  One
      * possible solution is to block access to people who haven't built the poster
      * unless they are given a unique URL via the 'share' component.
-     * 
-     * @todo Are annotations HTML?  If not, they need to be properly escaped
-     * when displayed.  If they are HTML, we need to pretty much require use
-     * of the HtmlPurifier plugin alongside MyOmeka.
      */
     public function viewAction()
     {        

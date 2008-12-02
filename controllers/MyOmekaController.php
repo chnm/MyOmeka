@@ -8,10 +8,6 @@ require_once 'TagTable.php';
 require_once 'MyOmekaPoster.php';
 require_once 'MyOmekaNote.php';
 
-/**
- * @param string
- * @return void
- **/
 class MyOmeka_MyOmekaController extends Omeka_Controller_Action
 {
 		
@@ -21,10 +17,7 @@ class MyOmeka_MyOmekaController extends Omeka_Controller_Action
 	}
 	
 	/**
-	 * @todo Block access via the ACL (instead of forwarding to login within the action).
-	 * 
-	 * @param string
-	 * @return void
+	 * The starting point for all MyOmeka interactions.
 	 **/
 	public function dashboardAction()
 	{		
