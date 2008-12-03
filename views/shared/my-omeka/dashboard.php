@@ -4,7 +4,7 @@
 
 <div id="primary">
     
-<div id="myomeka-primary">
+<div id="myomeka-dashboard">
 
 	<h1><?php echo get_option('my_omeka_page_title'); ?>: Dashboard</h1>
 	
@@ -17,11 +17,11 @@
 		<?php if(count($posters) > 0): ?>
 
 	        <?php foreach($posters as $poster): ?>           
-				<div>
+				<div class="myomeka-poster">
 					<h3 class="poster-title"><?php echo htmlspecialchars($poster->title); ?></h3>
 					<ul class="myomeka-poster-meta">
-						<li class="poster-date"><?php echo $poster->date_created; ?></li>	
-						<li class="post-description"><?php echo snippet($poster->description,0,250); ?></li>
+						<li class="myomeka-poster-date"><?php echo $poster->date_created; ?></li>	
+						<li class="myomeka-poster-description"><?php echo snippet($poster->description,0,250); ?></li>
 					</ul>
 					<ul class="myomeka-poster-nav">
 					
@@ -39,16 +39,16 @@
 		<?php endif; ?>
 	</div>
 
-	<div id="create-poster"><a href="<?php echo uri(array('action'=>'new'), 'myOmekaPosterAction'); ?>">Create a new poster &rarr;</a>
+	<div id="myomeka-create-poster"><a href="<?php echo uri(array('action'=>'new'), 'myOmekaPosterAction'); ?>">Create a new poster &rarr;</a>
 	</div>
 
-	<div id="myomeka-notedItems">
+	<div id="myomeka-noted-items">
 	<h3>Items with your notes and tags</h3>
 	<?php if (has_items_for_loop()): ?>
 
 		<?php while (loop_items()): ?>
-		<div class="myomeka-notedItems-list-box">
-	    	<ul id="myomeka-notedItems-list">            
+		<div class="myomeka-noted-items-list">
+	    	<ul>            
 				<li><?php echo link_to_item(item_thumbnail()); ?></li>	            
                 <li><?php echo link_to_item(); ?></li>
 				<li><?php echo item('Dublin Core', 'Description', array('snippet'=>200));?>
@@ -59,8 +59,7 @@
 		<?php else: ?>
 		   <p>You have not added notes to any items yet.</p>
 		<?php endif; ?>
-	</div >
-
+	</div>
 	<div id="myomeka-tags">
 	<h3>Your Tags</h3>
 	<?php if(count($tags)): ?>
@@ -74,7 +73,7 @@
 	<?php endif; ?>
 	</div>
 
-</div><!-- end myomeka-primary -->
+</div>
 
 </div>
 <?php foot(); ?>

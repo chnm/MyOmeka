@@ -11,7 +11,7 @@
     Poster.itemCount = <?php echo count($poster->Items); ?>;
 </script>
 <div id="primary">
-<div id="myomeka-primary">
+<div id="myomeka-poster">
 	<div id="myomeka-poster-info">
 	<h2>Edit Your Poster</h2>
 	<a href="<?php echo uri(array('action'=>'help'), 'myOmekaAction'); ?>" class="myomeka-help-link">Help</a>
