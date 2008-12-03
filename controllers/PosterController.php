@@ -90,7 +90,7 @@ class MyOmeka_PosterController extends Omeka_Controller_Action
                 $site_title = get_option('site_title');
         		$from = get_option('administrator_email');
         		
-                $user = Omeka::loggedIn();
+                $user = Omeka_Context::getInstance()->getCurrentUser();
                 $subject = $user->username . " shared a poster with you";
                 
                 $body = $user->username . " shared a poster with you on $site_title. \n\n";
