@@ -15,6 +15,7 @@ Add item to posters model
 .myomeka-additem-image {
     float:right;
 }
+.myomeka-additem-image img {width: 100px; height:100px;}
 .myomeka-additem-details {
     float:left;
 width: 400px;
