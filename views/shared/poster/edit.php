@@ -40,7 +40,8 @@
         <?php
             if(count($poster->Items)){
                 foreach($poster->Items as $posterItem){
-                    common('spot', array('posterItem'=>$posterItem, 'noteText'=>$posterItem->annotation), 'poster');
+                    $noteObj = my_omeka_get_note_for_item($posterItem);
+                    common('spot', array('posterItem'=>$posterItem, 'noteText'=>$noteObj->note), 'poster');
                 }   
             }
         ?>

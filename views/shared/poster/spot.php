@@ -19,7 +19,7 @@
     </div>
 
     <div class="myomeka-annotation">
-        <?php echo __v()->formTextarea('annotation-' . $posterItem->ordernum, $noteText,
+        <?php echo __v()->formTextarea('annotation-' . $posterItem->ordernum, $posterItem->annotation,
             array(  'id'=>'myomeka-annotation-' . mt_rand(0, 999999999),
                     'rows'=>'6',
                     'cols'=>'10')); ?>

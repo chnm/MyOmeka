@@ -312,3 +312,9 @@ function my_omeka_xss_filter($request, $purifier)
         }
     }
 }
+
+function my_omeka_get_note_for_item($item)
+{
+    $user = current_user();
+    return get_db()->getTable('MyOmekaNote')->findByUserIdAndItemId($user->id, $item->id);
+}
