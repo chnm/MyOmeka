@@ -20,7 +20,7 @@
 		<?php $disclaimer = get_option('my_omeka_disclaimer'); if(!empty($disclaimer)): ?>
 		<div id="myomeka-disclaimer">
 			<p id="myomeka-disclaimer-title"><strong>Disclaimer</strong></p>
-			<?php echo nls2p($disclaimer); ?>
+			<?php echo nls2p(htmlspecialchars($disclaimer)); ?>
 		</div>
 		<?php endif; ?>
 	</div>

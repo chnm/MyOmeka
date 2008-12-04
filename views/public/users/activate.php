@@ -4,7 +4,7 @@
 	<div id="myomeka-user-activation">
 		<h1>User Activation</h1>
 		<?php echo flash(); ?>
-	    <h2>Hello, <?php echo h($user->first_name . ' ' . $user->last_name); ?>. Your username is: <?php echo h($user->username); ?></h2>
+	    <h2>Hello, <?php echo htmlspecialchars($user->first_name . ' ' . $user->last_name); ?>. Your username is: <?php echo htmlspecialchars($user->username); ?></h2>
 		<form method="post">
 			<div class="field">
 			<?php echo label('new_password1', 'Create a Password'); ?>
