@@ -30,7 +30,7 @@ echo js('dashboard');
                     <td><?php echo $poster->User->username; ?></td>
                     <td><?php echo $poster->date_modified; ?></td>
                     <td>
-                        <a href="<?php echo uri(array('action'=>'view','id'=>$poster->id), 'myOmekaPosterActionId'); ?>">view</a> 
+                        <a href="<?php echo public_uri(array('action'=>'view','id'=>$poster->id), 'myOmekaPosterActionId'); ?>">view</a> 
                         <a href="<?php echo uri(array('action'=>'edit','id'=>$poster->id), 'myOmekaPosterActionId'); ?>">edit</a> 
                         <a href="<?php echo uri(array('action'=>'delete','id'=>$poster->id), 'myOmekaPosterActionId'); ?>" class="myomeka-delete-poster-link">delete</a>
                     </td>
