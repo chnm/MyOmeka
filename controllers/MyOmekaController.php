@@ -74,16 +74,20 @@ class MyOmeka_MyOmekaController extends Omeka_Controller_Action
 		$ua->user_id = $user->id;
 		$ua->save();
 		
-		//send the user an email telling them about their great new user account
-				
-		$site_title = get_option('site_title');
-		$from = get_option('administrator_email');
-		
-		$body = "Welcome!\n\nYour account for the ".$site_title." archive has been created. Your username is ".$user->username.". Please click the following link to activate your account:\n\n"
-		. uri( get_option('my_omeka_page_path') . "activate?u={$ua->url}") . "\n\n (or use any other page on the site).\n\nBe aware that we log you out after 15 minutes of inactivity to help protect people using shared computers (at libraries, for instance).\n\n".$site_title." Administrator";
-		$title = "Activate your account with the ".$site_title." Archive";
-		$header = 'From: '.$from. "\n" . 'X-Mailer: PHP/' . phpversion();
-		return mail($user->email, $title, $body, $header);
+        $toEmail = $user->Entity->email;
+        $toName = $user->Entity->first_name . ' ' . $user->Entity->last_name;
+        //send the user an email telling them about their great new user account
+
+        $this->view->user = $user;
+        $this->view->activationSlug = $ua->url;
+        $this->view->siteTitle = get_option('site_title');
+
+        $mail = new Zend_Mail();
+        $mail->setBodyText($this->view->render('my-omeka/register.mail.php'));
+        $mail->setFrom(get_option('administrator_email'), $this->view->siteTitle . ' Administrator');
+        $mail->addTo($toEmail, $toName);
+        $mail->setSubject("Activate your account with the {$this->view->siteTitle} Archive");
+        $mail->send();
 	}
 	
 	public function helpAction()
