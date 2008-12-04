@@ -25,7 +25,7 @@
 					</ul>
 					<ul class="myomeka-poster-nav">
 					
-	               		<li><a href="<?php echo uri(array('action'=>'view','id'=>$poster->id), 'myOmekaPosterActionId'); ?>" class="myomeka-view-poster-link">view</a> </li>
+	               		<li><a href="<?php echo uri(array('action'=>'show','id'=>$poster->id), 'myOmekaPosterActionId'); ?>" class="myomeka-view-poster-link">view</a> </li>
 	               		<li><a href="<?php echo uri(array('action'=>'edit','id'=>$poster->id), 'myOmekaPosterActionId'); ?>" class="myomeka-edit-poster-link">edit</a> </li>
 	               		<li><a href="<?php echo uri(array('action'=>'share','id'=>$poster->id), 'myOmekaPosterActionId'); ?>" class="myomeka-share-poster-link">share</a></li>
 	               		<li><a href="<?php echo uri(array('action'=>'delete','id'=>$poster->id), 'myOmekaPosterActionId'); ?>" class="myomeka-delete-poster-link">delete</a></li>

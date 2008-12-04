@@ -62,7 +62,7 @@ class MyOmeka_PosterController extends Omeka_Controller_Action
      * possible solution is to block access to people who haven't built the poster
      * unless they are given a unique URL via the 'share' component.
      */
-    public function viewAction()
+    public function showAction()
     {        
         // Get the poster object
         $poster = $this->findById(null, 'MyOmekaPoster');
@@ -98,7 +98,7 @@ class MyOmeka_PosterController extends Omeka_Controller_Action
                 
                 // Hack to get access to the abs_uri() function in the view helpers.
                 require_once HELPER_DIR . DIRECTORY_SEPARATOR . 'all.php';
-                $body .= abs_uri(array('action'=>'view', 'id'=>$poster->id), 'myOmekaPosterActionId');
+                $body .= abs_uri(array('action'=>'show', 'id'=>$poster->id), 'myOmekaPosterActionId');
                 
                 $header = "From: $from\n";
                 $header .= "X-Mailer: PHP/" . phpversion();

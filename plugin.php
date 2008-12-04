@@ -98,9 +98,9 @@ function my_omeka_define_routes($router)
     // We may be able to condense this list even more.
     $routes['myOmekaDashboard'] = array('', array('controller'=>'my-omeka'));
     $routes['myOmekaAction'] = array(':action', array('controller'=>'my-omeka'));
-    $routes['myOmekaPosterAction'] = array('poster/:action', array('controller'=>'poster'));
-    $routes['myOmekaPosterActionId'] = array('poster/:action/:id', array('controller'=>'poster'));
-    $routes['myOmekaPosterBrowse'] = array('poster/browse/:page', array('controller'=>'poster', 'action'=>'browse', 'page'=>1));
+    $routes['myOmekaPosterAction'] = array('posters/:action', array('controller'=>'poster'));
+    $routes['myOmekaPosterActionId'] = array('posters/:action/:id', array('controller'=>'poster'));
+    $routes['myOmekaPosterBrowse'] = array('posters/browse/:page', array('controller'=>'poster', 'action'=>'browse', 'page'=>1));
     $routes['myOmekaAddTag'] = array('tags/add', array('controller'=>'tag', 'action'=>'add'));
     $routes['myOmekaTagDelete'] = array('tags/delete/:tag_id/:item_id', array('controller'=>'tag', 'action'=>'delete'));
     $routes['myOmekaNoteAction'] = array('note/:action', array('controller'=>'note'));
