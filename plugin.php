@@ -9,7 +9,7 @@
 // note: MyOmeka currently requires the TermsOfService plugin
 
 // Define the plugin version and page path.
-define('MY_OMEKA_PLUGIN_VERSION', '0.3');
+define('MY_OMEKA_PLUGIN_VERSION', '0.4');
 define('MY_OMEKA_PAGE_PATH', 'myomeka/');
 define('MY_OMEKA_PAGE_TITLE', 'MyOmeka');
 define('MY_OMEKA_DISCLAIMER', 'This page contains user generated content and does not necessarily reflect the opinions of this website. For more information please refer to our Terms and Conditions. If you would like to report the content of this page as objectionable, please contact us.');
@@ -26,6 +26,7 @@ require_once HELPER_DIR . DIRECTORY_SEPARATOR . 'all.php';
 
 // Add plugin hooks.
 add_plugin_hook('install', 'my_omeka_install');
+add_plugin_hook('uninstall', 'my_omeka_uninstall');
 add_plugin_hook('config', 'my_omeka_config');
 add_plugin_hook('config_form', 'my_omeka_config_form');
 add_plugin_hook('define_acl', 'my_omeka_setup_acl');
@@ -79,6 +80,22 @@ function my_omeka_install()
             		`item_id` BIGINT UNSIGNED NOT NULL,
             		`date_modified` TIMESTAMP NOT NULL default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP
             	) ENGINE = MYISAM;");
+}
+
+/**
+ * Uninstall the plugin
+ */
+function my_omeka_uninstall() 
+{
+    delete_option('my_omeka_plugin_version');
+	delete_option('my_omeka_page_path');
+	delete_option('my_omeka_page_title');
+	delete_option('my_omeka_disclaimer');
+
+	$db = get_db();
+	$db->query("DROP TABLE {$db->prefix}posters");
+	$db->query("DROP TABLE {$db->prefix}posters_items");
+	$db->query("DROP TABLE {$db->prefix}notes");	
 }
 
 /**
