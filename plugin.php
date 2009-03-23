@@ -6,10 +6,10 @@
  * @package Omeka
  * @subpackage MyOmeka
  **/
-// note: MyOmeka currently requires the TermsOfService plugin
+// note: MyOmeka can optionally be used in conjunction with the TermsOfService plugin
 
 // Define the plugin version and page path.
-define('MY_OMEKA_PLUGIN_VERSION', '0.4');
+define('MY_OMEKA_PLUGIN_VERSION', '0.3.1');
 define('MY_OMEKA_PAGE_PATH', 'myomeka/');
 define('MY_OMEKA_PAGE_TITLE', 'MyOmeka');
 define('MY_OMEKA_DISCLAIMER', 'This page contains user generated content and does not necessarily reflect the opinions of this website. For more information please refer to our Terms and Conditions. If you would like to report the content of this page as objectionable, please contact us.');
@@ -22,7 +22,6 @@ require_once 'MyOmekaNote.php';
 // for generating URLs in emails.  Need to refactor helpers to allow access
 // within controllers.
 require_once HELPER_DIR . DIRECTORY_SEPARATOR . 'all.php';
-
 
 // Add plugin hooks.
 add_plugin_hook('install', 'my_omeka_install');
@@ -45,7 +44,6 @@ add_filter('admin_navigation_main', 'my_omeka_admin_nav');
 /**
  * Install the plugin.
  */
-
 function my_omeka_install()
 {	
 	set_option('my_omeka_plugin_version', MY_OMEKA_PLUGIN_VERSION);
