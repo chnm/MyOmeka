@@ -49,13 +49,20 @@
 		<?php while (loop_items()): ?>
 		<div class="myomeka-noted-items-list">
 	    	<ul>            
-				<li><?php echo link_to_item(item_thumbnail()); ?></li>	            
-                <li><?php echo link_to_item(); ?></li>
-				<li><?php echo item('Dublin Core', 'Description', array('snippet'=>200));?>
+				<li>
+				<?php 
+				    if (item_has_thumbnail()):
+				        echo link_to_item(item_thumbnail());
+				        echo '<br />';
+				    endif;	            
+                    echo link_to_item(); 
+                ?>
+                <br/>
+                <?php echo item('Dublin Core', 'Description', array('snippet'=>200));?>
+                </li>
 			</ul>
 		</div>
 		<?php endwhile; ?>
-
 		<?php else: ?>
 		   <p>You have not added notes to any items yet.</p>
 		<?php endif; ?>
