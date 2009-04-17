@@ -34,6 +34,7 @@ add_plugin_hook('public_theme_header', 'my_omeka_css');
 add_plugin_hook('item_browse_sql', 'my_omeka_show_only_my_items');
 add_plugin_hook('public_append_to_items_show', 'my_omeka_embed_notes_and_tags');
 add_plugin_hook('initialize', 'my_omeka_add_controller_plugin');
+add_plugin_hook('before_delete_item', 'my_omeka_delete_myomeka_taggings');
 
 // Special hooks.
 add_plugin_hook('html_purifier_form_submission', 'my_omeka_xss_filter');
@@ -179,11 +180,10 @@ function my_omeka_show_only_my_items($select, $params)
  */
 function my_omeka_embed_notes_and_tags() 
 {
-	 $item = get_current_item();
-	 
+	$item = get_current_item();
 	$user = current_user(); 
 	$html = '';
-	 if ($user) {
+	if ($user) {
         $html .= '<div id="myomeka-notes-tags">';
         $html .= my_omeka_add_notes($item);
         $html .= my_omeka_add_tags($item);
@@ -332,4 +332,22 @@ function my_omeka_get_note_for_item($item)
 {
     $user = current_user();
     return get_db()->getTable('MyOmekaNote')->findByUserIdAndItemId($user->id, $item->id);
+}
+
+/* 
+ * Since, MyOmeka hacks the record type for taggings from 'Item' to MYOMEKA_TAG_TYPE, 
+ * the core will not automatically remove MYOMEKA_TAG_TYPE taggings when an Item is deleted.
+ * So we need to delete MyOmeka taggings when items are deleted.  Hence, this is another hack.  
+ * All of this should be removed when we remake MyOmeka for collaborative tagging between users.
+**/
+function my_omeka_delete_myomeka_taggings($item) 
+{
+
+    $taggings = get_db()->getTable('Taggings')->findBySql(
+                'relation_id = ? AND type = ?', 
+                array($item->id, MYOMEKA_TAG_TYPE));
+    
+    foreach ($taggings as $tagging) {
+        $tagging->delete();
+    }
 }
