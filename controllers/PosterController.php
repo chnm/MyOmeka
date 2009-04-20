@@ -9,7 +9,7 @@ require_once 'MyOmekaNote.php';
 class MyOmeka_PosterController extends Omeka_Controller_Action
 {        
     
-    const UNTITLED_POSTER_TITLE = 'untitled';
+    const UNTITLED_POSTER_TITLE = 'Untitled';
     
     public function init()
     {
@@ -21,6 +21,9 @@ class MyOmeka_PosterController extends Omeka_Controller_Action
      **/
     public function browseAction()
     {
+        //clear the new poster id for discard
+        unset($_SESSION['my_omeka_new_poster_id']);
+        
         $requestParams = $this->_request->getParams();
         
         // Make sure we're on the first page if 'page' isn't set.
@@ -35,7 +38,7 @@ class MyOmeka_PosterController extends Omeka_Controller_Action
     }
 
     public function editAction()
-    {   
+    {           
         // Get the poster object
         $poster = $this->findById(null, 'MyOmekaPoster');
         
@@ -63,7 +66,10 @@ class MyOmeka_PosterController extends Omeka_Controller_Action
      * unless they are given a unique URL via the 'share' component.
      */
     public function showAction()
-    {        
+    {
+        //clear the new poster id for discard
+        unset($_SESSION['my_omeka_new_poster_id']);
+                
         // Get the poster object
         $poster = $this->findById(null, 'MyOmekaPoster');
         $this->view->poster = $poster;
@@ -78,8 +84,9 @@ class MyOmeka_PosterController extends Omeka_Controller_Action
      */
     public function shareAction()
     {   
-        $poster_id = $this->_getParam('id');
-        
+        //clear the new poster id for discard
+        unset($_SESSION['my_omeka_new_poster_id']);
+                
         // Get the poster object
         $poster = $this->findById(null, 'MyOmekaPoster');
         
@@ -114,7 +121,10 @@ class MyOmeka_PosterController extends Omeka_Controller_Action
     }
     
     public function saveAction()
-    {           
+    {
+        //clear the new poster id for discard
+        unset($_SESSION['my_omeka_new_poster_id']);
+                   
         // Get the poster object
         $poster = $this->findById(null, 'MyOmekaPoster');
         
@@ -133,8 +143,29 @@ class MyOmeka_PosterController extends Omeka_Controller_Action
         }
     }
 
+    
+    public function discardAction()
+    {        
+        if (isset($_SESSION['my_omeka_new_poster_id'])) {
+            // if the poster was just created and not yet saved by the edit form, then delete it
+            $poster = $this->findById($_SESSION['my_omeka_new_poster_id'], 'MyOmekaPoster');
+            // Check to make sure the poster belongs to the logged in user
+            $this->_verifyAccess($poster, 'delete');
+            // delete the poster
+            $poster->delete();
+            //clear the new poster id for discard
+            unset($_SESSION['my_omeka_new_poster_id']);
+        }
+        
+        if (is_admin_theme()) {
+            $this->redirect->gotoRoute(array('action'=>'browse'), 'myOmekaPosterAction');
+        } else {
+            $this->redirect->gotoRoute(array(), 'myOmekaDashboard');
+        }
+    }
 
-    public function newAction(){        
+    public function newAction()
+    {        
         $poster = new MyOmekaPoster();
         $poster->title = self::UNTITLED_POSTER_TITLE;
         $poster->user_id = $this->_currentUser->id;
@@ -142,12 +173,17 @@ class MyOmeka_PosterController extends Omeka_Controller_Action
         $poster->date_created = date( 'Y-m-d H:i:s', time() );
         $poster->save();
         
-        return $this->redirect->gotoRoute( array('action'=>'edit', 'id'=>$poster->id), 
-        'myOmekaPosterActionId');
+        // set the new poster id for discard
+        $_SESSION['my_omeka_new_poster_id'] = $poster->id;
+        
+        return $this->redirect->gotoRoute( array('action'=>'edit','id'=>$poster->id), 'myOmekaPosterActionId');        
     }
     
     public function deleteAction()
-    {   
+    {
+        //clear the new poster id for discard
+        unset($_SESSION['my_omeka_new_poster_id']);
+        
         $poster = $this->findById(null, 'MyOmekaPoster');
         
         // Check to make sure the poster belongs to the logged in user
@@ -168,9 +204,9 @@ class MyOmeka_PosterController extends Omeka_Controller_Action
     public function addPosterItemAction()
     {   
         $params = $this->getRequest()->getParams();
-        $id = $params['item-id'];
-        $posterItem = $this->getTable('Item')->find((int) $id);
-        $noteObj = $this->getTable('MyOmekaNote')->findByUserIdAndItemId($this->_currentUser->id, $id);
+        $itemId = $params['item-id'];
+        $posterItem = $this->getTable('Item')->find((int) $itemId);
+        $noteObj = $this->getTable('MyOmekaNote')->findByUserIdAndItemId($this->_currentUser->id, $itemId);
         if ($noteObj) {
             $this->view->noteText = $noteObj->note;
         }

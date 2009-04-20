@@ -49,9 +49,9 @@
         <div id="myomeka-submit-poster">
             <input type="submit" name="save_poster" value="Save Poster" /> or 
             <?php if (is_admin_theme()): ?>
-                <a href="<?php echo uri(array('action'=>'browse'), 'myOmekaPosterAction'); ?>">Discard changes and return to poster administration</a>
+                <a href="<?php echo uri(array('action'=>'discard'), 'myOmekaPosterAction'); ?>">Discard changes and return to poster administration</a>
             <?php else: ?>
-                <a href="<?php echo uri(array(), 'myOmekaDashboard'); ?>">Discard changes and return to the dashboard</a>
+                <a href="<?php echo uri(array('action'=> 'discard'), 'myOmekaPosterAction'); ?>">Discard changes and return to the dashboard</a>
             <?php endif ?>
             <input type="hidden" name="itemCount" value="<?php echo count($poster->Items);?>" id="myomeka-itemCount"/>
         </div>
