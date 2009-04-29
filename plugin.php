@@ -9,7 +9,7 @@
 // note: MyOmeka can optionally be used in conjunction with the TermsOfService plugin
 
 // Define the plugin version and page path.
-define('MY_OMEKA_PLUGIN_VERSION', '0.3.1');
+define('MY_OMEKA_PLUGIN_VERSION', get_plugin_ini('MyOmeka', 'version'));
 define('MY_OMEKA_PAGE_PATH', 'myomeka/');
 define('MY_OMEKA_PAGE_TITLE', 'MyOmeka');
 define('MY_OMEKA_DISCLAIMER', 'This page contains user generated content and does not necessarily reflect the opinions of this website. For more information please refer to our Terms and Conditions. If you would like to report the content of this page as objectionable, please contact us.');
