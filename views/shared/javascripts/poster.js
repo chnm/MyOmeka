@@ -21,7 +21,7 @@ Object.extend(Poster, {
        $$('#myomeka-poster-form').invoke('observe', 'submit', function(e){
            // index the form element names
            index = 1;
-           $$(".myomeka-annotation textarea").each(function(n){
+           $$(".myomeka-item-annotation textarea").each(function(n){
                n.setAttribute("name","annotation-"+index);
                n.up(".myomeka-poster-spot").down(".myomeka-hidden-item-id").setAttribute("name","itemID-"+index);
                index++;
@@ -55,10 +55,16 @@ Object.extend(Poster, {
                       $$(".myomeka-additem-submit").each(function(n){n.enable();});
                    }
                });
+               
+               // Hide the no items yet message if it exists
+               var noItemsYet = $("myomeka-poster-no-items-yet");
+               if (noItemsYet) {                  
+                  noItemsYet.hide();
+               }
            });
        });
        
-       if(Poster.itemCount > 0){
+       if (Poster.itemCount > 0) {
             // When the form loads, hide up and down controls that can't be used
             // Should maybe grey them out instead
             Poster.hideExtraControls();
@@ -81,11 +87,29 @@ Object.extend(Poster, {
     Hides the move up and down options on the top and bottom items
     */
     hideExtraControls: function() {
+        
         $$('.myomeka-poster-control').invoke("show");
-       	$$('.myomeka-move-up').first().hide();
-       	$$('.myomeka-move-top').first().hide();
-       	$$('.myomeka-move-down').last().hide();
-       	$$('.myomeka-move-bottom').last().hide();
+       	
+       	var moveUpImg = $$('.myomeka-move-up').first();
+       	if (moveUpImg) {
+           	moveUpImg.hide();       	    
+       	}
+       	
+       	var moveTopImg = $$('.myomeka-move-top').first();
+       	if (moveTopImg) {
+           	moveTopImg.hide();       	    
+       	}
+       	
+       	var moveDownImg = $$('.myomeka-move-down').last();
+       	if (moveDownImg) {
+           	moveDownImg.hide();	    
+       	}
+       	
+       	var moveBottomImg = $$('.myomeka-move-bottom').last();
+       	if (moveBottomImg) {
+           	moveBottomImg.hide();       	    
+       	}
+       	
 		return;
     },
     
@@ -93,11 +117,21 @@ Object.extend(Poster, {
     Bind functions to items controls
     */
     bindControls: function(){
+        
+        //Remove all previous bindings for controls
+        $$('.myomeka-move-up').invoke('stopObserving');
+        $$('.myomeka-move-down').invoke('stopObserving');
+        $$('.myomeka-move-top').invoke('stopObserving');
+        $$('.myomeka-move-bottom').invoke('stopObserving');
+        $$('.myomeka-delete').invoke('stopObserving');
+        
         // Bind move up buttons
         $$('.myomeka-move-up').invoke('observe', 'click', function(e){
             var element = Event.element(e);
             Poster.mceExecCommand("mceRemoveControl");
-            $('myomeka-poster-canvas').insertBefore(element.up('.myomeka-poster-spot'), element.up('.myomeka-poster-spot').previous());
+            var curPoster = element.up('.myomeka-poster-spot');
+            var prevPoster = curPoster.previous();            
+            $('myomeka-poster-canvas').insertBefore(curPoster, prevPoster);
             Poster.hideExtraControls();
             Poster.mceExecCommand("mceAddControl");
             Event.stop(e);
@@ -107,7 +141,9 @@ Object.extend(Poster, {
         $$('.myomeka-move-down').invoke('observe', 'click', function(e){
             var element = Event.element(e);
             Poster.mceExecCommand("mceRemoveControl");
-            $('myomeka-poster-canvas').insertBefore(element.up('.myomeka-poster-spot').next(), element.up('.myomeka-poster-spot'));
+            var curPoster = element.up('.myomeka-poster-spot');
+            var nextPoster = curPoster.next();
+            $('myomeka-poster-canvas').insertBefore(nextPoster, curPoster);
             Poster.hideExtraControls();
             Poster.mceExecCommand("mceAddControl");
             Event.stop(e);
@@ -117,7 +153,9 @@ Object.extend(Poster, {
         $$('.myomeka-move-top').invoke('observe', 'click', function(e){
             var element = Event.element(e);
             Poster.mceExecCommand("mceRemoveControl");
-            $('myomeka-poster-canvas').insertBefore(element.up('.myomeka-poster-spot'), element.up('.myomeka-poster-spot').siblings().first());
+            var curPoster = element.up('.myomeka-poster-spot');
+            var firstPoster = curPoster.siblings().first();
+            $('myomeka-poster-canvas').insertBefore(curPoster, firstPoster);
             Poster.hideExtraControls();
             Poster.mceExecCommand("mceAddControl");
             Event.stop(e);
@@ -127,7 +165,8 @@ Object.extend(Poster, {
         $$('.myomeka-move-bottom').invoke('observe', 'click', function(e){
             var element = Event.element(e);
             Poster.mceExecCommand("mceRemoveControl");
-            $('myomeka-poster-canvas').appendChild(element.up('.myomeka-poster-spot'));
+            var curPoster = element.up('.myomeka-poster-spot');
+            $('myomeka-poster-canvas').appendChild(curPoster);
             Poster.hideExtraControls();
             Poster.mceExecCommand("mceAddControl");
             Event.stop(e);
@@ -137,14 +176,15 @@ Object.extend(Poster, {
         $$('.myomeka-delete').invoke('observe', 'click', function(e){
             var element = Event.element(e);
             Poster.mceExecCommand("mceRemoveControl");
-            element.up('.myomeka-poster-spot').remove();
+            var curPoster = element.up('.myomeka-poster-spot'); 
+            curPoster.remove();
             Poster.hideExtraControls();
             Poster.mceExecCommand("mceAddControl");
             Event.stop(e);
         });
     }
 });
-Event.observe(window, 'load', Poster.init );
+Event.observe(window, 'load', Poster.init);
 
 
 dump = function(object, showTypes) {

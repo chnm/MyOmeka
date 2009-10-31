@@ -9,7 +9,6 @@
 // note: MyOmeka can optionally be used in conjunction with the TermsOfService plugin
 
 // Define the plugin version and page path.
-define('MY_OMEKA_PLUGIN_VERSION', get_plugin_ini('MyOmeka', 'version'));
 define('MY_OMEKA_PAGE_PATH', 'myomeka/');
 define('MY_OMEKA_PAGE_TITLE', 'MyOmeka');
 define('MY_OMEKA_DISCLAIMER', 'This page contains user generated content and does not necessarily reflect the opinions of this website. For more information please refer to our Terms and Conditions. If you would like to report the content of this page as objectionable, please contact us.');
@@ -30,7 +29,10 @@ add_plugin_hook('config', 'my_omeka_config');
 add_plugin_hook('config_form', 'my_omeka_config_form');
 add_plugin_hook('define_acl', 'my_omeka_setup_acl');
 add_plugin_hook('define_routes', 'my_omeka_define_routes');
+
 add_plugin_hook('public_theme_header', 'my_omeka_css');
+add_plugin_hook('admin_theme_header', 'my_omeka_css');
+
 add_plugin_hook('item_browse_sql', 'my_omeka_show_only_my_items');
 add_plugin_hook('public_append_to_items_show', 'my_omeka_embed_notes_and_tags');
 add_plugin_hook('initialize', 'my_omeka_add_controller_plugin');
@@ -47,7 +49,6 @@ add_filter('admin_navigation_main', 'my_omeka_admin_nav');
  */
 function my_omeka_install()
 {	
-	set_option('my_omeka_plugin_version', MY_OMEKA_PLUGIN_VERSION);
 	set_option('my_omeka_page_path', my_omeka_clean_path(MY_OMEKA_PAGE_PATH));
 	set_option('my_omeka_page_title', MY_OMEKA_PAGE_TITLE);
 	set_option('my_omeka_disclaimer', MY_OMEKA_DISCLAIMER);
@@ -86,7 +87,6 @@ function my_omeka_install()
  */
 function my_omeka_uninstall() 
 {
-    delete_option('my_omeka_plugin_version');
 	delete_option('my_omeka_page_path');
 	delete_option('my_omeka_page_title');
 	delete_option('my_omeka_disclaimer');
@@ -150,7 +150,7 @@ function my_omeka_css($request)
     // Don't output the myomeka.css file on pages made by other plugins.
     // This may be a bug that needs to be fixed in the next version of Omeka.
     if (in_array($request->getModuleName(), array('my-omeka', 'default', ''))) {
-        echo "<link rel=\"stylesheet\" media=\"screen\" href=\"".css('myomeka')."\" />";
+        echo "<link rel=\"stylesheet\" media=\"screen\" href=\"". html_escape(css('myomeka')) . "\" />";
     }
 }
 
@@ -198,7 +198,7 @@ function my_omeka_embed_notes_and_tags()
  */
 function my_omeka_add_notes($item)
 {	
-    if($user = current_user()) {
+    if ($user = current_user()) {
 		// Check if the user has already added notes to the item
     	$note = get_db()->getTable('MyOmekaNote')->findByUserIdAndItemId($user->id, $item->id);
         
@@ -229,17 +229,17 @@ function my_omeka_items_show_navigation()
     $helpUrl = uri(array('action'=>'help'), 'myOmekaAction');
     $dashboardUrl = uri(array(), 'myOmekaDashboard');
 ?>
-    <ul class="navigation"><li><a href="<?php echo $helpUrl; ?>" class="myomeka-help-link">Help</a></li>
-    <li><a class="dashboard-link" href="<?php echo $dashboardUrl; ?>">Go to My Dashboard</a></li></ul>
+    <ul class="navigation"><li><a href="<?php echo html_escape($helpUrl); ?>" class="myomeka-help-link">Help</a></li>
+    <li><a class="dashboard-link" href="<?php echo html_escape($dashboardUrl); ?>">Go to My Dashboard</a></li></ul>
 
 <?php
 }
 
-function poster_icon_html() 
+function my_omeka_poster_icon_html() 
 {
     $html = item_thumbnail();
     if (!$html) {
-        $html = "<img alt='no image available' src='".img('noThumbnail.png')."'/>";
+        $html = "<img alt='no image available' src='".html_escape(img('noThumbnail.png'))."'/>";
     }
     return $html;
 }
@@ -248,9 +248,9 @@ function my_omeka_user_status()
 {
 	$user = current_user();
 	if ($user) {
-		$html = "<p>logged in as <a href=\"" . uri(array(), 'myOmekaDashboard') . "\">$user->username</a> | <a href=\"" . uri(array('action'=>'logout', 'controller'=>'users'), 'default') . "\">Logout</a></p>";
+		$html = "<p>logged in as <a href=\"" . html_escape(uri(array(), 'myOmekaDashboard')) . "\">html_escape($user->username)</a> | <a href=\"" . html_escape(uri(array('action'=>'logout', 'controller'=>'users'), 'default')) . "\">Logout</a></p>";
 	} else {
-		$html = '<p><a href="' . uri(array(), 'myOmekaDashboard') . '">Login</a> | <a href="' . uri(array('action'=>'register'), 'myOmekaAction') . '">Register</a></p>';
+		$html = '<p><a href="' . html_escape(uri(array(), 'myOmekaDashboard')) . '">Login</a> | <a href="' . html_escape(uri(array('action'=>'register'), 'myOmekaAction')) . '">Register</a></p>';
 	}
 	return $html;
 }

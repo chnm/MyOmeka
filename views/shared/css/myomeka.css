@@ -1,3 +1,108 @@
+#myomeka-help {
+ margin-top:20px;   
+}
+
+/* Edit poster */
+.myomeka-item-header {
+    margin-bottom: 10px;
+}
+
+.myomeka-item-header h3.myomeka-item-title {
+    display:inline;
+}
+
+.myomeka-controls {
+    display:inline;
+}
+
+.myomeka-item-thumbnail {
+    margin-bottom: 5px;
+}
+
+.myomeka-item-annotation {
+    margin-bottom: 5px;
+}
+
+#myomeka-poster-canvas {
+    margin-top:10px;
+}
+
+.myomeka-poster-spot {
+ margin-bottom:40px;   
+}
+
+.myomeka-poster {
+    margin-top:20px;
+}
+
+#myomeka-create-poster {
+    margin-top:20px;
+}
+
+.myomeka-poster-item {
+    margin-top:20px;
+}
+
+.myomeka-poster-nav li {
+    display: inline; 
+}
+
+#myomeka-submit-poster {
+    margin-top:20px;
+}
+
+.myomeka-field {
+    margin-bottom: 20px;
+}
+
+.myomeka-field label, .myomeka-field input {
+    display: block;
+}
+
+/* 
+Dashboard
+*/
+.myomeka-item {
+    margin-bottom: 20px;
+}
+
+.myomeka-item-thumbnail {
+    display: block;
+}
+
+#myomeka-tags {
+    margin-top:20px;
+}
+
+#myomeka-noted-items {
+    margin-top:20px;
+}
+
+
+/*
+Add notes to public item page
+*/
+
+#myomeka-field {
+    float:none;
+}
+
+#myomeka-note {
+    float:none;
+}
+
+#myomeka-submit-add-tags, #myomeka-new-tags {
+    display:inline;
+}
+
+#myomeka-tag-form {
+ margin-top: 20px;   
+}
+
+#myomeka-my-tags {
+    margin-top: -2em;
+}
+
 /*
 Add item to posters model
 */
@@ -18,9 +123,21 @@ Add item to posters model
 .myomeka-additem-image img {width: 100px; height:100px;}
 .myomeka-additem-details {
     float:left;
-width: 400px;
+    width: 400px;
 }
 
-#myomeka-primary input, button {margin:3px 0;}
+#myomeka-primary input, button {
+    margin:3px 0;
+}
 
-.myomeka-additem-form {clear:both;display:block; margin-top: 12px;}
+.myomeka-additem-form {
+    clear:both;
+    display:block; 
+    margin-top: 12px;
+}
+
+#myomeka-additem-modal {
+    display:none;
+    border-style:solid;
+    border-width:2px;
+}

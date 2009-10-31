@@ -93,7 +93,7 @@ class MyOmeka_PosterController extends Omeka_Controller_Action
         if ($this->getRequest()->isPost()) {
             $validator = new Zend_Validate_EmailAddress();
             $emailTo = $this->getRequest()->getPost('email_to');
-            if(Zend_Validate::is($emailTo, 'EmailAddress')){
+            if (Zend_Validate::is($emailTo, 'EmailAddress')){
                 $site_title = get_option('site_title');
         		$from = get_option('administrator_email');
         		
@@ -135,6 +135,8 @@ class MyOmeka_PosterController extends Omeka_Controller_Action
         $poster->description = $params['description'];
         $poster->updateItems($params);
         $poster->save();
+        
+        $this->flashSuccess("\"$poster->title\" was successfully saved.");
         
         if (is_admin_theme()) {
             $this->redirect->gotoRoute(array('action'=>'browse'), 'myOmekaPosterAction');
@@ -190,7 +192,7 @@ class MyOmeka_PosterController extends Omeka_Controller_Action
         $this->_verifyAccess($poster, 'delete');
         
         $poster->delete();
-        $this->flash("\"$poster->title\" was successfully deleted");
+        $this->flashSuccess("\"$poster->title\" was successfully deleted.");
         
         // Try to redirect to the HTTP Referer, otherwise go back to the dashboard.
         $redirectUrl = $_SERVER['HTTP_REFERER'];

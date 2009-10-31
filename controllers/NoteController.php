@@ -19,7 +19,7 @@ class MyOmeka_NoteController extends Omeka_Controller_Action
     	    	
     	$note = $this->getTable('MyOmekaNote')->findByUserIdAndItemId($userId, $itemId);
     	
-    	$noteText = $this->getRequest()->getPost('note');
+    	$noteText = $this->getRequest()->getPost('myomeka-note');
     	
     	if (!empty($noteText)) {
     	   if (!$note) {

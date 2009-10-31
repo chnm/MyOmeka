@@ -2,9 +2,9 @@
 
 <div id="primary">
 <div id="myomeka-login-box">
-<h1><?php echo get_option('my_omeka_page_title'); ?>: Login</h1>
+<h1><?php echo html_escape(get_option('my_omeka_page_title')); ?>: Login</h1>
 
-<a href="<?php echo uri(array('action'=>'register'), 'myOmekaAction'); ?>">Sign up for a new account</a>
+<a href="<?php echo html_escape(uri(array('action'=>'register'), 'myOmekaAction')); ?>">Sign up for a new account</a>
 
 <form id="myomeka-login-form" method="post" accept-charset="utf-8">
 	<div class="field">
@@ -23,7 +23,7 @@
 	<input type="submit" class="login" value="Login" />
 </form>
 
-<p id="myomeka-forgot-password"><a href="<?php echo uri('users/forgot-password'); ?>">Lost your password?</a></p>
+<p id="myomeka-forgot-password"><a href="<?php echo html_escape(uri('users/forgot-password')); ?>">Lost your password?</a></p>
 
 <?php 
 // Possible spot for a hook that other plugins could use to append data 

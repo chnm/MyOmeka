@@ -1,8 +1,8 @@
-<?php head(array('title'=>'Register for ' . get_option('my_omeka_page_title'))); ?>
+<?php head(array('title'=>'Register for ' . html_escape(get_option('my_omeka_page_title')))); ?>
 <div id="primary">
     
 <div id="myomeka-register">
-<h2><?php echo get_option('my_omeka_page_title'); ?>: Register</h2>
+<h2><?php echo html_escape(get_option('my_omeka_page_title')); ?>: Register</h2>
 
 <?php
 echo flash(); 
@@ -10,7 +10,7 @@ echo flash();
 if (!$emailSent): 
 ?>
 	
-<form id="myomeka-register-form" action="<?php echo uri(array('action'=>'register'), 'myOmekaAction');?>" method="post" accept-charset="utf-8">
+<form id="myomeka-register-form" action="<?php echo html_escape(uri(array('action'=>'register'), 'myOmekaAction'));?>" method="post" accept-charset="utf-8">
 <fieldset>
 	
 	<div class="field">

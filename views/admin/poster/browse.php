@@ -1,10 +1,16 @@
-<?php 
-head(); 
+<?php
+$pageTitle = 'Browse Posters';
+head(array('title'=>$pageTitle)); 
 echo js('dashboard');
+
+if ($totalPosters == 1) {
+    $pageTitle .= ' (' . $totalPosters . ' poster)';
+} else {
+    $pageTitle .= ' (' . $totalPosters . ' posters)';
+}
 ?>
 
-<h1>Poster Administration (<?php echo $totalPosters; ?> posters)</h1>
-
+<h1><?php echo $pageTitle; ?></h1>
 <div id="primary">
     <p>Posters created by users are listed below.</p>
     
@@ -16,26 +22,38 @@ echo js('dashboard');
                                          'per_page'        => $perPage)) ?>
     </div>
     
-    <?php if(count($posters)): ?>
+    <?php if (count($posters)): ?>
         <table>
+            <thead>
             <tr>
+                <th>ID</th>
                 <th>Poster name</th>
                 <th>Creator</th>
-                <th>Date modified</th>
-                <th>Operations</th>
+                <th>Date Modified</th>
+                <th>Preview</th>
+                <th>Edit?</th>
+                <th>Delete?</th>
             </tr>
+            </thead>
+            <tbody>
             <?php foreach ($posters as $poster): ?>
                 <tr>
-                    <td><?php echo htmlspecialchars($poster->title); ?></td>
-                    <td><?php echo $poster->User->username; ?></td>
-                    <td><?php echo $poster->date_modified; ?></td>
+                    <td><?php echo html_escape($poster->id); ?></td>
+                    <td><?php echo html_escape($poster->title); ?></td>
+                    <td><?php echo html_escape($poster->User->username); ?></td>
+                    <td><?php echo html_escape($poster->date_modified); ?></td>
                     <td>
-                        <a href="<?php echo public_uri(array('action'=>'show','id'=>$poster->id), 'myOmekaPosterActionId'); ?>">view</a> 
-                        <a href="<?php echo uri(array('action'=>'edit','id'=>$poster->id), 'myOmekaPosterActionId'); ?>">edit</a> 
-                        <a href="<?php echo uri(array('action'=>'delete','id'=>$poster->id), 'myOmekaPosterActionId'); ?>" class="myomeka-delete-poster-link">delete</a>
+                        <a href="<?php echo html_escape(public_uri(array('action'=>'show','id'=>$poster->id), 'myOmekaPosterActionId')); ?>">[Preview]</a> 
+                    </td>
+                    <td>
+                        <a href="<?php echo html_escape(uri(array('action'=>'edit','id'=>$poster->id), 'myOmekaPosterActionId')); ?>" class="edit">Edit</a> 
+                    </td>
+                    <td>
+                        <a href="<?php echo html_escape(uri(array('action'=>'delete','id'=>$poster->id), 'myOmekaPosterActionId')); ?>" class="delete">Delete</a>
                     </td>
                 </tr>
             <?php endforeach; ?>
+            </tbody>
         </table>
     <?php else: ?>
         There are no posters.
