@@ -1,16 +1,13 @@
 <?php
     $pageTitle = 'Edit Poster: &quot;' . html_escape($poster->title) . '&quot;';
+    queue_js(array('tiny_mce/tiny_mce', 'poster'));
     head(array('title'=>$pageTitle));
-    echo js('tiny_mce/tiny_mce'); 
-    echo js('ibox/ibox');
-    echo js('poster');
 ?>
-<script type="text/javascript" charset="utf-8">
-    // Make the items-widget div a modal pop-up
-    iBox.setPath(<?php echo js_escape(WEB_ROOT . '/plugins/MyOmeka/views/shared/javascripts/ibox/'); ?>);
-
+<script type="text/javascript">
     // Set the initial Item Count
-    Poster.itemCount = <?php echo count($poster->Items); ?>;
+    Omeka.Poster.itemCount = <?php echo count($poster->Items); ?>;
+
+    jQuery(window).load(Omeka.Poster.init);
 </script>
 <div id="primary">
     <h1><?php echo $pageTitle; ?></h1>
