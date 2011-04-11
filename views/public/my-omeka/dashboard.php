@@ -1,7 +1,6 @@
 <?php
     $pageTitle = html_escape(get_option('my_omeka_page_title') . ': Dashboard');
-    head(array('title'=>$pageTitle)); 
-    echo js('dashboard'); 
+    head(array('title'=>$pageTitle));
 ?>
 
 <div id="primary">
@@ -25,7 +24,7 @@
 					<ul class="myomeka-poster-nav">
 	               		<li><a href="<?php echo html_escape(uri(array('action'=>'edit','id'=>$poster->id), 'myOmekaPosterActionId')); ?>" class="myomeka-edit-poster-link">edit</a> </li>
 	               		<li><a href="<?php echo html_escape(uri(array('action'=>'share','id'=>$poster->id), 'myOmekaPosterActionId')); ?>" class="myomeka-share-poster-link">share</a></li>
-	               		<li><a href="<?php echo html_escape(uri(array('action'=>'delete','id'=>$poster->id), 'myOmekaPosterActionId')); ?>" class="myomeka-delete-poster-link">delete</a></li>
+	               		<li><?php echo delete_button(uri(array('action'=>'delete-confirm','id'=>$poster->id), 'myOmekaPosterActionId')); ?></li>
 					</ul>
 				</div>
 	      	<?php endforeach; ?>

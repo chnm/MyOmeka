@@ -10,6 +10,7 @@ class MyOmekaControllerPlugin extends Zend_Controller_Plugin_Abstract
         array('my-omeka', 'index'),
         array('poster', 'edit'),
         array('poster', 'share'),
+        array('poster', 'delete-confirm'),
         array('poster', 'delete'),
         array('poster', 'save'),
         array('poster', 'new'),
