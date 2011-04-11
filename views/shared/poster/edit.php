@@ -7,7 +7,7 @@
 ?>
 <script type="text/javascript" charset="utf-8">
     // Make the items-widget div a modal pop-up
-    iBox.setPath(<?php echo Zend_JSON::encode(WEB_ROOT . '/plugins/MyOmeka/views/shared/javascripts/ibox/'); ?>);
+    iBox.setPath(<?php echo js_escape(WEB_ROOT . '/plugins/MyOmeka/views/shared/javascripts/ibox/'); ?>);
 
     // Set the initial Item Count
     Poster.itemCount = <?php echo count($poster->Items); ?>;
