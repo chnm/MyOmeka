@@ -1,7 +1,6 @@
 <?php
 $pageTitle = 'Browse Posters';
-head(array('title'=>$pageTitle)); 
-echo js('dashboard');
+head(array('title'=>$pageTitle));
 
 if ($totalPosters == 1) {
     $pageTitle .= ' (' . $totalPosters . ' poster)';
@@ -49,7 +48,7 @@ if ($totalPosters == 1) {
                         <a href="<?php echo html_escape(uri(array('action'=>'edit','id'=>$poster->id), 'myOmekaPosterActionId')); ?>" class="edit">Edit</a> 
                     </td>
                     <td>
-                        <a href="<?php echo html_escape(uri(array('action'=>'delete','id'=>$poster->id), 'myOmekaPosterActionId')); ?>" class="delete">Delete</a>
+                        <?php echo delete_button(uri(array('action'=>'delete-confirm','id'=>$poster->id), 'myOmekaPosterActionId')); ?>
                     </td>
                 </tr>
             <?php endforeach; ?>
@@ -59,4 +58,4 @@ if ($totalPosters == 1) {
         There are no posters.
     <?php endif; ?>
 </div>
-<?php foot(); ?>
+<?php foot();

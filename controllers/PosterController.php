@@ -14,6 +14,7 @@ class MyOmeka_PosterController extends Omeka_Controller_Action
     public function init()
     {
         $this->_currentUser = Omeka_Context::getInstance()->getCurrentUser();
+        $this->_modelClass = 'MyOmekaPoster';
     }
     
     /**
