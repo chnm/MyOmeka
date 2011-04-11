@@ -141,4 +141,4 @@ Omeka.Poster = {
             Omeka.Poster.mceExecCommand('mceAddControl');
         });
     }
-}
+};
