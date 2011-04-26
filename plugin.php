@@ -147,10 +147,9 @@ function my_omeka_admin_nav($navArray)
 
 function my_omeka_css($request)
 {
-    // Don't output the myomeka.css file on pages made by other plugins.
-    // This may be a bug that needs to be fixed in the next version of Omeka.
-    if (in_array($request->getModuleName(), array('my-omeka', 'default', ''))) {
-        echo "<link rel=\"stylesheet\" media=\"screen\" href=\"". html_escape(css('myomeka')) . "\" />";
+    $module = $request->getModuleName();
+    if ($module == 'my-omeka' || ($module == 'default' && !is_admin_theme())) {
+        queue_css('myomeka');
     }
 }
 

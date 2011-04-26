@@ -126,7 +126,8 @@ Add item to posters model
     width: 400px;
 }
 
-#myomeka-primary input, button {
+#myomeka-primary input,
+#myomeka-primary button {
     margin:3px 0;
 }
 
