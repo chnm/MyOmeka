@@ -16,7 +16,6 @@ define('MY_OMEKA_DISCLAIMER', 'This page contains user generated content and doe
 define('MYOMEKA_USER_ROLE', 'my-omeka');
 define('MYOMEKA_TAG_TYPE', 'MyomekaTag');
 
-require_once 'MyOmekaNote.php';
 // Current hack, controllers require access to some of the view helpers
 // for generating URLs in emails.  Need to refactor helpers to allow access
 // within controllers.
