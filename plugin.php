@@ -48,38 +48,37 @@ add_filter('admin_navigation_main', 'my_omeka_admin_nav');
  * Install the plugin.
  */
 function my_omeka_install()
-{	
-	set_option('my_omeka_page_path', my_omeka_clean_path(MY_OMEKA_PAGE_PATH));
-	set_option('my_omeka_page_title', MY_OMEKA_PAGE_TITLE);
-	set_option('my_omeka_disclaimer', MY_OMEKA_DISCLAIMER);
-	
-	// Create new tables to support poster building
-	$db = get_db();
-	$db->exec(  "CREATE TABLE IF NOT EXISTS {$db->prefix}posters ( 
-                    `id` BIGINT UNSIGNED NOT NULL auto_increment PRIMARY KEY, 
-            	    `title` VARCHAR(255) NOT NULL, 
-            	    `description` TEXT, 
-            		`user_id` BIGINT UNSIGNED NOT NULL,
-            		`date_created` TIMESTAMP NOT NULL default '0000-00-00 00:00:00',
-            		`date_modified` TIMESTAMP NOT NULL default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP
-            	) ENGINE = MYISAM;");
-	
-	$db->exec(  "CREATE TABLE IF NOT EXISTS {$db->prefix}posters_items ( 
-                    `id` BIGINT UNSIGNED NOT NULL auto_increment PRIMARY KEY, 
-            	    `annotation` TEXT, 
-            		`poster_id` BIGINT UNSIGNED NOT NULL,
-            		`item_id` BIGINT UNSIGNED NOT NULL,
-            		`ordernum` INT NOT NULL
-            	) ENGINE = MYISAM;");
+{
+    set_option('my_omeka_page_path', my_omeka_clean_path(MY_OMEKA_PAGE_PATH));
+    set_option('my_omeka_page_title', MY_OMEKA_PAGE_TITLE);
+    set_option('my_omeka_disclaimer', MY_OMEKA_DISCLAIMER);
 
-	// Create Notes table
-	$db->exec(  "CREATE TABLE IF NOT EXISTS {$db->prefix}notes ( 
+    // Create new tables to support poster building
+    $db = get_db();
+    $db->query("CREATE TABLE IF NOT EXISTS {$db->prefix}posters (
                     `id` BIGINT UNSIGNED NOT NULL auto_increment PRIMARY KEY, 
-            	    `note` TEXT NOT NULL, 
-            		`user_id` BIGINT UNSIGNED NOT NULL,
-            		`item_id` BIGINT UNSIGNED NOT NULL,
-            		`date_modified` TIMESTAMP NOT NULL default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP
-            	) ENGINE = MYISAM;");
+                    `title` VARCHAR(255) NOT NULL,
+                    `description` TEXT,
+                    `user_id` BIGINT UNSIGNED NOT NULL,
+                    `date_created` TIMESTAMP NOT NULL default '0000-00-00 00:00:00',
+                    `date_modified` TIMESTAMP NOT NULL default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP
+                ) ENGINE = MYISAM;");
+
+    $db->query("CREATE TABLE IF NOT EXISTS {$db->prefix}posters_items (
+                    `id` BIGINT UNSIGNED NOT NULL auto_increment PRIMARY KEY,
+                    `annotation` TEXT,
+                    `poster_id` BIGINT UNSIGNED NOT NULL,
+                    `item_id` BIGINT UNSIGNED NOT NULL,
+                    `ordernum` INT NOT NULL
+                ) ENGINE = MYISAM;");
+
+    $db->query("CREATE TABLE IF NOT EXISTS {$db->prefix}notes (
+                    `id` BIGINT UNSIGNED NOT NULL auto_increment PRIMARY KEY,
+                    `note` TEXT NOT NULL,
+                    `user_id` BIGINT UNSIGNED NOT NULL,
+                    `item_id` BIGINT UNSIGNED NOT NULL,
+                    `date_modified` TIMESTAMP NOT NULL default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP
+                ) ENGINE = MYISAM;");
 }
 
 /**
